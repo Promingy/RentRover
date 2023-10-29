@@ -21,13 +21,19 @@ module.exports = (sequelize, DataTypes) => {
         otherKey: 'userId'
       }),
 
-      Spot.hasMany(models.SpotImage, {
-        foreignKey: 'spotId'
+      Spot.belongsToMany(models.User, {
+        through: models.Review,
+        foreignKey: 'spotId',
+        otherKey: 'userId'
       }),
 
-      Spot.hasMany(models.Review, {
+      Spot.hasMany(models.SpotImage, {
         foreignKey: 'spotId'
       })
+
+      // Spot.hasMany(models.Review, {
+      //   foreignKey: 'spotId'
+      // })
     }
   }
   Spot.init({
