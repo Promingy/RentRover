@@ -69,10 +69,10 @@ router.get('/', async (_req, res) => {
         avgRating = stars / numOfReviews
 
         spot = spot.toJSON()
-        url = url.toJSON()
+        if(url) url = url.toJSON()
 
         spot.avgRating = avgRating
-        spot.previewImage = url.url
+        if(url) spot.previewImage = url.url
 
         updatedSpots.push(spot)
         // spot.dataValues.avgRating = avgRating
@@ -101,6 +101,17 @@ router.post('/', [requireAuth, validBody], async (req, res) => {
 
     res.status(201)
     res.json(newSpot)
+});
+
+router.get('/current', requireAuth, async (req, res) => {
+    const { user } = req;
+    const spots = await Spot.findAll({
+        where: {
+            ownerId: user.id
+        }
+    })
+
+    res.json(spots)
 });
 
 router.get('/:spotId', async (req, res) => {
@@ -143,21 +154,17 @@ router.get('/:spotId', async (req, res) => {
     res.json(spot)
 });
 
-router.get('/current', requireAuth, async (req, res) => {
-    const { user } = req;
-    const spots = await Spot.findAll({
-        where: {
-            ownerId: user.id
-        }
-    })
-
-    res.json(spots)
-});
-
 router.post('/:spotId/images', requireAuth, async (req, res) => {
+    // const { user } = req;
+    // const id = user.id;
+
     const { spotId } = req.params;
     const { url, preview } = req.body;
     const spot = await Spot.findByPk(spotId);
+
+    // if (spot['ownerId'] !== id){
+    //     throw new error('IM AN ERROR')
+    // }
 
     if (!spot) {
         res.status(404);
@@ -208,6 +215,33 @@ router.put('/:spotId', [requireAuth, validBody], async (req, res) => {
 
 
     res.json(spot)
+});
+
+router.delete('/:spotId', requireAuth, async (req, res) => {
+    const { user } = req;
+    const { spotId } = req.params;
+    const spot = await Spot.findByPk(spotId);
+
+    if(!spot) {
+        return res.status(404).json(
+            {
+            "message": "Spot couldn't be found"
+         });
+    };
+
+    if(spot['ownerId'] !== user.id ) {
+        res.status(403).json(
+            {
+            "message": "Forbidden"
+          })
+    }
+
+    await spot.destroy();
+    return res.json(
+        {
+        "message": "Successfully deleted"
+      })
+
 })
 
 module.exports = router;
