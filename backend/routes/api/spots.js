@@ -155,6 +155,7 @@ router.get('/current', requireAuth, async (req, res) => {
 });
 
 router.post('/:spotId/images', requireAuth, async (req, res) => {
+    const { user } = req;
     const { spotId } = req.params;
     const { url, preview } = req.body;
     const spot = await Spot.findByPk(spotId);
@@ -166,6 +167,15 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
             "message": "Spot couldn't be found"
           })
     }
+
+    if (user.id !== spot['ownerId']){
+       res.status(403).json(
+        {
+            "message": "Forbidden"
+          }
+       )
+    };
+
 
     const newSpotImage = await SpotImage.create({
         spotId,
@@ -183,6 +193,7 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
 
 router.put('/:spotId', [requireAuth, validBody], async (req, res) => {
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
+    const { user } = req;
     const { spotId } = req.params;
     let spot = await Spot.findByPk(spotId);
 
@@ -191,6 +202,13 @@ router.put('/:spotId', [requireAuth, validBody], async (req, res) => {
         return res.json(
             {
             "message": "Spot couldn't be found"
+          })
+    }
+
+    if(user.id !== spot['ownerId']){
+        res.status(403).json(
+            {
+            "message": "Forbidden"
           })
     }
 
