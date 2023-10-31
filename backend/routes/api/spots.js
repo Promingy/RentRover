@@ -207,18 +207,18 @@ router.put('/:spotId', [requireAuth, validBody], async (req, res) => {
     const { spotId } = req.params;
     let spot = await Spot.findByPk(spotId);
 
-    if(user.id !== spot['ownerId']){
-        res.status(403).json(
-            {
-            "message": "Forbidden"
-          })
-    }
-
     if (!spot) {
         res.status(404);
         return res.json(
             {
             "message": "Spot couldn't be found"
+          })
+    }
+
+    if(user.id !== spot['ownerId']){
+        res.status(403).json(
+            {
+            "message": "Forbidden"
           })
     }
 
