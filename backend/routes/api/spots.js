@@ -103,6 +103,17 @@ router.post('/', [requireAuth, validBody], async (req, res) => {
     res.json(newSpot)
 });
 
+router.get('/current', requireAuth, async (req, res) => {
+    const { user } = req;
+    const spots = await Spot.findAll({
+        where: {
+            ownerId: user.id
+        }
+    })
+
+    res.json(spots)
+});
+
 router.get('/:spotId', async (req, res) => {
     const { spotId } = req.params;
     let spot = await Spot.findByPk(spotId, {
@@ -141,17 +152,6 @@ router.get('/:spotId', async (req, res) => {
     spot.Owner = Owner
 
     res.json(spot)
-});
-
-router.get('/current', requireAuth, async (req, res) => {
-    const { user } = req;
-    const spots = await Spot.findAll({
-        where: {
-            ownerId: user.id
-        }
-    })
-
-    res.json(spots)
 });
 
 router.post('/:spotId/images', requireAuth, async (req, res) => {
