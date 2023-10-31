@@ -171,9 +171,14 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
     const { url, preview } = req.body;
     const spot = await Spot.findByPk(spotId);
 
-    // if (spot['ownerId'] !== id){
-    //     throw new error('IM AN ERROR')
-    // }
+
+    if (user.id !== spot['ownerId']){
+        res.status(403).json(
+         {
+             "message": "Forbidden"
+           }
+        )
+     };
 
     if (!spot) {
         res.status(404);
@@ -182,15 +187,6 @@ router.post('/:spotId/images', requireAuth, async (req, res) => {
             "message": "Spot couldn't be found"
           })
     }
-
-    if (user.id !== spot['ownerId']){
-       res.status(403).json(
-        {
-            "message": "Forbidden"
-          }
-       )
-    };
-
 
     const newSpotImage = await SpotImage.create({
         spotId,
@@ -212,18 +208,18 @@ router.put('/:spotId', [requireAuth, validBody], async (req, res) => {
     const { spotId } = req.params;
     let spot = await Spot.findByPk(spotId);
 
+    if(user.id !== spot['ownerId']){
+        res.status(403).json(
+            {
+            "message": "Forbidden"
+          })
+    }
+
     if (!spot) {
         res.status(404);
         return res.json(
             {
             "message": "Spot couldn't be found"
-          })
-    }
-
-    if(user.id !== spot['ownerId']){
-        res.status(403).json(
-            {
-            "message": "Forbidden"
           })
     }
 
@@ -248,19 +244,19 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
     const { spotId } = req.params;
     const spot = await Spot.findByPk(spotId);
 
-    if(!spot) {
-        return res.status(404).json(
-            {
-            "message": "Spot couldn't be found"
-         });
-    };
-
     if(spot['ownerId'] !== user.id ) {
         res.status(403).json(
             {
             "message": "Forbidden"
           })
     }
+
+    if(!spot) {
+        return res.status(404).json(
+            {
+            "message": "Spot couldn't be found"
+         });
+    };
 
     await spot.destroy();
     return res.json(
