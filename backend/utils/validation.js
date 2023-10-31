@@ -20,6 +20,24 @@ const handleValidationErrors = (req, _res, next) => {
   next();
 };
 
+const handleBookings = (req, _res, next) => {
+  const validationErrors = validationResult(req);
+
+  if (!validationErrors.isEmpty()) {
+    const errors = {};
+    validationErrors
+      .array()
+      .forEach(error => errors[error.path] = error.msg);
+
+    const err = Error("Sorry, this spot is already booked for the specified dates");
+    err.errors = errors;
+    err.status = 403;
+    next(err);
+  }
+  next()
+}
+
 module.exports = {
-  handleValidationErrors
+  handleValidationErrors,
+  handleBookings
 };
