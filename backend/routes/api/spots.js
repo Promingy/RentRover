@@ -2,7 +2,7 @@ const express = require('express')
 const bcrypt = require('bcryptjs')
 const { check } = require('express-validator')
 
-const { handleValidationErrors, handleBookings } = require('../../utils/validation');
+const { handleValidationErrors, handleBookings, handleValidationErrorsNoTitle } = require('../../utils/validation');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const { User, Spot, Review, SpotImage, ReviewImage, Booking, Sequelize } = require('../../db/models');
 
@@ -46,7 +46,7 @@ const validBodySpot = [
             min: 1
         })
         .withMessage('Price per day is required'),
-        handleValidationErrors
+        handleValidationErrorsNoTitle
 ]
 
 const validBodyReview = [
@@ -59,7 +59,7 @@ const validBodyReview = [
             min: 1
         })
         .withMessage('Stars must be an integer from 1 to 5'),
-    handleValidationErrors
+        handleValidationErrorsNoTitle
 ]
 
 const bookingValidator = [
@@ -76,7 +76,7 @@ const bookingValidator = [
             return !(endDateTime <= startDateTime)
         })
         .withMessage(`endDate cannot be on or before startDate`),
-        handleValidationErrors
+        handleValidationErrorsNoTitle
 
 ];
 

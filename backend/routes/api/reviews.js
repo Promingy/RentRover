@@ -4,7 +4,7 @@ const { Op } = require('sequelize');
 const { check } = require('express-validator');
 
 const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth');
-const { handleValidationErrors } = require('../../utils/validation');
+const { handleValidationErrors, handleValidationErrorsNoTitle } = require('../../utils/validation');
 const { User, Review, Spot, ReviewImage, SpotImage, Sequelize } = require('../../db/models')
 
 const router = express.Router();
@@ -19,7 +19,7 @@ const validBodyReview = [
             min: 1
         })
         .withMessage('Stars must be an integer from 1 to 5'),
-    handleValidationErrors
+        handleValidationErrorsNoTitle
 ];
 
 router.get('/current', requireAuth, async (req, res) => {
