@@ -159,61 +159,76 @@ handleBookings
 
 const handleQueryErrors = [
     check('page')
-        .custom(({req}) => {
+        .custom((value, {req}) => {
             const { page } = req.query;
 
-            if (page < 1) return false
+            return page && page < 1 ? false : true
+
+            // if (page < 1) return false
         })
         .withMessage('Page must be greater than or equal to 1'),
     check('size')
-        .custom(({req}) => {
+        .custom((value, {req}) => {
             const { size } = req.query;
+            return size && size < 1 ? false : true
 
             if (size < 1) return false
         })
         .withMessage('Size must be greater than or equal to 1'),
     check('maxLat')
-        .custom(({req}) => {
-            const { maxLat } = req.query;
+        .custom((value, {req}) => {
+            const { maxLat, minLat } = req.query;
+
+            return maxLat && maxLat > 90 || minLat > maxLat ? false : true
 
             if (maxLat > 90) return false
         })
         .withMessage('Maximum latitude is invalid'),
     check('minLat')
-        .custom(({req}) => {
-            const { minLat } = req.query;
+        .custom((value, {req}) => {
+            const { minLat, maxLat } = req.query;
+
+            return minLat && minLat < -90 || minLat > 90 || minLat > maxLat ? false : true
 
             if (minLat < -90) return false
         })
         .withMessage('Minimum latitude is invalid'),
     check('minLng')
-        .custom(({req}) => {
-            const { minLng } = req.query;
+        .custom((value, {req}) => {
+            const { minLng, maxLng } = req.query;
+
+            return minLng && minLng < -180 || minLng > 180 || minLng > maxLng ? false : true
 
             if (minLng < -180) return false
         })
         .withMessage('Minimum longitude is invalid'),
     check('maxLng')
-        .custom(({req}) => {
-            const { maxLng } = req.query;
+        .custom((value, {req}) => {
+            const { maxLng, minLng } = req.query;
+
+            return maxLng && maxLng > 180 || +maxLng < +minLng ? false : true
 
             if (maxLng > 180) return false
         })
         .withMessage('Maximum longitude is invalid'),
     check('minPrice')
-        .custom(({req}) => {
+        .custom((value, {req}) => {
             const { minPrice } = req.query;
 
-            if (minPrice < 1) return false
+            return minPrice && +minPrice < 1 ? false : true
+
+            if (+minPrice < 1) return false
         })
         .withMessage('Minimum price must be greater than or equal to 0'),
     check('maxPrice')
-        .custom(({req}) => {
+        .custom((value, {req}) => {
             const { maxPrice } = req.query;
 
-            if (maxPrice < 1) return false
+            return maxPrice && +maxPrice < 1 ? false : true
+
+            if (+maxPrice < 1) return false
         })
-        .withMessage('Maximum price must be greate than or equal to 0'),
+        .withMessage('Maximum price must be greater than or equal to 0'),
     handleQueries
 ]
 
@@ -288,6 +303,8 @@ router.get('/', handleQueryErrors, async (req, res) => {
 
         updatedSpots.push(spot)
     }
+
+    if(Object.keys(req.query).length === 0) return res.json({Spots: updatedSpots})
     return res.json({Spots: updatedSpots, page, size})
 });
 
