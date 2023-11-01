@@ -9,7 +9,6 @@ const { User, Review, Spot, ReviewImage, SpotImage, Booking, Sequelize } = requi
 
 const router = express.Router();
 
-/// COME BACK AND TEST ONCE YOU CREATE BOOKINGS
 router.get('/current', requireAuth, async (req, res) => {
     const { user } = req;
     const Bookings = await Booking.findAll({

@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs')
 const { check } = require('express-validator')
 
 const { handleValidationErrors, handleBookings, handleValidationErrorsNoTitle } = require('../../utils/validation');
-const { setTokenCookie, requireAuth } = require('../../utils/auth');
+const { setTokenCookie, requireAuth, authorize } = require('../../utils/auth');
 const { User, Spot, Review, SpotImage, ReviewImage, Booking, Sequelize } = require('../../db/models');
 
 
@@ -274,7 +274,7 @@ router.get('/:spotId', async (req, res) => {
     res.json(spot)
 });
 
-router.post('/:spotId/images', requireAuth, async (req, res) => {
+router.post('/:spotId/images', [requireAuth], async (req, res) => {
     const { user } = req;
     const { spotId } = req.params;
     const { url, preview } = req.body;
@@ -407,7 +407,7 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
     const { spotId } = req.params;
     const spot = await Spot.findByPk(spotId);
 
-    if(spot['ownerId'] == user.id ) {
+    if(spot['ownerId'] !== user.id ) {
         res.status(403).json(
             {
             "message": "Forbidden"
