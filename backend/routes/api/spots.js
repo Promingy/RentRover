@@ -66,12 +66,12 @@ const bookingValidator = [
 
     check('endDate')
         .custom((value, {req}) => {
-            const {startDate} = req.body
-            const endDateString = new Date(value).toDateString();
-            const startDateString = new Date(startDate).toDateString();
+            let {startDate} = req.body
+            let endDateString = new Date(value).toDateString();
+            let startDateString = new Date(startDate).toDateString();
 
-            const endDateTime = new Date(endDateString).getTime();
-            const startDateTime = new Date(startDateString).getTime();
+            let endDateTime = new Date(endDateString).getTime();
+            let startDateTime = new Date(startDateString).getTime();
 
             return !(endDateTime <= startDateTime)
         })
@@ -86,7 +86,6 @@ const bookingConflicts = [
         const { spotId } = req.params;
         const { user } = req;
         const spot = await Spot.findByPk(spotId);
-        console.log(user.id, spot['ownerId'])
         const bookings = await Booking.findAll({
             where: {
                 spotId
@@ -97,14 +96,14 @@ const bookingConflicts = [
             return true
         }
 
-        const endDate = new Date(value).toDateString();
+        let endDate = new Date(value).toDateString();
         endDate =  new Date(endDate).getTime();
 
         for (let booking of bookings){
-            const bookingStartDate = new Date(booking['startDate']).toDateString();
+            let bookingStartDate = new Date(booking['startDate']).toDateString();
             bookingStartDate = new Date(bookingStartDate).getTime();
 
-            const bookingEndDate = new Date(booking['endDate']).toDateString();
+            let bookingEndDate = new Date(booking['endDate']).toDateString();
             bookingEndDate = new Date(bookingEndDate).getTime();
 
             if(endDate >= bookingStartDate && endDate <= bookingEndDate){
@@ -117,7 +116,7 @@ const bookingConflicts = [
 check('startDate')
     .custom(async (value, { req }) => {
         const { spotId } = req.params;
-        const { endDate } = req.body;
+        let { endDate } = req.body;
         const { user } = req;
         const spot = await Spot.findByPk(spotId);
         const bookings = await Booking.findAll({
@@ -130,17 +129,17 @@ check('startDate')
             return true
         }
 
-        const startDate = new Date(value).toDateString();
+        let startDate = new Date(value).toDateString();
         startDate =  new Date(startDate).getTime();
 
         endDate = new Date(endDate).toDateString();
         endDate = new Date(endDate)
 
         for (let booking of bookings){
-            const bookingStartDate = new Date(booking['startDate']).toDateString();
+            let bookingStartDate = new Date(booking['startDate']).toDateString();
             bookingStartDate = new Date(bookingStartDate).getTime();
 
-            const bookingEndDate = new Date(booking['endDate']).toDateString();
+            let bookingEndDate = new Date(booking['endDate']).toDateString();
             bookingEndDate = new Date(bookingEndDate).getTime();
 
             if(startDate >= bookingStartDate && startDate <= bookingEndDate){
