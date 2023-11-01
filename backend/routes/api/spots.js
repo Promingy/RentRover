@@ -395,7 +395,7 @@ router.put('/:spotId', [requireAuth, validBodySpot], async (req, res) => {
         name,
         description,
         price
-    }).catch(err => res.status(400))
+    })
 
 
     res.json(spot)
@@ -406,19 +406,20 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
     const { spotId } = req.params;
     const spot = await Spot.findByPk(spotId);
 
-    if(spot['ownerId'] !== user.id ) {
-        res.status(403).json(
-            {
-            "message": "Forbidden"
-          })
-    }
-
     if(!spot) {
         return res.status(404).json(
             {
             "message": "Spot couldn't be found"
          });
     };
+
+
+    if(spot['ownerId'] !== user.id ) {
+        res.status(403).json(
+            {
+            "message": "Forbidden"
+          })
+    }
 
     await spot.destroy();
     return res.json(

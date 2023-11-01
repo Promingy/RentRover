@@ -31,16 +31,21 @@ const bookingValidator = [
 const bookingConflicts = [
     check('endDate')
     .custom(async (value, { req }) => {
-        const { spotId } = req.params;
+        const { bookingId } = req.params;
         const { user } = req;
-        const spot = await Spot.findByPk(spotId);
+        const bookingToEdit = await Booking.findByPk(bookingId);
+
+        if(!bookingToEdit) return true
+
+        const spot = await Spot.findByPk(bookingToEdit['spotId'])
         const bookings = await Booking.findAll({
             where: {
-                spotId
+                spotId: bookingToEdit['spotId']
             }
         });
 
-        if(!bookings.length || spot['ownerId'] == user.id){
+
+        if(!bookings.length || spot['ownerId'] == user.id || !spot){
             return true
         }
 
@@ -48,6 +53,8 @@ const bookingConflicts = [
         endDate =  new Date(endDate).getTime();
 
         for (let booking of bookings){
+            if (booking['id'] == bookingId) continue;
+
             let bookingStartDate = new Date(booking['startDate']).toDateString();
             bookingStartDate = new Date(bookingStartDate).getTime();
 
@@ -63,13 +70,17 @@ const bookingConflicts = [
     .withMessage('End date conflicts with an existing booking'),
 check('startDate')
     .custom(async (value, { req }) => {
-        const { spotId } = req.params;
+        const { bookingId } = req.params;
         let { endDate } = req.body;
         const { user } = req;
-        const spot = await Spot.findByPk(spotId);
+        const bookingToEdit = await Booking.findByPk(bookingId);
+
+        if (!bookingToEdit) return true
+
+        const spot = await Spot.findByPk(bookingToEdit['spotId']);
         const bookings = await Booking.findAll({
             where: {
-                spotId
+                spotId: bookingToEdit['spotId']
             }
         });
 
@@ -84,6 +95,9 @@ check('startDate')
         endDate = new Date(endDate)
 
         for (let booking of bookings){
+            if (booking['id'] == bookingId) continue;
+
+
             let bookingStartDate = new Date(booking['startDate']).toDateString();
             bookingStartDate = new Date(bookingStartDate).getTime();
 
@@ -128,6 +142,7 @@ router.get('/current', requireAuth, async (req, res) => {
 router.put('/:bookingId', [requireAuth, bookingValidator, bookingConflicts], async (req, res) => {
     const { user } = req;
     const { bookingId } = req.params;
+    const { startDate, endDate } = req.body;
     const booking = await Booking.findByPk(bookingId);
 
     if (!booking) {
@@ -142,7 +157,46 @@ router.put('/:bookingId', [requireAuth, bookingValidator, bookingConflicts], asy
         res.status(403).json({ message: 'Forbidden'})
     }
 
-    res.json('im a test')
+    await booking.update({
+        startDate,
+        endDate
+    })
+
+    res.json(booking)
+});
+
+router.delete('/:bookingId', requireAuth, async (req, res) => {
+    const { user } = req;
+    const { bookingId } = req.params;
+    const booking = await Booking.findByPk(bookingId);
+    
+    if (!booking) {
+        return res.status(404).json(
+            {
+                "message": "Booking couldn't be found"
+              }
+        )
+    };
+
+    let startTime = booking['startTime'];
+
+    startTime = new Date(startTime).toDateString();
+    startTime = new Date(startTime).getTime();
+
+
+    if (booking['userId'] !== user.id){
+       return res.status(403).json({ message: "Forbidden"})
+    };
+
+    if (startTime < new Date()){
+        res.status(403).json({
+            message: "Bookings that have been started can't be deleted"
+        })
+    }
+
+    await booking.destroy();
+
+    res.json({ message: "Successfully deleted"});
 })
 
 module.exports = router;

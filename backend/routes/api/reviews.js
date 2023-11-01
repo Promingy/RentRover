@@ -57,21 +57,22 @@ router.post('/:reviewId/images', requireAuth, async (req, res) =>{
             {
             "message": "Review couldn't be found"
           })
-    }
-
-    if (reviewImages == 10) {
-        res.status(403).json(
-            {
-            "message": "Maximum number of images for this resource was reached"
-          })
-    }
+    };
 
     if (user.id !== review['userId']){
         return res.status(403).json(
             {
             "message": "Forbidden"
           })
-    }
+    };
+
+    if (reviewImages == 10) {
+        res.status(403).json(
+            {
+            "message": "Maximum number of images for this resource was reached"
+          })
+    };
+
 
     const newReviewImage = await ReviewImage.create({reviewId, url})
 
