@@ -25,7 +25,7 @@ const router = express.Router();
     //   .exists({ checkFalsy: true })
     //   .isLength({ min: 6 })
     //   .withMessage('Password must be 6 characters or more.'),
-//     handleValidationErrorsNoTitle
+//     handleValidationErrors
 //   ];
 
 const validateSignup = [

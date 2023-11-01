@@ -73,6 +73,8 @@ app.use((err, _req, res, _next) => {
         message: err.message,
         errors: err.errors,
     }
+
+    if (err.title) result.title = err.title;
     if (!isProduction){
         result.title = err.title
         result.stack = err.stack
