@@ -169,7 +169,7 @@ router.delete('/:bookingId', requireAuth, async (req, res) => {
     const { user } = req;
     const { bookingId } = req.params;
     const booking = await Booking.findByPk(bookingId);
-    
+
     if (!booking) {
         return res.status(404).json(
             {
@@ -189,7 +189,7 @@ router.delete('/:bookingId', requireAuth, async (req, res) => {
     };
 
     if (startTime < new Date()){
-        res.status(403).json({
+        return res.status(403).json({
             message: "Bookings that have been started can't be deleted"
         })
     }

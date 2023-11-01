@@ -335,9 +335,34 @@ router.get('/current', requireAuth, async (req, res) => {
         where: {
             ownerId: user.id
         }
-    })
+    });
 
-    res.json({Spots})
+    const updatedSpots = [];
+
+    for (let spot of Spots) {
+        const stars = await Review.sum('stars', {
+            where: { spotId: spot.id}
+        })
+        const numOfReviews = await Review.count({
+            where: { spotId: spot.id}
+        })
+
+        let url = await SpotImage.findOne({
+            attributes: ['url'], where: {spotId: spot.id, preview: true}
+        });
+
+        avgRating = stars / numOfReviews
+
+        spot = spot.toJSON()
+        if(url) url = url.toJSON()
+
+        spot.avgRating = avgRating
+        if(url) spot.previewImage = url.url
+
+        updatedSpots.push(spot)
+    }
+
+    res.json({Spots: updatedSpots})
 });
 
 router.get('/current', requireAuth, async (req, res) => {
@@ -406,7 +431,7 @@ router.post('/:spotId/images', [requireAuth], async (req, res) => {
     }
 
     if (user.id !== spot['ownerId']){
-        res.status(403).json(
+        return res.status(403).json(
          {
              "message": "Forbidden"
            }
@@ -497,7 +522,7 @@ router.put('/:spotId', [requireAuth, validBodySpot], async (req, res) => {
     }
 
     if(user.id !== spot['ownerId']){
-        res.status(403).json(
+        return res.status(403).json(
             {
             "message": "Forbidden"
           })
@@ -533,7 +558,7 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
 
 
     if(spot['ownerId'] !== user.id ) {
-        res.status(403).json(
+        return res.status(403).json(
             {
             "message": "Forbidden"
           })
@@ -589,7 +614,7 @@ router.post('/:spotId/bookings', [requireAuth, bookingValidator, bookingConflict
     const spot = await Spot.findByPk(spotId);
 
     if(!spot){
-        res.status(404).json(
+        return res.status(404).json(
             {
                 "message": "Spot couldn't be found"
               }
@@ -598,7 +623,7 @@ router.post('/:spotId/bookings', [requireAuth, bookingValidator, bookingConflict
 
     //! may need to be updated. This disallows owner to book on their own spot
     if(user.id === spot['ownerId']){
-        res.status(403).json(
+        return res.status(403).json(
             {
                 "message": "Forbidden"
               }

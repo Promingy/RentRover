@@ -13,7 +13,7 @@ router.delete('/:spotImageId', requireAuth, async (req, res) => {
     const spotImage = await SpotImage.findByPk(spotImageId);
 
     if (!spotImage) {
-        res.status(404).json(
+        return res.status(404).json(
             {
                 "message": "Spot Image couldn't be found"
               }
@@ -23,7 +23,7 @@ router.delete('/:spotImageId', requireAuth, async (req, res) => {
     const spot = await Spot.findByPk(spotImage['spotId'])
 
     if (spot['ownerId'] !== user.id) {
-        res.status(403).json({ message: 'Forbidden'})
+        return res.status(403).json({ message: 'Forbidden'})
     }
 
     await spotImage.destroy();
