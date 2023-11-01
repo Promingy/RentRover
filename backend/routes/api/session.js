@@ -5,7 +5,7 @@ const { check } = require('express-validator');
 
 
 const { setTokenCookie, restoreUser } = require('../../utils/auth');
-const { handleValidationErrors } = require('../../utils/validation');
+const { handleValidationErrors, handleValidationErrorsNoTitle } = require('../../utils/validation');
 const { User } = require('../../db/models');
 
 const router = express.Router();
@@ -18,7 +18,7 @@ const validateLogin = [
     check('password')
       .exists({ checkFalsy: true })
       .withMessage('Please provide a password.'),
-    handleValidationErrors
+    handleValidationErrorsNoTitle
   ];
 
 // Login
@@ -39,6 +39,8 @@ router.post('/', validateLogin, async (req, res, next) => {
         err.status = 401;
         err.title = 'Login failed';
         err.errors = { credential: 'The provided credentials were invalid.' };
+
+        return res.status(401).json({ message: "Invalid credentials"})
         return next(err);
       }
 

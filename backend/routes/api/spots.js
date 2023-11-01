@@ -84,23 +84,30 @@ const bookingConflicts = [
     check('endDate')
     .custom(async (value, { req }) => {
         const { spotId } = req.params;
+        const { user } = req;
+        const spot = await Spot.findByPk(spotId);
+        console.log(user.id, spot['ownerId'])
         const bookings = await Booking.findAll({
             where: {
                 spotId
             }
         });
 
+        if(!bookings.length || spot['ownerId'] == user.id){
+            return true
+        }
+
         const endDate = new Date(value).toDateString();
-        const endDateTime =  new Date(endDate).getTime();
+        endDate =  new Date(endDate).getTime();
 
         for (let booking of bookings){
             const bookingStartDate = new Date(booking['startDate']).toDateString();
-            const bookingStartDateTime = new Date(bookingStartDate).getTime();
+            bookingStartDate = new Date(bookingStartDate).getTime();
 
             const bookingEndDate = new Date(booking['endDate']).toDateString();
-            const bookingEndDateTime = new Date(bookingEndDate).getTime();
+            bookingEndDate = new Date(bookingEndDate).getTime();
 
-            if(endDateTime > bookingStartDateTime && endDateTime <= bookingEndDateTime){
+            if(endDate >= bookingStartDate && endDate <= bookingEndDate){
                 throw Error
             }
         }
@@ -110,23 +117,35 @@ const bookingConflicts = [
 check('startDate')
     .custom(async (value, { req }) => {
         const { spotId } = req.params;
+        const { endDate } = req.body;
+        const { user } = req;
+        const spot = await Spot.findByPk(spotId);
         const bookings = await Booking.findAll({
             where: {
                 spotId
             }
         });
 
+        if(!bookings.length || spot['ownerId'] == user.id){
+            return true
+        }
+
         const startDate = new Date(value).toDateString();
-        const startDateTime =  new Date(startDate).getTime();
+        startDate =  new Date(startDate).getTime();
+
+        endDate = new Date(endDate).toDateString();
+        endDate = new Date(endDate)
 
         for (let booking of bookings){
             const bookingStartDate = new Date(booking['startDate']).toDateString();
-            const bookingStartDateTime = new Date(bookingStartDate).getTime();
+            bookingStartDate = new Date(bookingStartDate).getTime();
 
             const bookingEndDate = new Date(booking['endDate']).toDateString();
-            const bookingEndDateTime = new Date(bookingEndDate).getTime();
+            bookingEndDate = new Date(bookingEndDate).getTime();
 
-            if(startDateTime > bookingStartDateTime && startDateTime <= bookingEndDateTime){
+            if(startDate >= bookingStartDate && startDate <= bookingEndDate){
+                throw Error
+            }else if(startDate < bookingStartDate && endDate > bookingEndDate){
                 throw Error
             }
         }
@@ -195,13 +214,13 @@ router.post('/', [requireAuth, validBodySpot], async (req, res) => {
 
 router.get('/current', requireAuth, async (req, res) => {
     const { user } = req;
-    const spots = await Spot.findAll({
+    const Spots = await Spot.findAll({
         where: {
             ownerId: user.id
         }
     })
 
-    res.json(spots)
+    res.json({Spots})
 });
 
 router.get('/current', requireAuth, async (req, res) => {
@@ -388,7 +407,7 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
     const { spotId } = req.params;
     const spot = await Spot.findByPk(spotId);
 
-    if(spot['ownerId'] !== user.id ) {
+    if(spot['ownerId'] == user.id ) {
         res.status(403).json(
             {
             "message": "Forbidden"
@@ -427,21 +446,21 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
         )
    }
 
-   let bookings;
+   let Bookings;
 
    if (spot['ownerId'] === user.id) {
-        bookings = await Booking.findAll({
+        Bookings = await Booking.findAll({
             include: {model: User, attributes: ['id', 'firstName', 'lastName']},
             where: {spotId}
         })
    } else {
-        bookings = await Booking.findAll({
+        Bookings = await Booking.findAll({
             where: {spotId, userId: user.id},
             attributes: ['spotId', 'startDate', 'endDate']
         })
    }
 
-   res.json(bookings);
+   res.json({Bookings});
 
 });
 
@@ -470,7 +489,7 @@ router.post('/:spotId/bookings', [requireAuth, bookingValidator, bookingConflict
 
     const newBooking = await Booking.create({
         userId: user.id,
-        spotId,
+        spotId: +spotId,
         startDate,
         endDate
     });
