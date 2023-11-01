@@ -1,10 +1,12 @@
-const express = require('express')
-const bcrypt = require('bcryptjs')
-const { check } = require('express-validator')
+const express = require('express');
+const bcrypt = require('bcryptjs');
+const { check } = require('express-validator');
+const { Op } = require('sequelize');
 
-const { handleValidationErrors, handleBookings, handleValidationErrorsNoTitle } = require('../../utils/validation');
+
+const { handleValidationErrors, handleBookings, handleValidationErrorsNoTitle, handleQueries } = require('../../utils/validation');
 const { setTokenCookie, requireAuth, authorize } = require('../../utils/auth');
-const { User, Spot, Review, SpotImage, ReviewImage, Booking, Sequelize } = require('../../db/models');
+const { User, Spot, Review, SpotImage, ReviewImage, Booking,  } = require('../../db/models');
 
 
 const router = express.Router();
@@ -155,11 +157,112 @@ check('startDate')
 handleBookings
 ];
 
-router.get('/', async (_req, res) => {
+const handleQueryErrors = [
+    check('page')
+        .custom(({req}) => {
+            const { page } = req.query;
+
+            if (page < 1) return false
+        })
+        .withMessage('Page must be greater than or equal to 1'),
+    check('size')
+        .custom(({req}) => {
+            const { size } = req.query;
+
+            if (size < 1) return false
+        })
+        .withMessage('Size must be greater than or equal to 1'),
+    check('maxLat')
+        .custom(({req}) => {
+            const { maxLat } = req.query;
+
+            if (maxLat > 90) return false
+        })
+        .withMessage('Maximum latitude is invalid'),
+    check('minLat')
+        .custom(({req}) => {
+            const { minLat } = req.query;
+
+            if (minLat < -90) return false
+        })
+        .withMessage('Minimum latitude is invalid'),
+    check('minLng')
+        .custom(({req}) => {
+            const { minLng } = req.query;
+
+            if (minLng < -180) return false
+        })
+        .withMessage('Minimum longitude is invalid'),
+    check('maxLng')
+        .custom(({req}) => {
+            const { maxLng } = req.query;
+
+            if (maxLng > 180) return false
+        })
+        .withMessage('Maximum longitude is invalid'),
+    check('minPrice')
+        .custom(({req}) => {
+            const { minPrice } = req.query;
+
+            if (minPrice < 1) return false
+        })
+        .withMessage('Minimum price must be greater than or equal to 0'),
+    check('maxPrice')
+        .custom(({req}) => {
+            const { maxPrice } = req.query;
+
+            if (maxPrice < 1) return false
+        })
+        .withMessage('Maximum price must be greate than or equal to 0'),
+    handleQueries
+]
+
+router.get('/', handleQueryErrors, async (req, res) => {
+    let { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query;
+
+    page = page >= 1 && page <= 10 ? page : 1;
+    size = size >= 1 && size <= 20 ? size : 20;
+
+    let where = {};
+
+    if (parseFloat(minLat)) {
+        minLat = parseFloat(minLat)
+        where.lat = {...where.lat,
+                    [Op.gt]: minLat}
+    };
+
+    if (parseFloat(maxLat)) {
+        maxLat = parseFloat(maxLat);
+        where.lat = {...where.lat,
+                [Op.lt]: maxLat
+                }
+    }
+    if (parseFloat(minLng)) {
+        minLng = parseFloat(minLng)
+        where.lng = { ... where.lng,
+                        [Op.gt]: minLng}
+    }
+    if (parseFloat(maxLng)) {
+        maxLng = parseFloat(maxLng)
+        where.lng = { ...where.lng,
+                        [Op.lt]: maxLng}
+    }
+    if (parseFloat(minPrice)) {
+        minPrice = parseFloat(minPrice)
+        where.price = {...where.price,
+                        [Op.gt]: minPrice}
+    }
+    if (parseFloat(maxPrice)) {
+        maxPrice = parseFloat(maxPrice)
+        where.price = {...where.price,
+                        [Op.lt]: maxPrice}
+    }
+
+
     let Spots = await Spot.findAll({
-        // attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'description', 'price', 'createdAt', 'updatedAt', [Sequelize.literal('SpotImage.url'), 'previewImage']],
-        // include: [{model: SpotImage, as: 'SpotImage', attributes: []}]
-    });
+            where,
+            limit: size,
+            offset: size * (page - 1)});
 
     const updatedSpots = []
 
@@ -184,10 +287,8 @@ router.get('/', async (_req, res) => {
         if(url) spot.previewImage = url.url
 
         updatedSpots.push(spot)
-        // spot.dataValues.avgRating = avgRating
-        // spot.dataValues.previewImage = url.dataValues.url
     }
-    return res.json({Spots: updatedSpots})
+    return res.json({Spots: updatedSpots, page, size})
 });
 
 router.post('/', [requireAuth, validBodySpot], async (req, res) => {
@@ -464,7 +565,7 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
 
 });
 
-router.post('/:spotId/bookings', [requireAuth, bookingValidator, bookingConflicts], async (req, res, next) => {
+router.post('/:spotId/bookings', [requireAuth, bookingValidator, bookingConflicts], async (req, res) => {
     const { user } = req;
     const { spotId } = req.params;
     const { startDate, endDate } = req.body;
