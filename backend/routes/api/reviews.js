@@ -3,8 +3,8 @@ const bcrypt = require('bcryptjs');
 const { Op } = require('sequelize');
 const { check } = require('express-validator');
 
-const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth');
-const { handleValidationErrors, handleValidationErrorsNoTitle } = require('../../utils/validation');
+const { setTokenCookie, restoreUser, requireAuth, authorize } = require('../../utils/auth');
+const { ifExists, handleValidationErrorsNoTitle } = require('../../utils/validation');
 const { User, Review, Spot, ReviewImage, SpotImage, Sequelize } = require('../../db/models')
 
 const router = express.Router();
@@ -31,14 +31,15 @@ router.get('/current', requireAuth, async (req, res) => {
             {model: ReviewImage, attributes: ['id', 'url']}],
         where: {
             userId: user.id
-        }
+        },
+        order: [[ReviewImage, 'id']]
     });
 
     const returnReviews = [];
 
     for (let review of Reviews) {
         const previewImage = await SpotImage.findByPk(review.Spot.id, {
-            where: {preview: true}
+            where: {preview: true},
         })
 
         const createdAt = review['createdAt'].toLocaleString();
@@ -56,26 +57,26 @@ router.get('/current', requireAuth, async (req, res) => {
     res.json({Reviews: returnReviews})
 });
 
-router.post('/:reviewId/images', requireAuth, async (req, res) =>{
-    const { user } = req;
+router.post('/:reviewId/images', [requireAuth, authorize, ifExists], async (req, res) =>{
+    // const { user } = req;
     const { url } = req.body;
     const { reviewId } = req.params;
-    const review = await Review.findByPk(reviewId);
+    // const review = await Review.findByPk(reviewId);
     const reviewImages = await ReviewImage.count({where: {reviewId}})
 
-    if (!review) {
-        res.status(404).json(
-            {
-            "message": "Review couldn't be found"
-          })
-    };
+    // if (!review) {
+    //     res.status(404).json(
+    //         {
+    //         "message": "Review couldn't be found"
+    //       })
+    // };
 
-    if (user.id !== review['userId']){
-        return res.status(403).json(
-            {
-            "message": "Forbidden"
-          })
-    };
+    // if (user.id !== review['userId']){
+    //     return res.status(403).json(
+    //         {
+    //         "message": "Forbidden"
+    //       })
+    // };
 
     if (reviewImages == 10) {
         return res.status(403).json(
@@ -90,29 +91,29 @@ router.post('/:reviewId/images', requireAuth, async (req, res) =>{
     res.json({id: newReviewImage.id, url: newReviewImage.url})
 });
 
-router.put('/:reviewId', [requireAuth, validBodyReview], async (req, res) => {
-    const { user } = req;
+router.put('/:reviewId', [requireAuth, authorize, ifExists, validBodyReview], async (req, res) => {
+    // const { user } = req;
     const { review, stars } = req.body;
     const { reviewId } = req.params;
     let reviewToUpdate = await Review.findByPk(reviewId);
 
-    if (!reviewToUpdate) {
-        return res.status(404).json(
-            {
-            "message": "Review couldn't be found"
-          })
-    }
+    // if (!reviewToUpdate) {
+    //     return res.status(404).json(
+    //         {
+    //         "message": "Review couldn't be found"
+    //       })
+    // }
 
-    if (reviewToUpdate['userId'] !== user.id) {
-        return res.status(403).json(
-            {
-            "message": "Forbidden"
-          })
-    }
+    // if (reviewToUpdate['userId'] !== user.id) {
+    //     return res.status(403).json(
+    //         {
+    //         "message": "Forbidden"
+    //       })
+    // }
 
     await reviewToUpdate.update({
         review,
-        stars
+        stars: +stars
     })
 
     const createdAt = reviewToUpdate['createdAt'].toLocaleString();
@@ -126,25 +127,25 @@ router.put('/:reviewId', [requireAuth, validBodyReview], async (req, res) => {
     res.json(reviewToUpdate)
 });
 
-router.delete('/:reviewId', requireAuth, async (req, res) => {
-    const { user } = req;
+router.delete('/:reviewId', [requireAuth, authorize, ifExists], async (req, res) => {
+    // const { user } = req;
     const { reviewId } = req.params;
     const review = await Review.findByPk(reviewId);
 
-    if(!review) {
-        return res.status(404).json(
-            {
-            "message": "Review couldn't be found"
-          })
-    }
+    // if(!review) {
+    //     return res.status(404).json(
+    //         {
+    //         "message": "Review couldn't be found"
+    //       })
+    // }
 
-    if(user.id !== review['userId']){
-        return res.status(403).json(
-            {
-                "message": "Forbidden"
-              }
-        )
-    }
+    // if(user.id !== review['userId']){
+    //     return res.status(403).json(
+    //         {
+    //             "message": "Forbidden"
+    //           }
+    //     )
+    // }
 
     await review.destroy();
 
