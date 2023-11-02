@@ -34,20 +34,26 @@ router.get('/current', requireAuth, async (req, res) => {
         }
     });
 
+    const returnReviews = [];
+
     for (let review of Reviews) {
         const previewImage = await SpotImage.findByPk(review.Spot.id, {
             where: {preview: true}
         })
 
-        const createdAt = review['createdAt'].toISOString().split('T').join(' ').replace(/\..+/g, '');
-        const updatedAt = review['updatedAt'].toISOString().split('T').join(' ').replace(/\..+/g, '');
+        const createdAt = review['createdAt'].toLocaleString();
+        const updatedAt = review['updatedAt'].toLocaleString();
 
-        review.dataValues.createdAt = createdAt
-        review.dataValues.updatedAt = updatedAt
-        review.Spot.dataValues.previewImage = previewImage.dataValues.url
+        review = review.toJSON()
+
+        review.createdAt = createdAt.split('/').join('-');
+        review.updatedAt = updatedAt.split('/').join('-');
+        review.Spot.previewImage = previewImage.dataValues.url
+
+        returnReviews.push(review)
     }
 
-    res.json({Reviews})
+    res.json({Reviews: returnReviews})
 });
 
 router.post('/:reviewId/images', requireAuth, async (req, res) =>{
@@ -88,7 +94,7 @@ router.put('/:reviewId', [requireAuth, validBodyReview], async (req, res) => {
     const { user } = req;
     const { review, stars } = req.body;
     const { reviewId } = req.params;
-    const reviewToUpdate = await Review.findByPk(reviewId);
+    let reviewToUpdate = await Review.findByPk(reviewId);
 
     if (!reviewToUpdate) {
         return res.status(404).json(
@@ -109,15 +115,15 @@ router.put('/:reviewId', [requireAuth, validBodyReview], async (req, res) => {
         stars
     })
 
-    const createdAt = reviewToUpdate['createdAt'].toISOString().split('T').join(' ').replace(/\..+/g, '');
-    const updatedAt = reviewToUpdate['updatedAt'].toISOString().split('T').join(' ').replace(/\..+/g, '');
+    const createdAt = reviewToUpdate['createdAt'].toLocaleString();
+    const updatedAt = reviewToUpdate['updatedAt'].toLocaleString();
 
-    const returnReview = { ...reviewToUpdate.dataValues}
+    reviewToUpdate = reviewToUpdate.toJSON()
 
-    returnReview.createdAt = createdAt
-    returnReview.updatedAt = updatedAt
-    
-    res.json(returnReview)
+    reviewToUpdate.createdAt = createdAt.split('/').join('-');
+    reviewToUpdate.updatedAt = updatedAt.split('/').join('-');
+
+    res.json(reviewToUpdate)
 });
 
 router.delete('/:reviewId', requireAuth, async (req, res) => {
