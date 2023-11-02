@@ -39,6 +39,11 @@ router.get('/current', requireAuth, async (req, res) => {
             where: {preview: true}
         })
 
+        const createdAt = review['createdAt'].toISOString().split('T').join(' ').replace(/\..+/g, '');
+        const updatedAt = review['updatedAt'].toISOString().split('T').join(' ').replace(/\..+/g, '');
+
+        review.dataValues.createdAt = createdAt
+        review.dataValues.updatedAt = updatedAt
         review.Spot.dataValues.previewImage = previewImage.dataValues.url
     }
 
@@ -102,9 +107,17 @@ router.put('/:reviewId', [requireAuth, validBodyReview], async (req, res) => {
     await reviewToUpdate.update({
         review,
         stars
-    }).catch(err => res.status(400).json(err))
+    })
 
-    res.json(reviewToUpdate)
+    const createdAt = reviewToUpdate['createdAt'].toISOString().split('T').join(' ').replace(/\..+/g, '');
+    const updatedAt = reviewToUpdate['updatedAt'].toISOString().split('T').join(' ').replace(/\..+/g, '');
+
+    const returnReview = { ...reviewToUpdate.dataValues}
+
+    returnReview.createdAt = createdAt
+    returnReview.updatedAt = updatedAt
+    
+    res.json(returnReview)
 });
 
 router.delete('/:reviewId', requireAuth, async (req, res) => {

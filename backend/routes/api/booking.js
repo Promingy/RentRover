@@ -126,24 +126,38 @@ router.get('/current', requireAuth, async (req, res) => {
             userId: user.id
         }
     });
+    const updatedBookings = []
 
     for (let booking of Bookings) {
-        console.log(booking.Spot.id)
-        const previewImage = await SpotImage.findByPk(booking.Spot.id, {
+        let previewImage = await SpotImage.findByPk(booking.Spot.id, {
             where: {preview: true}
         })
 
-        booking.Spot.dataValues.previewImage = previewImage.dataValues.url
+        booking = booking.toJSON()
+        previewImage = previewImage.toJSON()
+
+        const createdAt = booking['createdAt'].toISOString().split('T').join(' ').replace(/\..+/g, '');
+        const updatedAt = booking['updatedAt'].toISOString().split('T').join(' ').replace(/\..+/g, '');
+        startDate = booking['startDate'].toISOString().split('T').join(' ').replace(/\..+/g, '')
+        endDate = booking['endDate'].toISOString().split('T').join(' ').replace(/\..+/g, '');
+
+        booking.startDate = startDate.slice(0, 10);
+        booking.endDate = endDate.slice(0, 10);
+        booking.createdAt = createdAt
+        booking.updatedAt = updatedAt
+
+        booking.Spot.previewImage = previewImage.url
+        updatedBookings.push(booking)
     }
 
-    res.json({Bookings})
+    res.json({Bookings: updatedBookings})
 })
 
 router.put('/:bookingId', [requireAuth, bookingValidator, bookingConflicts], async (req, res) => {
     const { user } = req;
     const { bookingId } = req.params;
-    const { startDate, endDate } = req.body;
-    const booking = await Booking.findByPk(bookingId);
+    let { startDate, endDate } = req.body;
+    let booking = await Booking.findByPk(bookingId);
 
     if (!booking) {
         res.status(404).json(
@@ -161,6 +175,18 @@ router.put('/:bookingId', [requireAuth, bookingValidator, bookingConflicts], asy
         startDate,
         endDate
     })
+
+    booking = booking.toJSON();
+
+    const createdAt = booking['createdAt'].toISOString().split('T').join(' ').replace(/\..+/g, '');
+    const updatedAt = booking['updatedAt'].toISOString().split('T').join(' ').replace(/\..+/g, '');
+    startDate = booking['startDate'].toISOString().split('T').join(' ').replace(/\..+/g, '')
+    endDate = booking['endDate'].toISOString().split('T').join(' ').replace(/\..+/g, '');
+
+    booking.startDate = startDate.slice(0, 10);
+    booking.endDate = endDate.slice(0, 10);
+    booking.createdAt = createdAt;
+    booking.updatedAt = updatedAt;
 
     res.json(booking)
 });

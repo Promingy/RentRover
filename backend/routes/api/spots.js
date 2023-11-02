@@ -6,7 +6,7 @@ const { Op } = require('sequelize');
 
 const { handleValidationErrors, handleBookings, handleValidationErrorsNoTitle, handleQueries } = require('../../utils/validation');
 const { setTokenCookie, requireAuth, authorize } = require('../../utils/auth');
-const { User, Spot, Review, SpotImage, ReviewImage, Booking,  } = require('../../db/models');
+const { User, Spot, Review, SpotImage, ReviewImage, Booking, Sequelize,  } = require('../../db/models');
 
 
 const router = express.Router();
@@ -293,6 +293,9 @@ router.get('/', handleQueryErrors, async (req, res) => {
             attributes: ['url'], where: {spotId: spot.id, preview: true}
         });
 
+        const createdAt = spot['createdAt'].toISOString().split('T').join(' ').replace(/\..+/g, '');
+        const updatedAt = spot['updatedAt'].toISOString().split('T').join(' ').replace(/\..+/g, '');
+
         avgRating = stars / numOfReviews
 
         spot = spot.toJSON()
@@ -300,6 +303,8 @@ router.get('/', handleQueryErrors, async (req, res) => {
 
         spot.avgRating = avgRating
         if(url) spot.previewImage = url.url
+        spot.createdAt = createdAt
+        spot.updatedAt = updatedAt
 
         updatedSpots.push(spot)
     }
@@ -312,7 +317,7 @@ router.post('/', [requireAuth, validBodySpot], async (req, res) => {
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
     const { user } = req
 
-    const newSpot = await Spot.create({
+    let newSpot = await Spot.create({
         "ownerId": user.id,
         address,
         city,
@@ -324,6 +329,15 @@ router.post('/', [requireAuth, validBodySpot], async (req, res) => {
         description,
         price
     });
+
+    const createdAt = newSpot['createdAt'].toISOString().split('T').join(' ').replace(/\..+/g, '');
+    const updatedAt = newSpot['updatedAt'].toISOString().split('T').join(' ').replace(/\..+/g, '')
+
+    newSpot = newSpot.toJSON();
+
+    newSpot.createdAt = createdAt;
+    newSpot.updatedAt = updatedAt;
+
 
     res.status(201)
     res.json(newSpot)
@@ -351,15 +365,20 @@ router.get('/current', requireAuth, async (req, res) => {
             attributes: ['url'], where: {spotId: spot.id, preview: true}
         });
 
-        avgRating = stars / numOfReviews
+        avgRating = stars / numOfReviews;
 
-        spot = spot.toJSON()
-        if(url) url = url.toJSON()
+        const createdAt = spot['createdAt'].replace(/\..+/g, '');
+        const updatedAt = spot['updatedAt'].replace(/\..+/g, '');
 
-        spot.avgRating = avgRating
-        if(url) spot.previewImage = url.url
+        spot = spot.toJSON();
+        if(url) url = url.toJSON();
 
-        updatedSpots.push(spot)
+        spot.avgRating = avgRating;
+        if(url) spot.previewImage = url.url;
+        spot.createdAt = createdAt;
+        spot.updatedAt = updatedAt;
+
+        updatedSpots.push(spot);
     }
 
     res.json({Spots: updatedSpots})
@@ -409,11 +428,16 @@ router.get('/:spotId', async (req, res) => {
 
     spot = spot.toJSON();
 
-    spot.numReviews = reviews
-    spot.avgRating = avgRating
-    spot.Owner = Owner
+    const createdAt = spot['createdAt'].replace(/\..+/g, '');
+    const updatedAt = spot['updatedAt'].replace(/\..+/g, '');
 
-    res.json(spot)
+    spot.createdAt = createdAt;
+    spot.updatedAt = updatedAt;
+    spot.numReviews = reviews;
+    spot.avgRating = avgRating;
+    spot.Owner = Owner;
+
+    res.json(spot);
 });
 
 router.post('/:spotId/images', [requireAuth], async (req, res) => {
@@ -471,7 +495,21 @@ router.get('/:spotId/reviews', async (req, res) => {
         }
     });
 
-    res.json({Reviews})
+    const returnReviews = [];
+
+    for (let review of Reviews) {
+        const createdAt = review['createdAt'].toISOString().split('T').join(' ').replace(/\..+/g, '');
+        const updatedAt = review['updatedAt'].toISOString().split('T').join(' ').replace(/\..+/g, '');
+
+        review = review.toJSON();
+
+        review.createdAt = createdAt
+        review.updatedAt = updatedAt
+
+        returnReviews.push(review)
+    }
+
+    res.json({Reviews: returnReviews})
 })
 
 router.post('/:spotId/reviews', [requireAuth, validBodyReview], async (req, res) => {
@@ -497,12 +535,20 @@ router.post('/:spotId/reviews', [requireAuth, validBodyReview], async (req, res)
           })
     }
 
-    const newReview = await Review.create({
+    let newReview = await Review.create({
         userId: user.id,
         spotId,
         review,
         stars
     })
+
+    newReview = newReview.toJSON();
+
+    const createdAt = newReview['createdAt'].toISOString().split('T').join(' ').replace(/\..+/g, '');
+    const updatedAt = newReview['updatedAt'].toISOString().split('T').join(' ').replace(/\..+/g, '')
+
+    newReview.createdAt = createdAt;
+    newReview.updatedAt = updatedAt;
 
     res.status(201).json(newReview)
 })
@@ -540,6 +586,13 @@ router.put('/:spotId', [requireAuth, validBodySpot], async (req, res) => {
         price
     })
 
+    spot = spot.toJSON();
+
+    const createdAt = spot['createdAt'].toISOString().split('T').join(' ').replace(/\..+/g, '');
+    const updatedAt = spot['updatedAt'].toISOString().split('T').join(' ').replace(/\..+/g, '');
+
+    spot.createdAt = createdAt;
+    spot.updatedAt = updatedAt;
 
     res.json(spot)
 });
@@ -573,10 +626,7 @@ router.delete('/:spotId', requireAuth, async (req, res) => {
 });
 
 router.get('/:spotId/bookings', requireAuth, async (req, res) => {
-    /*
-     /   if user is owner of spot, get all bookings for spot
-     /   if user is not owner, get only current users bookings
-    */
+
    const { user } = req;
    const { spotId } = req.params;
    const spot = await Spot.findByPk(spotId);
@@ -589,18 +639,46 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
         )
    }
 
-   let Bookings;
+   let Bookings = [];
 
    if (spot['ownerId'] === user.id) {
-        Bookings = await Booking.findAll({
+        let preBookings = await Booking.findAll({
             include: {model: User, attributes: ['id', 'firstName', 'lastName']},
             where: {spotId}
         })
+
+        for (let booking of preBookings) {
+            booking = booking.toJSON();
+
+            const createdAt = booking['createdAt'].toISOString().split('T').join(' ').replace(/\..+/g, '');
+            const updatedAt = booking['updatedAt'].toISOString().split('T').join(' ').replace(/\..+/g, '');
+            const startDate = booking['startDate'].toISOString().split('T').join(' ').replace(/\..+/g, '');
+            const endDate = booking['endDate'].toISOString().split('T').join(' ').replace(/\..+/g, '');
+
+            booking.startDate = startDate;
+            booking.endDate = endDate;
+            booking.createdAt = createdAt
+            booking.updatedAt = updatedAt
+
+            Bookings.push(booking)
+        }
    } else {
-        Bookings = await Booking.findAll({
+        let preBookings = await Booking.findAll({
             where: {spotId, userId: user.id},
             attributes: ['spotId', 'startDate', 'endDate']
         })
+
+        for (let booking of preBookings){
+            booking = booking.toJSON();
+
+            const startDate = booking['startDate'].toISOString().split('T').join(' ').replace(/\..+/g, '');
+            const endDate = booking['endDate'].toISOString().split('T').join(' ').replace(/\..+/g, '');
+
+            booking.startDate = startDate;
+            booking.endDate = endDate;
+
+            Bookings.push(booking)
+        }
    }
 
    res.json({Bookings});
@@ -610,7 +688,7 @@ router.get('/:spotId/bookings', requireAuth, async (req, res) => {
 router.post('/:spotId/bookings', [requireAuth, bookingValidator, bookingConflicts], async (req, res) => {
     const { user } = req;
     const { spotId } = req.params;
-    const { startDate, endDate } = req.body;
+    let { startDate, endDate } = req.body;
     const spot = await Spot.findByPk(spotId);
 
     if(!spot){
@@ -630,12 +708,24 @@ router.post('/:spotId/bookings', [requireAuth, bookingValidator, bookingConflict
         )
     };
 
-    const newBooking = await Booking.create({
+    let newBooking = await Booking.create({
         userId: user.id,
         spotId: +spotId,
         startDate,
         endDate
     });
+
+    newBooking = newBooking.toJSON();
+
+    const createdAt = newBooking['createdAt'].toISOString().split('T').join(' ').replace(/\..+/g, '');
+    const updatedAt = newBooking['updatedAt'].toISOString().split('T').join(' ').replace(/\..+/g, '');
+    startDate = newBooking['startDate'].toISOString().split('T').join(' ').replace(/\..+/g, '')
+    endDate = newBooking['endDate'].toISOString().split('T').join(' ').replace(/\..+/g, '');
+
+    newBooking.startDate = startDate.slice(0, 10);
+    newBooking.endDate = endDate.slice(0, 10);
+    newBooking.createdAt = createdAt;
+    newBooking.updatedAt = updatedAt;
 
     res.json(newBooking)
 })
