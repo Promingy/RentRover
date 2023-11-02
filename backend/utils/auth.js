@@ -101,7 +101,7 @@ const authorize = async function (req, _res, next) {
 
     }
     if(spotImageId){
-        const spotImage = await ReviewImage.findByPk(spotImageId);
+        const spotImage = await SpotImage.findByPk(spotImageId);
 
         if (!spotImage) return next();
 

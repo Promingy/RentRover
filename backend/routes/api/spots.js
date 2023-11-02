@@ -326,11 +326,11 @@ router.post('/', [requireAuth, validBodySpot], async (req, res) => {
         city,
         state,
         country,
-        lat,
-        lng,
+        lat: +lat,
+        lng: +lng,
         name,
         description,
-        price
+        price: +price
     });
 
     const createdAt = newSpot['createdAt'].toLocaleString();

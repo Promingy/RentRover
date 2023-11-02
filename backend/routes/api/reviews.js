@@ -38,6 +38,8 @@ router.get('/current', requireAuth, async (req, res) => {
     const returnReviews = [];
 
     for (let review of Reviews) {
+        review = review.toJSON()
+
         const previewImage = await SpotImage.findByPk(review.Spot.id, {
             where: {preview: true},
         })
@@ -45,11 +47,9 @@ router.get('/current', requireAuth, async (req, res) => {
         const createdAt = review['createdAt'].toLocaleString();
         const updatedAt = review['updatedAt'].toLocaleString();
 
-        review = review.toJSON()
-
         review.createdAt = createdAt.split('/').join('-');
         review.updatedAt = updatedAt.split('/').join('-');
-        review.Spot.previewImage = previewImage.dataValues.url
+        review.Spot.previewImage = previewImage.url
 
         returnReviews.push(review)
     }
