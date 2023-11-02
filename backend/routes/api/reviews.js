@@ -2,7 +2,7 @@ const express = require('express');
 const { check } = require('express-validator');
 
 const { requireAuth, authorize } = require('../../utils/auth');
-const { ifExists, handleValidationErrorsNoTitle } = require('../../utils/validation');
+const { ifExists, handleValidationErrorsNoTitle, objFormatter } = require('../../utils/validation');
 const { User, Review, Spot, ReviewImage, SpotImage } = require('../../db/models')
 
 const router = express.Router();
@@ -36,23 +36,13 @@ router.get('/current', requireAuth, async (req, res) => {
     const returnReviews = [];
 
     for (let review of Reviews) {
-        review = review.toJSON()
+        review = objFormatter(review);
 
         const previewImage = await SpotImage.findByPk(review.Spot.id, {
             where: {preview: true},
         })
 
-        const createdAt = review['createdAt'].toLocaleString();
-        const updatedAt = review['updatedAt'].toLocaleString();
-
-        review.createdAt = createdAt.split('/').join('-');
-        review.updatedAt = updatedAt.split('/').join('-');
-
-        review.Spot.previewImage = previewImage.url;
-
-        review.Spot.lat = +review.Spot.lat;
-        review.Spot.lng = +review.Spot.lng;
-        review.Spot.price = +review.Spot.price;
+        if(previewImage) review.Spot.previewImage = previewImage.url;
 
         returnReviews.push(review)
     }
@@ -87,13 +77,8 @@ router.put('/:reviewId', [requireAuth, authorize, ifExists, validBodyReview], as
         stars: +stars
     })
 
-    const createdAt = reviewToUpdate['createdAt'].toLocaleString();
-    const updatedAt = reviewToUpdate['updatedAt'].toLocaleString();
 
-    reviewToUpdate = reviewToUpdate.toJSON()
-
-    reviewToUpdate.createdAt = createdAt.split('/').join('-');
-    reviewToUpdate.updatedAt = updatedAt.split('/').join('-');
+    reviewToUpdate = objFormatter(reviewToUpdate);
 
     res.json(reviewToUpdate)
 });

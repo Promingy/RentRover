@@ -2,7 +2,7 @@ const express = require('express');
 const { check } = require('express-validator');
 const { Op } = require('sequelize');
 
-const { ifExists, handleBookings, handleValidationErrorsNoTitle, handleQueries } = require('../../utils/validation');
+const { ifExists, handleBookings, handleValidationErrorsNoTitle, handleQueries, objFormatter } = require('../../utils/validation');
 const { requireAuth, authorize } = require('../../utils/auth');
 const { User, Spot, Review, SpotImage, ReviewImage, Booking } = require('../../db/models');
 
@@ -276,22 +276,14 @@ router.get('/', handleQueryErrors, async (req, res) => {
             attributes: ['url'], where: {spotId: spot.id, preview: true}
         });
 
-        const createdAt = spot['createdAt'].toLocaleString();
-        const updatedAt = spot['updatedAt'].toLocaleString();
-
         avgRating = stars / numOfReviews
 
-        spot = spot.toJSON()
+        spot = objFormatter(spot)
+
         if(url) url = url.toJSON()
 
         spot.avgRating = avgRating
         if(url) spot.previewImage = url.url
-        spot.createdAt = createdAt.split('/').join('-')
-        spot.updatedAt = updatedAt.split('/').join('-')
-
-        spot.price = +spot.price;
-        spot.lat = +spot.lat;
-        spot.lng = +spot.lng;
 
         updatedSpots.push(spot)
     }
@@ -317,18 +309,7 @@ router.post('/', [requireAuth, validBodySpot], async (req, res) => {
         price
     });
 
-    const createdAt = newSpot['createdAt'].toLocaleString();
-    const updatedAt = newSpot['updatedAt'].toLocaleString();
-
-    newSpot = newSpot.toJSON();
-
-    newSpot.createdAt = createdAt.split('/').join('-');
-    newSpot.updatedAt = updatedAt.split('/').join('-');
-
-    newSpot.lat = +newSpot.lat;
-    newSpot.lng = +newSpot.lng;
-    newSpot.price = +newSpot.price;
-
+    newSpot = objFormatter(newSpot)
 
     res.status(201)
     res.json(newSpot)
@@ -358,19 +339,11 @@ router.get('/current', requireAuth, async (req, res) => {
 
         avgRating = stars / numOfReviews;
 
-        const createdAt = spot['createdAt'].toLocaleString();
-        const updatedAt = spot['updatedAt'].toLocaleString();
-
-        spot = spot.toJSON();
+        spot = objFormatter(spot)
         if(url) url = url.toJSON();
 
         spot.avgRating = avgRating;
         if(url) spot.previewImage = url.url;
-        spot.createdAt = createdAt.split('/').join('-');
-        spot.updatedAt = updatedAt.split('/').join('-');
-        spot.price = +spot.price;
-        spot.lat = +spot.lat;
-        spot.lng = +spot.lng;
 
         updatedSpots.push(spot);
     }
@@ -401,19 +374,11 @@ router.get('/:spotId', ifExists, async (req, res) => {
 
     const avgRating = totalRating / reviews
 
-    spot = spot.toJSON();
+    spot = objFormatter(spot)
 
-    const createdAt = spot['createdAt'].toLocaleString();
-    const updatedAt = spot['updatedAt'].toLocaleString();
-
-    spot.createdAt = createdAt.split('/').join('-');
-    spot.updatedAt = updatedAt.split('/').join('-');
     spot.numReviews = reviews;
     spot.avgRating = avgRating;
     spot.Owner = Owner;
-    spot.price = +spot.price;
-    spot.lat = +spot.lat;
-    spot.lng = +spot.lng;
 
     res.json(spot);
 });
@@ -452,13 +417,7 @@ router.get('/:spotId/reviews', ifExists, async (req, res) => {
     const returnReviews = [];
 
     for (let review of Reviews) {
-        const createdAt = review['createdAt'].toLocaleString();
-        const updatedAt = review['updatedAt'].toLocaleString();
-
-        review = review.toJSON();
-
-        review.createdAt = createdAt.split('/').join('-');
-        review.updatedAt = updatedAt.split('/').join('-');
+        review = objFormatter(review);
 
         returnReviews.push(review)
     }
@@ -487,15 +446,9 @@ router.post('/:spotId/reviews', [requireAuth, ifExists, validBodyReview], async 
         spotId: +spotId,
         review,
         stars: +stars
-    })
+    });
 
-    newReview = newReview.toJSON();
-
-    const createdAt = newReview['createdAt'].toLocaleString();
-    const updatedAt = newReview['updatedAt'].toLocaleString();
-
-    newReview.createdAt = createdAt.split('/').join('-');
-    newReview.updatedAt = updatedAt.split('/').join('-');
+    newReview = objFormatter(newReview)
 
     res.status(201).json(newReview)
 })
@@ -517,13 +470,7 @@ router.put('/:spotId', [requireAuth, authorize, ifExists, validBodySpot], async 
         price
     })
 
-    spot = spot.toJSON();
-
-    const createdAt = spot['createdAt'].toLocaleString();
-    const updatedAt = spot['updatedAt'].toLocaleString();
-
-    spot.createdAt = createdAt.split('/').join('-');
-    spot.updatedAt = updatedAt.split('/').join('-');
+    spot = objFormatter(spot)
 
     res.json(spot)
 });
@@ -554,17 +501,7 @@ router.get('/:spotId/bookings', [requireAuth, ifExists], async (req, res) => {
         })
 
         for (let booking of preBookings) {
-            booking = booking.toJSON();
-
-            const createdAt = booking['createdAt'].toLocaleString();
-            const updatedAt = booking['updatedAt'].toLocaleString();
-            const startDate = booking['startDate'].toLocaleString();
-            const endDate = booking['endDate'].toLocaleString();
-
-            booking.startDate = startDate.split('/').join('-').slice(0, 10);
-            booking.endDate = endDate.split('/').join('-').slice(0, 10);
-            booking.createdAt = createdAt.split('/').join('-');
-            booking.updatedAt = updatedAt.split('/').join('-');
+            booking = objFormatter(booking);
 
             Bookings.push(booking)
         }
@@ -575,15 +512,9 @@ router.get('/:spotId/bookings', [requireAuth, ifExists], async (req, res) => {
         })
 
         for (let booking of preBookings){
-            booking = booking.toJSON();
+            booking = objFormatter(booking);
 
-            const startDate = booking['startDate'].toLocaleString().slice(0, 10);
-            const endDate = booking['endDate'].toLocaleString().slice(0, 10);
-
-            booking.startDate = startDate.split('/').join('-');
-            booking.endDate = endDate.split('/').join('-');
-
-            Bookings.push(booking)
+            Bookings.push(booking);
         }
    }
 
@@ -612,17 +543,7 @@ router.post('/:spotId/bookings', [requireAuth, ifExists, bookingValidator, booki
         endDate
     });
 
-    newBooking = newBooking.toJSON();
-
-    const createdAt = newBooking['createdAt'].toLocaleString();
-    const updatedAt = newBooking['updatedAt'].toLocaleString();
-    startDate = newBooking['startDate'].toLocaleString();
-    endDate = newBooking['endDate'].toLocaleString();
-
-    newBooking.startDate = startDate.split('/').join('-').slice(0, 10);
-    newBooking.endDate = endDate.split('/').join('-').slice(0, 10);
-    newBooking.createdAt = createdAt.split('/').join('-');
-    newBooking.updatedAt = updatedAt.split('/').join('-');
+    newBooking = objFormatter(newBooking)
 
     res.json(newBooking)
 })

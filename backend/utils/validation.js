@@ -110,12 +110,41 @@ const ifExists = async (req, res, next) => {
   return next();
 };
 
+function objFormatter(obj){
+  obj = obj.toJSON();
 
+  if(obj.createdAt !== undefined) {
+      obj.createdAt = obj.createdAt.toLocaleString().split('/').join('-');
+      obj.updatedAt = obj.updatedAt.toLocaleString().split('/').join('-');
+  }
+
+  if(obj.price !== undefined) obj.price = +obj.price;
+  if(obj.lat !== undefined) obj.lat = +obj.lat;
+  if(obj.lng !== undefined) obj.lng = +obj.lng;
+
+  if(obj.startDate !== undefined){
+      obj.startDate = obj.startDate.toLocaleString().split('/').join('-').slice(0, 10);
+  }
+
+  if(obj.endDate !== undefined){
+      obj.endDate = obj.endDate.toLocaleString().split('/').join('-').slice(0, 10);
+  }
+
+  if(obj.Spot !== undefined){
+    if(obj.Spot.lat !== undefined) obj.Spot.lat = +obj.Spot.lat
+    if(obj.Spot.lng !== undefined) obj.Spot.lng = +obj.Spot.lng
+    if(obj.Spot.price !== undefined) obj.Spot.price = +obj.Spot.price
+
+  }
+
+  return obj
+}
 
 module.exports = {
   handleValidationErrors,
   handleBookings,
   handleValidationErrorsNoTitle,
   handleQueries,
-  ifExists
+  ifExists,
+  objFormatter
 };

@@ -2,7 +2,7 @@ const express = require('express');
 const { check } = require('express-validator');
 
 const { requireAuth, authorize } = require('../../utils/auth');
-const { ifExists, handleValidationErrorsNoTitle, handleBookings } = require('../../utils/validation');
+const { ifExists, handleValidationErrorsNoTitle, handleBookings, objFormatter } = require('../../utils/validation');
 const { Spot, SpotImage, Booking } = require('../../db/models');
 
 const router = express.Router();
@@ -130,23 +130,10 @@ router.get('/current', requireAuth, async (req, res) => {
             where: {preview: true}
         })
 
-        booking = booking.toJSON()
-        previewImage = previewImage.toJSON()
+        booking = objFormatter(booking)
+        if(previewImage) previewImage = previewImage.toJSON()
 
-        const createdAt = booking['createdAt'].toLocaleString();
-        const updatedAt = booking['updatedAt'].toLocaleString();
-        startDate = booking['startDate'].toLocaleString();
-        endDate = booking['endDate'].toLocaleString();
-
-        booking.startDate = startDate.split('/').join('-').slice(0, 10);
-        booking.endDate = endDate.split('/').join('-').slice(0, 10);
-        booking.createdAt = createdAt.split('/').join('-')
-        booking.updatedAt = updatedAt.split('/').join('-')
-
-        booking.Spot.previewImage = previewImage.url
-        booking.Spot.lat = +booking.Spot.lat;
-        booking.Spot.lng = +booking.Spot.lng;
-        booking.Spot.price = +booking.Spot.price;
+        if(previewImage) booking.Spot.previewImage = previewImage.url
 
         updatedBookings.push(booking)
     }
@@ -164,17 +151,7 @@ router.put('/:bookingId', [requireAuth, authorize, ifExists, bookingValidator, b
         endDate
     })
 
-    booking = booking.toJSON();
-
-    const createdAt = booking['createdAt'].toLocaleString();
-    const updatedAt = booking['updatedAt'].toLocaleString();
-    startDate = booking['startDate'].toLocaleString();
-    endDate = booking['endDate'].toLocaleString();
-
-    booking.startDate = startDate.split('/').join('-').slice(0, 10);
-    booking.endDate = endDate.split('/').join('-').slice(0, 10);
-    booking.createdAt = createdAt.split('/').join('-');
-    booking.updatedAt = updatedAt.split('/').join('-');
+    booking = objFormatter(booking)
 
     res.json(booking)
 });
