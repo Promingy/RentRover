@@ -1,11 +1,9 @@
 const express = require('express');
-const bcrypt = require('bcryptjs');
-const { Op } = require('sequelize');
 const { check } = require('express-validator');
 
-const { setTokenCookie, restoreUser, requireAuth, authorize } = require('../../utils/auth');
+const { requireAuth, authorize } = require('../../utils/auth');
 const { ifExists, handleValidationErrorsNoTitle } = require('../../utils/validation');
-const { User, Review, Spot, ReviewImage, SpotImage, Sequelize } = require('../../db/models')
+const { User, Review, Spot, ReviewImage, SpotImage } = require('../../db/models')
 
 const router = express.Router();
 
@@ -51,7 +49,7 @@ router.get('/current', requireAuth, async (req, res) => {
         review.updatedAt = updatedAt.split('/').join('-');
 
         review.Spot.previewImage = previewImage.url;
-        
+
         review.Spot.lat = +review.Spot.lat;
         review.Spot.lng = +review.Spot.lng;
         review.Spot.price = +review.Spot.price;
@@ -63,25 +61,9 @@ router.get('/current', requireAuth, async (req, res) => {
 });
 
 router.post('/:reviewId/images', [requireAuth, authorize, ifExists], async (req, res) =>{
-    // const { user } = req;
     const { url } = req.body;
     const { reviewId } = req.params;
-    // const review = await Review.findByPk(reviewId);
     const reviewImages = await ReviewImage.count({where: {reviewId}})
-
-    // if (!review) {
-    //     res.status(404).json(
-    //         {
-    //         "message": "Review couldn't be found"
-    //       })
-    // };
-
-    // if (user.id !== review['userId']){
-    //     return res.status(403).json(
-    //         {
-    //         "message": "Forbidden"
-    //       })
-    // };
 
     if (reviewImages == 10) {
         return res.status(403).json(
@@ -90,31 +72,15 @@ router.post('/:reviewId/images', [requireAuth, authorize, ifExists], async (req,
           })
     };
 
-
     const newReviewImage = await ReviewImage.create({reviewId, url})
 
     res.json({id: newReviewImage.id, url: newReviewImage.url})
 });
 
 router.put('/:reviewId', [requireAuth, authorize, ifExists, validBodyReview], async (req, res) => {
-    // const { user } = req;
     const { review, stars } = req.body;
     const { reviewId } = req.params;
     let reviewToUpdate = await Review.findByPk(reviewId);
-
-    // if (!reviewToUpdate) {
-    //     return res.status(404).json(
-    //         {
-    //         "message": "Review couldn't be found"
-    //       })
-    // }
-
-    // if (reviewToUpdate['userId'] !== user.id) {
-    //     return res.status(403).json(
-    //         {
-    //         "message": "Forbidden"
-    //       })
-    // }
 
     await reviewToUpdate.update({
         review,
@@ -133,31 +99,14 @@ router.put('/:reviewId', [requireAuth, authorize, ifExists, validBodyReview], as
 });
 
 router.delete('/:reviewId', [requireAuth, authorize, ifExists], async (req, res) => {
-    // const { user } = req;
     const { reviewId } = req.params;
     const review = await Review.findByPk(reviewId);
-
-    // if(!review) {
-    //     return res.status(404).json(
-    //         {
-    //         "message": "Review couldn't be found"
-    //       })
-    // }
-
-    // if(user.id !== review['userId']){
-    //     return res.status(403).json(
-    //         {
-    //             "message": "Forbidden"
-    //           }
-    //     )
-    // }
 
     await review.destroy();
 
     res.json({
         "message": "Successfully deleted"
       })
-
 });
 
 module.exports = router;

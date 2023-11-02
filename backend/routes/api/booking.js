@@ -1,12 +1,9 @@
 const express = require('express');
-const bcrypt = require('bcryptjs');
-const { Op } = require('sequelize');
 const { check } = require('express-validator');
 
-
-const { setTokenCookie, restoreUser, requireAuth, authorize } = require('../../utils/auth');
+const { requireAuth, authorize } = require('../../utils/auth');
 const { ifExists, handleValidationErrorsNoTitle, handleBookings } = require('../../utils/validation');
-const { User, Review, Spot, ReviewImage, SpotImage, Booking, Sequelize } = require('../../db/models');
+const { Spot, SpotImage, Booking } = require('../../db/models');
 
 const router = express.Router();
 
@@ -150,7 +147,7 @@ router.get('/current', requireAuth, async (req, res) => {
         booking.Spot.lat = +booking.Spot.lat;
         booking.Spot.lng = +booking.Spot.lng;
         booking.Spot.price = +booking.Spot.price;
-        
+
         updatedBookings.push(booking)
     }
 
@@ -158,22 +155,9 @@ router.get('/current', requireAuth, async (req, res) => {
 })
 
 router.put('/:bookingId', [requireAuth, authorize, ifExists, bookingValidator, bookingConflicts], async (req, res) => {
-    // const { user } = req;
     const { bookingId } = req.params;
     let { startDate, endDate } = req.body;
     let booking = await Booking.findByPk(bookingId);
-
-    // if (!booking) {
-    //     res.status(404).json(
-    //         {
-    //             "message": "Booking couldn't be found"
-    //           }
-    //     )
-    // }
-
-    // if (booking['userId'] !== user.id) {
-    //     res.status(403).json({ message: 'Forbidden'})
-    // }
 
     await booking.update({
         startDate,
@@ -196,27 +180,13 @@ router.put('/:bookingId', [requireAuth, authorize, ifExists, bookingValidator, b
 });
 
 router.delete('/:bookingId', [requireAuth, authorize, ifExists], async (req, res) => {
-    // const { user } = req;
     const { bookingId } = req.params;
     const booking = await Booking.findByPk(bookingId);
-
-    // if (!booking) {
-    //     return res.status(404).json(
-    //         {
-    //             "message": "Booking couldn't be found"
-    //           }
-    //     )
-    // };
 
     let startTime = booking['startTime'];
 
     startTime = new Date(startTime).toDateString();
     startTime = new Date(startTime).getTime();
-
-
-    // if (booking['userId'] !== user.id){
-    //    return res.status(403).json({ message: "Forbidden"})
-    // };
 
     if (startTime < new Date()){
         return res.status(403).json({
