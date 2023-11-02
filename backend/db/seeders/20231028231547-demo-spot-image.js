@@ -44,8 +44,33 @@ module.exports = {
       },
       {
         spotId: 5,
-        url: "https://a0.muscache.com/im/pictures/56467892-0d23-4ab1-8302-9c3d0d5e52cd.jpg?im_w=960",
+        url: "testImage2.url",
         preview: true
+      },
+      {
+        spotId: 1,
+        url: "testImage2.url",
+        preview: false
+      },
+      {
+        spotId: 2,
+        url: "testImage2.url",
+        preview: false
+      },
+      {
+        spotId: 3,
+        url: "testImage2.url",
+        preview: false
+      },
+      {
+        spotId: 4,
+        url: "testImage2.url",
+        preview: false
+      },
+      {
+        spotId: 5,
+        url: "testImage2.url",
+        preview: false
       }
     ])
   },
@@ -58,8 +83,10 @@ module.exports = {
      * await queryInterface.bulkDelete('People', null, {});
      */
     options.tableName = 'SpotImages'
+    const Op = Sequelize.Op;
+
     return queryInterface.bulkDelete(options, {
-      preview: false
+      preview: {[Op.in]: [true, false]}
     })
   }
 };

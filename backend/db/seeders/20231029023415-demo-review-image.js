@@ -41,6 +41,26 @@ module.exports = {
       {
         reviewId: 5,
         url: "https://www.nztravelorganiser.com/wp-content/uploads/2019/09/hobbiton-1024x683.jpg"
+      },
+      {
+        reviewId: 6,
+        url: "testImage2.url"
+      },
+      {
+        reviewId: 7,
+        url: "testImage2.url"
+      },
+      {
+        reviewId: 8,
+        url: "testImage2.url"
+      },
+      {
+        reviewId: 9,
+        url: "testImage2.url"
+      },
+      {
+        reviewId: 10,
+        url: "testImage2.url"
       }
     ])
   },

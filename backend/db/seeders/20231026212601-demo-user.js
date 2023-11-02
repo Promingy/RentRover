@@ -57,6 +57,41 @@ module.exports = {
         email: 'hearthop@user.io',
         username: 'Ekoh',
         hashedPassword: bcrypt.hashSync('password5')
+      },
+      {
+        firstName: "Nathan",
+        lastName: "Feuerstein",
+        email: 'realmusic@user.io',
+        username: 'fakeNF',
+        hashedPassword: bcrypt.hashSync('password6')
+      },
+      {
+        firstName: "Mark",
+        lastName: "Richard",
+        email: 'wonderifyouwonder@user.io',
+        username: 'WittLowry',
+        hashedPassword: bcrypt.hashSync('password7')
+      },
+      {
+        firstName: "Leon",
+        lastName: "Pearl",
+        email: 'genkigenki@user.io',
+        username: 'Miyachi',
+        hashedPassword: bcrypt.hashSync('password8')
+      },
+      {
+        firstName: "Ben",
+        lastName: "Goldberg",
+        email: 'tokenhiphop@user.io',
+        username: 'Token',
+        hashedPassword: bcrypt.hashSync('password9')
+      },
+      {
+        firstName: "Jonathon",
+        lastName: "Quiles",
+        email: 'sikworld@user.io',
+        username: 'SikWorld',
+        hashedPassword: bcrypt.hashSync('password10')
       }
     ], {validate: true});
   },
@@ -72,7 +107,7 @@ module.exports = {
     options.tableName = 'Users';
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
-      username: { [Op.in]: ['Eminem', 'SnowThaProduct', 'Russ', 'Locksmith', 'Ekoh'] }
+      username: { [Op.in]: ['Eminem', 'SnowThaProduct', 'Russ', 'Locksmith', 'Ekoh', 'fakeNF', 'WittLowry', 'Miyachi', 'Token', 'SikWorld'] }
     }, {});
   }
 };
