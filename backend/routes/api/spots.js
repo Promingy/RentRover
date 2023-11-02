@@ -164,7 +164,6 @@ const handleQueryErrors = [
 
             return page && page < 1 ? false : true
 
-            // if (page < 1) return false
         })
         .withMessage('Page must be greater than or equal to 1'),
     check('size')
@@ -183,7 +182,7 @@ const handleQueryErrors = [
 
             if (maxLat > 90) return false
         })
-        .withMessage('Maximum latitude is invalid'),
+        .withMessage('Maximum latitude cannot be greater than 90'),
     check('minLat')
         .custom((value, {req}) => {
             const { minLat, maxLat } = req.query;
@@ -192,7 +191,7 @@ const handleQueryErrors = [
 
             if (minLat < -90) return false
         })
-        .withMessage('Minimum latitude is invalid'),
+        .withMessage('Minimum latitude cannot be less than -90'),
     check('minLng')
         .custom((value, {req}) => {
             const { minLng, maxLng } = req.query;
@@ -201,7 +200,7 @@ const handleQueryErrors = [
 
             if (minLng < -180) return false
         })
-        .withMessage('Minimum longitude is invalid'),
+        .withMessage('Minimum longitude cannot be less than -180'),
     check('maxLng')
         .custom((value, {req}) => {
             const { maxLng, minLng } = req.query;
@@ -210,7 +209,7 @@ const handleQueryErrors = [
 
             if (maxLng > 180) return false
         })
-        .withMessage('Maximum longitude is invalid'),
+        .withMessage('Maximum longitude cannot be greater than 180'),
     check('minPrice')
         .custom((value, {req}) => {
             const { minPrice } = req.query;
@@ -306,6 +305,10 @@ router.get('/', handleQueryErrors, async (req, res) => {
         spot.createdAt = createdAt
         spot.updatedAt = updatedAt
 
+        spot.price = +spot.price;
+        spot.lat = +spot.lat;
+        spot.min = +spot.min;
+
         updatedSpots.push(spot)
     }
 
@@ -331,7 +334,7 @@ router.post('/', [requireAuth, validBodySpot], async (req, res) => {
     });
 
     const createdAt = newSpot['createdAt'].toISOString().split('T').join(' ').replace(/\..+/g, '');
-    const updatedAt = newSpot['updatedAt'].toISOString().split('T').join(' ').replace(/\..+/g, '')
+    const updatedAt = newSpot['updatedAt'].toISOString().split('T').join(' ').replace(/\..+/g, '');
 
     newSpot = newSpot.toJSON();
 
@@ -367,8 +370,8 @@ router.get('/current', requireAuth, async (req, res) => {
 
         avgRating = stars / numOfReviews;
 
-        const createdAt = spot['createdAt'].replace(/\..+/g, '');
-        const updatedAt = spot['updatedAt'].replace(/\..+/g, '');
+        const createdAt = spot['createdAt'].toISOString().split('T').join(' ').replace(/\..+/g, '');
+        const updatedAt = spot['updatedAt'].toISOString().split('T').join(' ').replace(/\..+/g, '');
 
         spot = spot.toJSON();
         if(url) url = url.toJSON();
@@ -377,6 +380,9 @@ router.get('/current', requireAuth, async (req, res) => {
         if(url) spot.previewImage = url.url;
         spot.createdAt = createdAt;
         spot.updatedAt = updatedAt;
+        spot.price = +spot.price;
+        spot.lat = +spot.lat;
+        spot.min = +spot.min;
 
         updatedSpots.push(spot);
     }
@@ -428,14 +434,17 @@ router.get('/:spotId', async (req, res) => {
 
     spot = spot.toJSON();
 
-    const createdAt = spot['createdAt'].replace(/\..+/g, '');
-    const updatedAt = spot['updatedAt'].replace(/\..+/g, '');
+    const createdAt = spot['createdAt'].toISOString().split('T').join(' ').replace(/\..+/g, '');
+    const updatedAt = spot['updatedAt'].toISOString().split('T').join(' ').replace(/\..+/g, '');
 
     spot.createdAt = createdAt;
     spot.updatedAt = updatedAt;
     spot.numReviews = reviews;
     spot.avgRating = avgRating;
     spot.Owner = Owner;
+    spot.price = +spot.price;
+    spot.lat = +spot.lat;
+    spot.min = +spot.min;
 
     res.json(spot);
 });
