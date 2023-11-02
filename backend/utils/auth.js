@@ -107,7 +107,7 @@ const authorize = async function (req, _res, next) {
 
         const spot = await Spot.findByPk(spotImage['spotId'])
 
-        if(user.id === spot['userId']) return next()
+        if(user.id === spot['ownerId']) return next()
 
     }
 

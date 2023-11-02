@@ -326,11 +326,11 @@ router.post('/', [requireAuth, validBodySpot], async (req, res) => {
         city,
         state,
         country,
-        lat: +lat,
-        lng: +lng,
+        lat,
+        lng,
         name,
         description,
-        price: +price
+        price
     });
 
     const createdAt = newSpot['createdAt'].toLocaleString();
@@ -340,6 +340,10 @@ router.post('/', [requireAuth, validBodySpot], async (req, res) => {
 
     newSpot.createdAt = createdAt.split('/').join('-');
     newSpot.updatedAt = updatedAt.split('/').join('-');
+
+    newSpot.lat = +newSpot.lat;
+    newSpot.lng = +newSpot.lng;
+    newSpot.price = +newSpot.price;
 
 
     res.status(201)

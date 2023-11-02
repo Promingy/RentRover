@@ -49,7 +49,12 @@ router.get('/current', requireAuth, async (req, res) => {
 
         review.createdAt = createdAt.split('/').join('-');
         review.updatedAt = updatedAt.split('/').join('-');
-        review.Spot.previewImage = previewImage.url
+
+        review.Spot.previewImage = previewImage.url;
+        
+        review.Spot.lat = +review.Spot.lat;
+        review.Spot.lng = +review.Spot.lng;
+        review.Spot.price = +review.Spot.price;
 
         returnReviews.push(review)
     }

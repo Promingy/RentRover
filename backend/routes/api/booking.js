@@ -147,6 +147,10 @@ router.get('/current', requireAuth, async (req, res) => {
         booking.updatedAt = updatedAt.split('/').join('-')
 
         booking.Spot.previewImage = previewImage.url
+        booking.Spot.lat = +booking.Spot.lat;
+        booking.Spot.lng = +booking.Spot.lng;
+        booking.Spot.price = +booking.Spot.price;
+        
         updatedBookings.push(booking)
     }
 
