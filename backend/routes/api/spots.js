@@ -282,7 +282,7 @@ router.get('/', handleQueryErrors, async (req, res) => {
 
         // if(url) url = url.toJSON()
 
-        spot.avgRating = avgRating
+        spot.avgRating = avgRating ? avgRating : `This spot has no ratings`
         // if(url) spot.previewImage = url.url
 
         spot.PreviewImage = url ? url.url : `No preview image available`
@@ -344,7 +344,7 @@ router.get('/current', requireAuth, async (req, res) => {
         spot = objFormatter(spot)
         // if(url) url = url.toJSON();
 
-        spot.avgRating = avgRating;
+        spot.avgRating = avgRating ? avgRating : `This spot has no ratings`;
 
         spot.previewImage = url ? url.url : `No preview image available`
 
@@ -384,7 +384,7 @@ router.get('/:spotId', ifExists, async (req, res) => {
     spot = objFormatter(spot)
 
     spot.numReviews = reviews;
-    spot.avgRating = avgRating;
+    spot.avgRating = avgRating ? avgRating : `This spot has no ratings`;
     spot.previewImage = url ? url.url : `No preview image available`
     spot.Owner = Owner;
 
