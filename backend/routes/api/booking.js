@@ -166,7 +166,7 @@ router.delete('/:bookingId', [requireAuth, authorize, ifExists], async (req, res
     startTime = new Date(startTime).getTime();
 
     let currentDate = new Date().toDateString();
-    currentDate = new Date(currentDate).gettime();
+    currentDate = new Date(currentDate).getTime();
 
     if (startTime < currentDate){
         return res.status(403).json({
