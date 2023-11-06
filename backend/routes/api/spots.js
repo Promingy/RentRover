@@ -95,17 +95,17 @@ const bookingConflicts = [
             return true
         }
 
-        let endDate = new Date(value).toDateString();
-        endDate =  new Date(endDate).getTime();
+        let newEnd = new Date(value).toDateString();
+        newEnd =  new Date(newEnd).getTime();
 
         for (let booking of bookings){
-            let bookingStartDate = new Date(booking['startDate']).toDateString();
-            bookingStartDate = new Date(bookingStartDate).getTime();
+            let existingStart = new Date(booking['startDate']).toDateString();
+            existingStart = new Date(existingStart).getTime();
 
-            let bookingEndDate = new Date(booking['endDate']).toDateString();
-            bookingEndDate = new Date(bookingEndDate).getTime();
+            let existingEnd = new Date(booking['endDate']).toDateString();
+            existingEnd = new Date(existingEnd).getTime();
 
-            if(endDate >= bookingStartDate && endDate <= bookingEndDate){
+            if(newEnd >= existingStart && newEnd <= existingEnd){
                 throw Error
             }
         }
@@ -115,7 +115,6 @@ const bookingConflicts = [
 check('startDate')
     .custom(async (value, { req }) => {
         const { spotId } = req.params;
-        let { endDate } = req.body;
         const { user } = req;
         const spot = await Spot.findByPk(spotId);
         const bookings = await Booking.findAll({
@@ -128,22 +127,22 @@ check('startDate')
             return true
         }
 
-        let startDate = new Date(value).toDateString();
-        startDate =  new Date(startDate).getTime();
+        let newStart = new Date(value).toDateString();
+        newStart =  new Date(newStart).getTime();
 
-        endDate = new Date(endDate).toDateString();
-        endDate = new Date(endDate)
+        newEnd = new Date(req.body.endDate).toDateString();
+        newEnd = new Date(newEnd)
 
         for (let booking of bookings){
-            let bookingStartDate = new Date(booking['startDate']).toDateString();
-            bookingStartDate = new Date(bookingStartDate).getTime();
+            let existingStart = new Date(booking['startDate']).toDateString();
+            existingStart = new Date(existingStart).getTime();
 
-            let bookingEndDate = new Date(booking['endDate']).toDateString();
-            bookingEndDate = new Date(bookingEndDate).getTime();
+            let existingEnd = new Date(booking['endDate']).toDateString();
+            existingEnd = new Date(existingEnd).getTime();
 
-            if(startDate >= bookingStartDate && startDate <= bookingEndDate){
+            if(newStart >= existingStart && newStart <= existingEnd){
                 throw Error
-            }else if(startDate < bookingStartDate && endDate > bookingEndDate){
+            }else if(newStart < existingStart && newEnd > existingEnd){
                 throw Error
             }
         }
@@ -285,7 +284,7 @@ router.get('/', handleQueryErrors, async (req, res) => {
         spot.avgRating = avgRating ? avgRating : `This spot has no ratings`
         // if(url) spot.previewImage = url.url
 
-        spot.PreviewImage = url ? url.url : `No preview image available`
+        spot.previewImage = url ? url.url : `No preview image available`
 
         updatedSpots.push(spot)
     }

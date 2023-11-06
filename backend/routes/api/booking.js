@@ -58,7 +58,7 @@ const bookingConflicts = [
             let bookingEndDate = new Date(booking['endDate']).toDateString();
             bookingEndDate = new Date(bookingEndDate).getTime();
 
-            if(endDate >= bookingStartDate && endDate <= bookingEndDate){
+            if(endDate >= bookingStartDate && endDate <= bookingEndDate){ /// potentially need to add 2 more conditions. || endDate === bookingStartDate || endDate === bookingEndDate
                 throw Error
             }
         }
@@ -131,9 +131,11 @@ router.get('/current', requireAuth, async (req, res) => {
         })
 
         booking = objFormatter(booking)
-        if(previewImage) previewImage = previewImage.toJSON()
+        // if(previewImage) previewImage = previewImage.toJSON()
 
-        if(previewImage) booking.Spot.previewImage = previewImage.url
+        // if(previewImage) booking.Spot.previewImage = previewImage.url
+        booking.Spot.previewImage = previewImage ? previewImage.url : `No preview image available`
+
 
         updatedBookings.push(booking)
     }
