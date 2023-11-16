@@ -131,11 +131,8 @@ router.get('/current', requireAuth, async (req, res) => {
         })
 
         booking = objFormatter(booking)
-        // if(previewImage) previewImage = previewImage.toJSON()
 
-        // if(previewImage) booking.Spot.previewImage = previewImage.url
         booking.Spot.previewImage = previewImage ? previewImage.url : `No preview image available`
-
 
         updatedBookings.push(booking)
     }

@@ -42,8 +42,6 @@ router.get('/current', requireAuth, async (req, res) => {
             where: {preview: true},
         })
 
-        // if(previewImage) review.Spot.previewImage = previewImage.url;
-
         review.Spot.previewImage = previewImage ? previewImage.url : `No preview image available`
 
         returnReviews.push(review)

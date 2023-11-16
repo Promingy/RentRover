@@ -341,7 +341,6 @@ router.get('/current', requireAuth, async (req, res) => {
         avgRating = stars / numOfReviews;
 
         spot = objFormatter(spot)
-        // if(url) url = url.toJSON();
 
         spot.avgRating = avgRating ? avgRating : `This spot has no ratings`;
 
