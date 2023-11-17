@@ -1,0 +1,29 @@
+.loginHeader {
+    text-align: center;
+    color: #E4FDE1;
+}
+
+.loginForm {
+    background-color: #456990;
+    display: flex;
+    flex-direction: column;
+    place-items: center;
+    width: 500px;
+}
+
+.loginCredential,
+.loginPassword {
+    padding-bottom: 15px;
+    display: flex;
+    gap: 10px;
+    text-align: left;
+    flex-direction: column;
+    color: #E4FDE1;
+}
+
+.loginInput {
+    background-color: #028090;
+    width: 200px;
+    max-width: 500px;
+    border: 0;
+}
