@@ -20,7 +20,7 @@ function SignupFormModal() {
     if (password === confirmPassword) {
       setErrors({});
       return dispatch(
-        sessionActions.signup({
+        sessionActions.thunkSignup({
           email,
           username,
           firstName,
