@@ -23,6 +23,9 @@ li {
     display: flex;
     max-height: 15px;
 }
+.loginButton {
+    border: 10px solid red;
+}
 
 .logoutButton {
     width: 75px;

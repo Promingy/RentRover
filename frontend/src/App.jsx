@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import LoginPageForm from './components/LoginPageForm';
-import SignupFormPage from './components/SignupFormPage/SignupFormPage';
+import SignupFormPage from './components/SignupFormModal/SignupFormModal';
 import Navigation from './components/Navigation/Navigation';
 import * as sessionActions from './store/session';
 
@@ -23,8 +22,6 @@ function App() {
         <Navigation isLoaded={isLoaded}/>
         <Routes>
           <Route path='/' element={<h1 style={{textAlign: "center", color: "#E4FDE1"}}>Welcome!</h1>} />
-          <Route path='/login' element={<LoginPageForm />} />
-          <Route path='/signup' element={<SignupFormPage />} />
         </Routes>
     </>
         }

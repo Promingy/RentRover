@@ -1,28 +1,28 @@
 import { useState } from 'react';
 import * as sessionActions from '../../store/session';
-import { useDispatch, useSelector } from 'react-redux';
-import { Navigate } from 'react-router-dom'
-import './LoginForm.css'
+import { useDispatch } from 'react-redux';
+import { useModal } from '../../context/Modal';
+import './LoginForm.css';
 
-export default function LoginPageForm () {
-    const dispatch = useDispatch();
-    const sessionUser = useSelector((state) => state.session.user);
-    const [credential, setCredential] = useState('');
-    const [password, setPassword] = useState('');
-    const [errors, setErrors] = useState({});
+export default function LoginFormModal() {
+  const dispatch = useDispatch();
+  const [credential, setCredential] = useState("");
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({});
+  const { closeModal } = useModal();
 
-    if(sessionUser) return <Navigate to='/' replace={true} />;
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setErrors({});
-        return dispatch(sessionActions.thunkLogin({ credential, password })).catch(
-            async (res) => {
-                const data = await res.json();
-                if (data?.errors) setErrors(data.errors);
-            }
-        );
-    };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setErrors({});
+    return dispatch(sessionActions.thunkLogin({ credential, password }))
+      .then(closeModal)
+      .catch(async (res) => {
+        const data = await res.json();
+        if (data && data.errors) {
+          setErrors(data.errors);
+        }
+      });
+  };
 
     return(
         <>
@@ -49,7 +49,7 @@ export default function LoginPageForm () {
                     />
                 </label>
                 {errors.credential && <p>{errors.credential}</p>}
-                <button type='submit' className='loginButton'>Log In</button>
+                <button type='submit'>Log In</button>
             </form>
         </>
     )

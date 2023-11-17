@@ -1,16 +1,14 @@
-body {
-    background-color: #114B5F;
-}
-
 .loginHeader {
     text-align: center;
-    color: #E4FDE1
+    color: #E4FDE1;
 }
 
 .loginForm {
+    background-color: #456990;
     display: flex;
     flex-direction: column;
     place-items: center;
+    width: 500px;
 }
 
 .loginCredential,
@@ -26,6 +24,6 @@ body {
 .loginInput {
     background-color: #028090;
     width: 200px;
-    max-width: 200px;
+    max-width: 500px;
     border: 0;
 }

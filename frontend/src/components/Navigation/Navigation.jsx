@@ -1,44 +1,51 @@
 import { NavLink } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
-import * as sessionActions from '../../store/session';
-import './Navigation.css'
+import OpenModalButton from '../OpenModalButton';
+import LoginFormModal from '../LoginFormModal';
+import SignupFormModal from '../SignupFormModal';
+import './Navigation.css';
 
-export default function Navigation ({ isLoaded }) {
-    const sessionUser = useSelector(state => state.session.user);
-    const dispatch = useDispatch();
+function Navigation({ isLoaded }) {
+  const sessionUser = useSelector((state) => state.session.user);
 
-    const logout = (e) => {
-        e.preventDefault();
-        dispatch(sessionActions.thunkLogout());
-    };
+  let sessionLinks;
+  if (sessionUser) {
+    sessionLinks = (
+      <li>
+        <ProfileButton user={sessionUser} />
+      </li>
+    );
+  } else {
+    sessionLinks = (
+      <>
+        <li>
+          <OpenModalButton
+            className="loginButton"
+            buttonText="Log In"
+            modalComponent={<LoginFormModal />}
+          />
+        </li>
+        <li>
+          <OpenModalButton
+            className='navButton'
+            buttonText="Sign Up"
+            modalComponent={<SignupFormModal />}
+          />
+        </li>
+      </>
+    );
+  }
 
-    const sessionLinks = sessionUser ? (
-        <>
-          <li className='navButton profileButton'>
-            <ProfileButton user={sessionUser} />
-          </li>
-          <li className='navButton'>
-            <button onClick={logout}>Log Out</button>
-          </li>
-        </>
-      ) : (
-        <>
-          <li className='navButton'>
-            <NavLink to="/login">Log In</NavLink>
-          </li>
-          <li className='navButton'>
-            <NavLink to="/signup">Sign Up</NavLink>
-          </li>
-        </>
-      );
-
-      return (
-        <ul>
-          <li className='navButton'>
-            <NavLink to="/">Home</NavLink>
-          </li>
-          {isLoaded && sessionLinks}
-        </ul>
-      );
+  return (
+    <ul>
+      <li>
+        <NavLink to="/">Home</NavLink>
+      </li>
+      {isLoaded && sessionLinks}
+    </ul>
+  );
 }
+
+export default Navigation;
+
