@@ -1,0 +1,24 @@
+body {
+    margin: auto;
+}
+
+h1 {
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    place-items: center;
+}
+
+label {
+    display: flex;
+    gap: 10px;
+    text-align: left;
+    flex-direction: column;
+}
+
+button {
+    margin-top: 15px;
+}
