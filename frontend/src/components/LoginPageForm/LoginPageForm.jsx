@@ -26,20 +26,22 @@ export default function LoginPageForm () {
 
     return(
         <>
-            <h1>Log In</h1>
-            <form onSubmit={handleSubmit}>
-                <label>
+            <h1 className='loginHeader'>Log In</h1>
+            <form onSubmit={handleSubmit} className='loginForm'>
+                <label className='loginCredential'>
                     Username or Email:
                     <input
+                        className='loginInput'
                         type='text'
                         value={credential}
                         onChange={(e) => setCredential(e.target.value)}
                         required
                     />
-                    Password:
                 </label>
-                <label>
+                <label className='loginPassword'>
+                    Password:
                     <input
+                        className='loginInput'
                         type='password'
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
@@ -47,7 +49,7 @@ export default function LoginPageForm () {
                     />
                 </label>
                 {errors.credential && <p>{errors.credential}</p>}
-                <button type='submit'>Log In</button>
+                <button type='submit' className='loginButton'>Log In</button>
             </form>
         </>
     )

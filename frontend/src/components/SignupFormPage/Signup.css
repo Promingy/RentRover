@@ -1,31 +1,31 @@
-body {
-    background-color: #114B5F;
-}
-
-.loginHeader {
+.signupHeader {
     text-align: center;
     color: #E4FDE1
 }
 
-.loginForm {
+.signupForm {
     display: flex;
     flex-direction: column;
     place-items: center;
 }
 
-.loginCredential,
-.loginPassword {
+.signupLabel {
     padding-bottom: 15px;
     display: flex;
     gap: 10px;
     text-align: left;
     flex-direction: column;
-    color: #E4FDE1;
+    color: #E4FDE1
 }
 
-.loginInput {
+.signupInput {
     background-color: #028090;
+    border: none;
     width: 200px;
     max-width: 200px;
-    border: 0;
+}
+
+.signupButton {
+    width: 100px;
+    margin: 10px auto 0;
 }

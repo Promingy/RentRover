@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 import * as sessionActions from '../../store/session';
+import './Signup.css'
 
 export default function SignupFormPage () {
     const dispatch = useDispatch();
@@ -19,7 +20,6 @@ export default function SignupFormPage () {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (password === confirmPassword) {
-            const errorsObj = {};
             return dispatch(
                 sessionActions.thunkSignup({
                     email,
@@ -42,11 +42,12 @@ export default function SignupFormPage () {
 
     return (
         <>
-            <h1>Sign Up</h1>
-            <form onSubmit={handleSubmit}>
-                <label>
-                    Email
+            <h1 className='signupHeader'>Sign Up</h1>
+            <form onSubmit={handleSubmit} className='signupForm'>
+                <label className='signupLabel signupEmail'>
+                    Email:
                     <input
+                        className='signupInput'
                         type='text'
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
@@ -54,9 +55,10 @@ export default function SignupFormPage () {
                     />
                 </label>
                 {errors.email && <p>{errors.email}</p>}
-                <label>
-                    Username
+                <label className='signupLabel signupUsername'>
+                    Username:
                     <input
+                        className='signupInput'
                         type="text"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
@@ -64,9 +66,10 @@ export default function SignupFormPage () {
                     />
                 </label>
                     {errors.username && <p>{errors.username}</p>}
-                <label>
-                    First Name
+                <label className='signupLabel signupFName'>
+                    First Name:
                     <input
+                        className='signupInput'
                         type="text"
                         value={firstName}
                         onChange={(e) => setFirstName(e.target.value)}
@@ -74,9 +77,10 @@ export default function SignupFormPage () {
                     />
                 </label>
                         {errors.firstName && <p>{errors.firstName}</p>}
-                <label>
-                Last Name
+                <label className='signupLabel signupLName'>
+                    Last Name:
                     <input
+                        className='signupInput'
                         type="text"
                         value={lastName}
                         onChange={(e) => setLastName(e.target.value)}
@@ -84,9 +88,10 @@ export default function SignupFormPage () {
                     />
                 </label>
                 {errors.lastName && <p>{errors.lastName}</p>}
-                <label>
-                    Password
+                <label className='signupLabel signupPassword'>
+                    Password:
                     <input
+                        className='signupInput'
                         type="password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
@@ -94,16 +99,17 @@ export default function SignupFormPage () {
                     />
                 </label>
                 {errors.password && <p>{errors.password}</p>}
-                <label>
-                    Confirm Password
+                <label className='signupLabel signupConfirmPassword'>
+                    Confirm Password:
                     <input
+                        className='signupInput'
                         type="password"
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         required
                     />
                     {errors.confirmPassword && <p>{errors.confirmPassword}</p>}
-                    <button type='submit'>Sign Up</button>
+                    <button type='submit' className='signupButton'>Sign Up</button>
                 </label>
             </form>
         </>

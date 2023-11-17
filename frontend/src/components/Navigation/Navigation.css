@@ -1,0 +1,44 @@
+a {
+    color: #E4FDE1;
+}
+a:active {
+    color: #F45B69
+}
+ul {
+    display: flex;
+    place-content: flex-end;
+    /* place-items: center; */
+    list-style-type: none;
+}
+
+li {
+    display: flex;
+    flex-direction: column;
+    width: 75px;
+    padding: 10px;
+    text-align:  center;
+}
+
+.navButton {
+    display: flex;
+    max-height: 15px;
+}
+
+.logoutButton {
+    width: 75px;
+}
+
+.hidden {
+    display: none;
+}
+
+.profileButton {
+    border: none;
+    background-color: transparent;
+    font-size: 85%;
+}
+
+.pic {
+    color: #F45B69;
+    height: 25px;
+}
