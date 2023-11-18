@@ -38,10 +38,15 @@ function Navigation({ isLoaded }) {
     );
   }
 
+  function logoClick () {
+    navigate('/')
+  }
+
   return (
-    <ul>
-      <li className='logoContainer' onClick={navigate('/')}>
+    <ul className='navBarContainer'>
+      <li className='logoContainer' onClick={logoClick}>
         <i className='fa-brands fa-airbnb fa-bounce fa-2xl logo' />
+        <span className='logoName logo'>AirBnb</span>
       </li>
       <li className='navBar'>
         <NavLink to="/">Home</NavLink>

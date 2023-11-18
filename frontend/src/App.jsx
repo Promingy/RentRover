@@ -20,7 +20,7 @@ function App() {
       <>
         <Navigation isLoaded={isLoaded}/>
         <Routes>
-          <Route path='/' element={<h1 style={{textAlign: "center", color: "#E4FDE1"}}>Welcome!</h1>} />
+          <Route path='/' element={<h1 className='welcomeHeader'>Welcome!</h1>} />
         </Routes>
     </>
         }

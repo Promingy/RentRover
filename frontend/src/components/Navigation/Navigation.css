@@ -1,13 +1,25 @@
+* {
+    margin: 0;
+}
+
+.navBarContainer {
+    display: flex;
+    place-content: flex-end;
+    place-items: center;
+    list-style-type: none;
+    padding: 10px 10px;
+    background-color: #456990;
+    height: 75px;
+}
+
 a {
     color: #E4FDE1;
 }
 a:active {
     color: #F45B69
 }
+
 ul {
-    display: flex;
-    place-content: flex-end;
-    /* place-items: center; */
     list-style-type: none;
 }
 
@@ -17,6 +29,7 @@ ul {
     width: 75px;
     padding: 10px;
     text-align:  center;
+
 }
 
 .signupButton {
@@ -24,7 +37,6 @@ ul {
 }
 .modalButton:hover {
     cursor: pointer;
-    border: 1px solid red;
 }
 
 .logoutButton {
@@ -41,6 +53,7 @@ ul {
     font-size: 85%;
 }
 
+
 .pic {
     color: #F45B69;
     height: 25px;
@@ -51,11 +64,20 @@ ul {
 }
 
 .logoContainer {
+    align-self: center;
     position: absolute;
-    width: 98%;
+    width: fit-content;
+    color: #E4FDE1;
+    align-items: center;
+    left: 20px;
 }
 
-.logo:hover {
+.logoName {
+    padding: 15px;
+    font-size: 24px;
+}
+
+.logoContainer:hover {
     cursor: pointer;
 }
 
@@ -67,7 +89,6 @@ ul {
     gap: 10px;
 }
 .dropDown {
-    display: flex;
     color: #E4FDE1;
 }
 

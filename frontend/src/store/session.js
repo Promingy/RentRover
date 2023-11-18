@@ -44,11 +44,11 @@ export const thunkLogin = (user) => async (dispatch) => {
             credential,
             password
         })
-    });
+    })
 
-    const data = await res.json();
-    dispatch(actionSetUser(data.user));
-    return res;
+        const data = await res.json();
+        dispatch(actionSetUser(data.user));
+        return res;
 };
 
 export const thunkLogout = () => async (dispatch) => {

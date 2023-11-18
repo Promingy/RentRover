@@ -1,4 +1,5 @@
 .loginHeader {
+    margin: 20px;
     text-align: center;
     color: #E4FDE1;
 }
@@ -26,4 +27,13 @@
     width: 200px;
     max-width: 500px;
     border: 0;
+}
+
+.loginButton {
+    margin: 5px;
+}
+
+.loginError {
+    color: #f45b69;
+    margin-bottom: 5px;
 }

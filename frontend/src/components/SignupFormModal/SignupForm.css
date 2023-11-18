@@ -1,4 +1,5 @@
 .signupHeader {
+    margin-top: 20px;
     text-align: center;
     color: #E4FDE1
 }
@@ -28,5 +29,5 @@
 
 .signupButton {
     width: 100px;
-    margin: 10px auto 0;
+    margin: 10px auto;
 }
