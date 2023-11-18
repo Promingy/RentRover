@@ -11,7 +11,7 @@ ul {
     list-style-type: none;
 }
 
-li {
+.navBar {
     display: flex;
     flex-direction: column;
     width: 75px;
@@ -19,20 +19,20 @@ li {
     text-align:  center;
 }
 
-.navButton {
-    display: flex;
-    max-height: 15px;
+.signupButton {
+    cursor: pointer;
 }
-.loginButton {
-    border: 10px solid red;
+.modalButton:hover {
+    cursor: pointer;
+    border: 1px solid red;
 }
 
 .logoutButton {
     width: 75px;
 }
 
-.hidden {
-    display: none;
+.logoutButton:hover{
+    cursor: pointer;
 }
 
 .profileButton {
@@ -44,4 +44,33 @@ li {
 .pic {
     color: #F45B69;
     height: 25px;
+}
+
+.pic:hover {
+    cursor: pointer;
+}
+
+.logoContainer {
+    position: absolute;
+    width: 98%;
+}
+
+.logo:hover {
+    cursor: pointer;
+}
+
+.profileDropdown{
+    display: flex;
+    position: absolute;
+    right: 10px;
+    padding-top: 10px;
+    gap: 10px;
+}
+.dropDown {
+    display: flex;
+    color: #E4FDE1;
+}
+
+.hidden {
+    display: none;
 }

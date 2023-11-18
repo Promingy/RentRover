@@ -36,10 +36,10 @@ export default function ProfileButton({ user }) {
         <i className="fas fa-user fa-2x pic" />
       </button>
       <ul className={ulClassName} ref={ulRef}>
-        <li className='drowDown'>{user.username}</li>
-        <li className='drowDown'>{user.firstName} {user.lastName}</li>
-        <li className='drowDown'>{user.email}</li>
-        <li className='drowDown'>
+        <li className='dropDown'>{user.username}</li>
+        <li className='dropDown'>{user.firstName} {user.lastName}</li>
+        <li className='dropDown'>{user.email}</li>
+        <li className='dropDown'>
           <button onClick={logout} className='logoutButton'>Log Out</button>
         </li>
       </ul>

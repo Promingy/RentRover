@@ -49,7 +49,7 @@ export default function LoginFormModal() {
                     />
                 </label>
                 {errors.credential && <p>{errors.credential}</p>}
-                <button type='submit'>Log In</button>
+                <button type='submit' class='loginButton'>Log In</button>
             </form>
         </>
     )
