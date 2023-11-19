@@ -1,38 +1,37 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
-import OpenModalButton from '../OpenModalButton';
-import LoginFormModal from '../LoginFormModal';
-import SignupFormModal from '../SignupFormModal';
 import './Navigation.css';
+import { useEffect, useState } from 'react';
 
 function Navigation({ isLoaded }) {
   const navigate = useNavigate();
   const sessionUser = useSelector((state) => state.session.user);
+  const [navClass, setNavClass] = useState(true)
+
+
+  // Implements the dynamic class/css settings for home and profile button
+  useEffect(() => {
+    const profileButton = document.getElementsByClassName('profileButtonContainer')[0];
+
+     profileButton && profileButton.addEventListener('click', () => setNavClass(!navClass));
+
+    return () => profileButton && profileButton.removeEventListener('click', () => setNavClass(!navClass));
+  }, [navClass])
+
 
   let sessionLinks;
   if (sessionUser) {
     sessionLinks = (
-      <li>
+      <li className='profileButtonContainer'>
         <ProfileButton user={sessionUser} />
       </li>
     );
   } else {
     sessionLinks = (
       <>
-        <li className='navBar'>
-          <OpenModalButton
-            className="loginButton"
-            buttonText="Log In"
-            modalComponent={<LoginFormModal />}
-          />
-        </li>
-        <li className='navBar'>
-          <OpenModalButton
-            className='navButton'
-            buttonText="Sign Up"
-            modalComponent={<SignupFormModal />}
-          />
+        <li className='profileButtonContainer'>
+          <ProfileButton />
         </li>
       </>
     );
@@ -43,10 +42,11 @@ function Navigation({ isLoaded }) {
   }
 
   return (
-    <ul className='navBarContainer'>
+    <ul className={`navBarContainer ${navClass ? '' : 'navBarContainerActive'}`}>
       <li className='logoContainer' onClick={logoClick}>
-        <i className='fa-brands fa-airbnb fa-bounce fa-2xl logo' />
-        <span className='logoName logo'>AirBnb</span>
+        {/* /// in order to rotate this icon, remove the bounce animation */}
+        <i className='fa-brands fa-airbnb fa-bounce  logoIcon' />
+        <span className='logoName logo'>airbnb</span>
       </li>
       <li className='navBar'>
         <NavLink to="/">Home</NavLink>

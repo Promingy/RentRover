@@ -7,9 +7,11 @@
     place-content: flex-end;
     place-items: center;
     list-style-type: none;
-    padding: 10px 10px;
+    padding: 10px;
     background-color: #456990;
     height: 75px;
+    transition: all 1s;
+    border-bottom: 3px solid #028090;
 }
 
 a {
@@ -23,23 +25,14 @@ ul {
     list-style-type: none;
 }
 
-.navBar {
-    display: flex;
-    flex-direction: column;
-    width: 75px;
-    padding: 10px;
-    text-align:  center;
-
-}
-
 .signupButton {
-    cursor: pointer;
-}
-.modalButton:hover {
     cursor: pointer;
 }
 
 .logoutButton {
+    border: none;
+    border-radius: 20px;
+    padding: 10px 0;
     width: 75px;
 }
 
@@ -48,15 +41,19 @@ ul {
 }
 
 .profileButton {
-    border: none;
+    display:flex;
+    border: 1px solid #A1A8A0;
+    border-radius: 20px;
     background-color: transparent;
-    font-size: 85%;
+    font-size: 70%;
+    margin-left: 10px;
 }
 
 
 .pic {
-    color: #F45B69;
+    color: #e4fde1;
     height: 25px;
+    padding: 5px;
 }
 
 .pic:hover {
@@ -64,7 +61,7 @@ ul {
 }
 
 .logoContainer {
-    align-self: center;
+    display: flex;
     position: absolute;
     width: fit-content;
     color: #E4FDE1;
@@ -72,24 +69,63 @@ ul {
     left: 20px;
 }
 
+.logoContainer:hover {
+    cursor: pointer;
+}
+
 .logoName {
     padding: 15px;
     font-size: 24px;
 }
 
-.logoContainer:hover {
-    cursor: pointer;
+.logoIcon {
+    font-size: 250%;
+    transform: rotate(180deg);
 }
 
 .profileDropdown{
     display: flex;
+    align-items: center;
+    flex-direction: column;
     position: absolute;
+    background-color: #028090;
     right: 10px;
-    padding-top: 10px;
-    gap: 10px;
+    top: 75px;
+    padding: 0;
+    box-shadow: 0 0 10px black;
+    border-radius: 20px;
+    width: 250px;
 }
 .dropDown {
     color: #E4FDE1;
+}
+
+.dropDownActive {
+    box-shadow: 2px 2px 5px black;
+}
+
+.dropDownLoginContainer {
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.dropDownSignupContainer {
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.dropDownLoginSignup{
+    width: 100%;
+    padding: 10px;
+    text-align: left;
+    background-color: transparent;
+    border: none;
+    /* border-bottom: 1px solid gray*/ /* comment this back in later when more items are added to dropdown*/
+}
+
+
+.dropDownLoginSignup:hover {
+    cursor: pointer;
 }
 
 .hidden {

@@ -49,7 +49,7 @@ export default function LoginFormModal() {
                         required
                     />
                 </label>
-                {errors.message && <p className='loginError'>{errors.message}</p>}
+                {errors.message && <p className='loginErrors'>{errors.message}</p>}
                 <button type='submit' className='loginButton'>Log In</button>
             </form>
         </>
