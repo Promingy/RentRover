@@ -35,15 +35,18 @@ export default function ProfileButton({ user }) {
   }, [showMenu]);
 
   const menuItems = user ? (
-    <ul className={ulClassName} ref={ulRef}>
-    <li className='dropDown'>{user.username}</li>
-    <li className='dropDown'>{user.firstName} {user.lastName}</li>
+    <ul className={`${ulClassName} dropDownLoggedIn`} ref={ulRef}>
+    <li className='dropDown'>Hello, {user.username}</li>
+    {/* <li className='dropDown'>{user.firstName} {user.lastName}</li> */}
     <li className='dropDown'>{user.email}</li>
+    {/* ///TODO add 'ManageSpots' button here */}
     <li className='dropDown'>
       <button onClick={logout} className='logoutButton'>Log Out</button>
     </li>
   </ul>
-  ) : (
+  )
+  :
+  (
     <>
     <ul className={ulClassName} ref={ulRef}>
       <li className='dropDownLoginContainer'>

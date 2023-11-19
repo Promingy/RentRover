@@ -29,17 +29,6 @@ ul {
     cursor: pointer;
 }
 
-.logoutButton {
-    border: none;
-    border-radius: 20px;
-    padding: 10px 0;
-    width: 75px;
-}
-
-.logoutButton:hover{
-    cursor: pointer;
-}
-
 .profileButton {
     display:flex;
     border: 1px solid #A1A8A0;
@@ -85,19 +74,32 @@ ul {
 
 .profileDropdown{
     display: flex;
-    align-items: center;
     flex-direction: column;
     position: absolute;
     background-color: #028090;
     right: 10px;
     top: 75px;
-    padding: 0;
+    padding: 0 10px;
     box-shadow: 0 0 10px black;
     border-radius: 20px;
     width: 250px;
 }
+
+
 .dropDown {
     color: #E4FDE1;
+    padding: 10px;
+}
+
+.logoutButton {
+    border: none;
+    border-radius: 20px;
+    padding: 10px 0;
+    width: 75px;
+}
+
+.logoutButton:hover{
+    cursor: pointer;
 }
 
 .dropDownActive {
@@ -120,9 +122,9 @@ ul {
     text-align: left;
     background-color: transparent;
     border: none;
+    color: #e4fde1;
     /* border-bottom: 1px solid gray*/ /* comment this back in later when more items are added to dropdown*/
 }
-
 
 .dropDownLoginSignup:hover {
     cursor: pointer;
