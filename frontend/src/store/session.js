@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { csrfFetch } from "./csrf";
 
 const SET_USER = 'session/SET_USER';
@@ -32,7 +33,7 @@ export const thunkSignup = (user) => async (dispatch) => {
             password
         })
     })
-    
+
     const data = await res.json();
     dispatch(actionSetUser(data.user));
     return res;

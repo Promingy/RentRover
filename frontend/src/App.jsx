@@ -17,7 +17,7 @@ function App() {
   }, [dispatch])
 
   return (
-    <BrowserRouter>
+    <>
     { isLoaded &&
       <>
         <Navigation isLoaded={isLoaded}/>
@@ -25,9 +25,9 @@ function App() {
           <Route path='/' element={<h1 className='welcomeHeader'>Welcome!</h1>} />
           <Route path='/spots' element={<Spots />} />
         </Routes>
-    </>
-        }
-        </BrowserRouter>
+      </>
+    }
+   </>
   )
 }
 
