@@ -52,8 +52,8 @@ export default function LoginFormModal() {
                         onChange={(e) => setCredential(e.target.value)}
                         required
                     />
-                </label>
-                <label className='loginPassword'>
+                {/* </label>
+                <label className='loginPassword'> */}
                     Password:
                     <input
                         className='loginInput'

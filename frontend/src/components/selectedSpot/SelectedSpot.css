@@ -1,0 +1,42 @@
+.spotWrapper {
+    margin: 30px 50px;
+    color: #E4FDE1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 50px;
+}
+
+.spotLocation {
+    display: flex;
+    padding-top: 40px;
+}
+
+.spotImagesWrapper {
+    display: flex;
+    gap: 10px;
+    max-width: 100%;
+    height: 500px;
+    margin-top: 25px
+}
+
+.spotBigImage {
+    width: 50%;
+}
+
+.spotSmallImageContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 10px;
+    min-width: 50%;
+}
+
+.spotSmallImage {
+    width: 100%;
+    height: 100%;
+    border: 1px solid grey;
+}
+
+.hostedBy {
+    margin: 20px 0;
+}

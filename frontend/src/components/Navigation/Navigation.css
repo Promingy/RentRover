@@ -41,6 +41,8 @@ ul {
 
 
 .pic {
+    display: flex;
+    place-items: center;
     color: #e4fde1;
     height: 25px;
     padding: 5px;

@@ -1,5 +1,5 @@
 .signupHeader {
-    margin-top: 20px;
+    margin: 20px;
     text-align: center;
     color: #E4FDE1
 }
@@ -14,8 +14,10 @@
 .signupLabel {
     padding-bottom: 15px;
     display: flex;
+    align-items: flex-start;
     gap: 10px;
     text-align: left;
+    width: 250px;
     flex-direction: column;
     color: #E4FDE1
 }
@@ -23,8 +25,8 @@
 .signupInput {
     background-color: #028090;
     border: none;
-    width: 200px;
-    max-width: 200px;
+    width: 250px;
+    max-width: 500px;
     color: #E4FDE1;
 }
 
