@@ -79,27 +79,36 @@ ul {
     background-color: #028090;
     right: 10px;
     top: 75px;
-    padding: 0 10px;
+    padding: 0 0px;
     box-shadow: 0 0 10px black;
     border-radius: 20px;
     width: 250px;
 }
 
-
 .dropDown {
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.dropDown:not(:last-child) {
     color: #E4FDE1;
-    padding: 10px;
+    padding: 15px 10px 10px;
 }
 
 .logoutButton {
-    border: none;
-    border-radius: 20px;
+    width: 100%;
     padding: 10px 0;
-    width: 75px;
+    padding-left: 10px;
+    text-align: left;
+    background-color: transparent;
+    border: none;
+    color: #E4FDE1;
 }
 
 .logoutButton:hover{
     cursor: pointer;
+    text-decoration: underline;
+    color: #F45B69;
 }
 
 .dropDownActive {
@@ -128,6 +137,8 @@ ul {
 
 .dropDownLoginSignup:hover {
     cursor: pointer;
+    text-decoration: underline;
+    color: #F45B69;
 }
 
 .hidden {

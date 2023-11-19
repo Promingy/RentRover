@@ -18,12 +18,17 @@ export default function LoginFormModal() {
       .then(closeModal)
       .catch(async (res) => {
         const data = await res.json();
-        console.log(data)
         if (data && data) {
           setErrors(data);
         }
       });
   };
+
+  const demoUserLogin = (e) => {
+    e.preventDefault();
+    return dispatch(sessionActions.thunkLogin({ credential: 'Eminem', password: 'password'}))
+    .then(closeModal)
+  }
 
     return(
         <>
@@ -31,6 +36,7 @@ export default function LoginFormModal() {
             <form onSubmit={handleSubmit} className='loginForm'>
                 <label className='loginCredential'>
                     Username or Email:
+                    {errors.message && <p className='loginErrors'>{errors.message}.</p>}
                     <input
                         className='loginInput'
                         type='text'
@@ -49,8 +55,8 @@ export default function LoginFormModal() {
                         required
                     />
                 </label>
-                {errors.message && <p className='loginErrors'>{errors.message}</p>}
                 <button type='submit' className='loginButton'>Log In</button>
+                <button type='button' onClick={demoUserLogin} className='demoLoginButton'>Demo User</button>
             </form>
         </>
     )

@@ -25,6 +25,11 @@
     border: none;
     width: 200px;
     max-width: 200px;
+    color: #E4FDE1;
+}
+
+.signupInput:focus {
+    outline: 1px solid #114B5F;
 }
 
 .signupButton {

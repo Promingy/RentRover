@@ -26,11 +26,35 @@
     background-color: #028090;
     width: 200px;
     max-width: 500px;
-    border: 0;
+    border: none;
+    color: #E4FDE1;
 }
+
+.loginInput:focus {
+    outline: 1px solid #114B5F;
+}
+
 
 .loginButton {
     margin: 5px;
+}
+
+.loginButton:hover {
+    cursor: pointer;
+}
+
+.demoLoginButton {
+    margin-top: 5px;
+    margin-bottom: 3px;
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid;
+    color: #E4FDE1;
+}
+
+.demoLoginButton:hover {
+    color: #F45B69;
+    cursor: pointer;
 }
 
 .loginErrors{
