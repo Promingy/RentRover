@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useModal } from '../../context/Modal';
 import * as sessionActions from '../../store/session';
@@ -14,6 +14,8 @@ function SignupFormModal() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
+
+  const [signupButton, setSignupButton] = useState(true);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -34,40 +36,32 @@ function SignupFormModal() {
           if (data?.errors) {
             setErrors(data.errors);
           }
-        });
+        })
     }
     return setErrors({
       confirmPassword: "Confirm Password field must be the same as the Password field"
     });
   };
 
+  useEffect(() => {
+    setSignupButton(true)
+
+
+    if(email &&
+      username.length >= 4 &&
+      firstName && lastName &&
+      password.length >= 6 &&
+      confirmPassword) {
+        setSignupButton(false)
+      }
+
+}, [email, username, firstName, lastName, password, confirmPassword])
+
   return (
     <>
       <h1 className='signupHeader' >Sign Up</h1>
       <form onSubmit={handleSubmit} className='signupForm'>
-        <label className='signupLabel signupEmail'>
-          Email
-          <input
-            className='signupInput'
-            type="text"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </label>
-        {errors.email && <p>{errors.email}</p>}
-        <label className='signupLabel signupUsername'>
-          Username
-          <input
-            className='signupInput'
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
-        </label>
-        {errors.username && <p>{errors.username}</p>}
-        <label className='signupLabel signupFName'>
+      <label className='signupLabel signupFName'>
           First Name
           <input
             className='signupInput'
@@ -77,7 +71,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.firstName && <p>{errors.firstName}</p>}
+        {errors.firstName && <p className='signupErrors'>{errors.firstName}</p>}
         <label className='signupLabel signupLName'>
           Last Name
           <input
@@ -88,7 +82,29 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.lastName && <p>{errors.lastName}</p>}
+        {errors.lastName && <p className='signupErrors'>{errors.lastName}</p>}
+        <label className='signupLabel signupEmail'>
+          Email
+          <input
+            className='signupInput'
+            type="text"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+        </label>
+        {errors.email && <p className='signupErrors'>{errors.email}</p>}
+        <label className='signupLabel signupUsername'>
+          Username
+          <input
+            className='signupInput'
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+        </label>
+        {errors.username && <p className='signupErrors'>{errors.username}</p>}
         <label className='signupLabel signupPassword'>
           Password
           <input
@@ -99,7 +115,7 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.password && <p>{errors.password}</p>}
+        {errors.password && <p className='signupErrors'>{errors.password}</p>}
         <label className='signupLabel signupConfirmPassword'>
           Confirm Password
           <input
@@ -110,10 +126,8 @@ function SignupFormModal() {
             required
           />
         </label>
-        {errors.confirmPassword && (
-          <p>{errors.confirmPassword}</p>
-        )}
-        <button type="submit" className='signupButton'>Sign Up</button>
+        {errors.confirmPassword && (<p className='signupErrors'>{errors.confirmPassword}</p>)}
+        <button type="submit" className='signupButton' disabled={signupButton}>Sign Up</button>
       </form>
     </>
   );

@@ -40,23 +40,33 @@ module.exports = (sequelize, DataTypes) => {
     username: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
       validate: {
         len: [4, 30],
         isNotEmail(value){
           if (Validator.isEmail(value)){
             throw new Error('Cannot be an email.')
           }
+        },
+        isUnique(value) {
+          return User.findOne({where: {username: value}})
+            .then((name) => {
+              if(name) throw new Error('username must be unique')
+            })
         }
       }
     },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
       validate: {
         len: [3, 256],
-        isEmail: true
+        isEmail: true,
+        isUnique(value) {
+          return User.findOne({where: {email: value}})
+            .then((name) => {
+              if(name) throw new Error('email must be unique')
+            })
+        }
       }
     },
     hashedPassword: {

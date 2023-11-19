@@ -14,13 +14,6 @@
     border-bottom: 3px solid #028090;
 }
 
-a {
-    color: #E4FDE1;
-}
-a:active {
-    color: #F45B69
-}
-
 ul {
     list-style-type: none;
 }
@@ -36,6 +29,13 @@ ul {
     background-color: transparent;
     font-size: 70%;
     margin-left: 10px;
+}
+
+.homeButton {
+    color: #E4FDE1;
+}
+.homeButton:hover {
+    color: #F45B69
 }
 
 
@@ -83,6 +83,7 @@ ul {
     box-shadow: 0 0 10px black;
     border-radius: 20px;
     width: 250px;
+    overflow: hidden;
 }
 
 .dropDown {
@@ -92,7 +93,8 @@ ul {
 
 .dropDown:not(:last-child) {
     color: #E4FDE1;
-    padding: 15px 10px 10px;
+    padding: 10px;
+    padding-bottom: 5px;
 }
 
 .logoutButton {
@@ -107,8 +109,7 @@ ul {
 
 .logoutButton:hover{
     cursor: pointer;
-    text-decoration: underline;
-    color: #F45B69;
+    background-color: #016E7D;
 }
 
 .dropDownActive {
@@ -137,8 +138,7 @@ ul {
 
 .dropDownLoginSignup:hover {
     cursor: pointer;
-    text-decoration: underline;
-    color: #F45B69;
+    background-color: #016E7D;
 }
 
 .hidden {

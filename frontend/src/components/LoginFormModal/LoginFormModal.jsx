@@ -18,7 +18,7 @@ export default function LoginFormModal() {
       .then(closeModal)
       .catch(async (res) => {
         const data = await res.json();
-        if (data && data) {
+        if (data) {
           setErrors(data);
         }
       });
@@ -30,13 +30,14 @@ export default function LoginFormModal() {
     .then(closeModal)
   }
 
+
     return(
         <>
             <h1 className='loginHeader'>Log In</h1>
             <form onSubmit={handleSubmit} className='loginForm'>
                 <label className='loginCredential'>
                     Username or Email:
-                    {errors.message && <p className='loginErrors'>{errors.message}.</p>}
+                    {errors.message && <p className='loginErrors'>The provided credentials were invalid</p>}
                     <input
                         className='loginInput'
                         type='text'
@@ -55,7 +56,7 @@ export default function LoginFormModal() {
                         required
                     />
                 </label>
-                <button type='submit' className='loginButton'>Log In</button>
+                <button type='submit' className='loginButton' disabled={credential.length < 4 || password.length < 6}>Log In</button>
                 <button type='button' onClick={demoUserLogin} className='demoLoginButton'>Demo User</button>
             </form>
         </>

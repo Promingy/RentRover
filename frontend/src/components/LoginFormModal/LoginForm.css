@@ -43,6 +43,10 @@
     cursor: pointer;
 }
 
+.loginButton:disabled {
+    cursor: auto;
+}
+
 .demoLoginButton {
     margin-top: 5px;
     margin-bottom: 3px;

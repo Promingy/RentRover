@@ -4,8 +4,10 @@ import * as sessionActions from '../../store/session';
 import OpenModalButton from '../OpenModalButton';
 import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
+import { useNavigate } from 'react-router-dom';
 export default function ProfileButton({ user }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const [showMenu, setShowMenu] = useState(false);
   const ulClassName = "profileDropdown" + (showMenu ? "" : " hidden");
 
@@ -19,6 +21,7 @@ export default function ProfileButton({ user }) {
   const logout = (e) => {
     e.preventDefault();
     dispatch(sessionActions.thunkLogout());
+    navigate('/');
   };
   useEffect(() => {
     if (!showMenu) return;
@@ -36,7 +39,7 @@ export default function ProfileButton({ user }) {
 
   const menuItems = user ? (
     <ul className={`${ulClassName} dropDownLoggedIn`} ref={ulRef}>
-    <li className='dropDown'>Hello, {user.username}</li>
+    <li className='dropDown'>Hello, {user.firstName}</li>
     {/* <li className='dropDown'>{user.firstName} {user.lastName}</li> */}
     <li className='dropDown'>{user.email}</li>
     {/* ///TODO add 'ManageSpots' button here */}
@@ -51,6 +54,7 @@ export default function ProfileButton({ user }) {
     <ul className={ulClassName} ref={ulRef}>
       <li className='dropDownLoginContainer'>
         <OpenModalButton
+          className='TEST'
           buttonText="Log In"
           modalComponent={<LoginFormModal />}
         />

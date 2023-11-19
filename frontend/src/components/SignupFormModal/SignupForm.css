@@ -36,3 +36,7 @@
     width: 100px;
     margin: 10px auto;
 }
+
+.signupErrors {
+    color: #F45B69;
+}
