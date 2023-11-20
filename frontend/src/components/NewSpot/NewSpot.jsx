@@ -11,7 +11,9 @@ export default function NewSpot() {
     const [spotName, setSpotName] = useState('');
     const [description, setDescription] = useState('')
     const [price, setPrice] = useState('');
+    const [previewImage, setPreviewImage] = useState('')
 
+    // creates spot object on submit and calls thunktion to flesh out any errors that may be present
     function onSubmit(e) {
         e.preventDefault();
 
@@ -28,21 +30,44 @@ export default function NewSpot() {
 
     }
 
+    // dynamically create input sections
+    function inputCreator(className, type, placeholder, value, setValue, labelClass, pInput) {
+        return (
+            <label className={labelClass ? labelClass : ''}>
+                {pInput && <p>{pInput}</p>}
+                <input
+                    className={className}
+                    type={type}
+                    required
+                    placeholder={placeholder}
+                    value={value}
+                    onChange={(e) => setValue(e.target.value)}
+                    />
+            </label>
+        )
+    }
+
+    // create the image input sections
     function createImageInput() {
         const returnArr = []
 
-        for (let i = 0; i < 5; i++) {
+        for (let i = 1; i < 5; i++) {
+            // create dynamic image and setImage variables to dry up code
+            const [image, setImage] = useState('');
+
+
+            // populate the return array with all needed input sections
             returnArr.push((
                 <label>
-                <input
-                    className='photoInput'
-                    type='url'
-                    required
-                    placeholder='Image URL'
-                    value={spotName}
-                    onChange={(e) => setSpotName(e.target.value)}
-                    />
-            </label>
+                    <input
+                        className='photoInput'
+                        type='url'
+                        required
+                        placeholder='Image URL'
+                        value={image}
+                        onChange={(e) => setImage(e.target.value)}
+                        />
+                </label>
             ))
         }
         return returnArr
@@ -102,7 +127,7 @@ export default function NewSpot() {
                 </div>
             </label>
             <label className='latAndLong sectionOneInputs'>
-                <div className='nestedInputContainer'>
+                {/* <div className='nestedInputContainer'>
                     <p>Latitude</p>
                     <input
                         className='newSpotInput'
@@ -111,9 +136,11 @@ export default function NewSpot() {
                         onChange={(e) => setLat(e.target.value)}
                         placeholder='Latitude'
                         />
-                </div>
+                </div> */}
+
+                {inputCreator('newSpotInput', 'text', 'Latitude', lat, setLat, 'nestedInputContainer', 'Latitude')}
                 <p className='inputComma'>,</p>
-                <div className='nestedInputContainer'>
+                {/* <div className='nestedInputContainer'>
                     <p>Longitude</p>
                     <input
                         className='newSpotInput'
@@ -122,9 +149,13 @@ export default function NewSpot() {
                         onChange={(e) => setLong(e.target.value)}
                         placeholder='Longitude'
                         />
-                </div>
+                </div> */}
+
+                {inputCreator('newSpotInput', 'text', 'Longitude', long, setLong, 'nestedInputContainer', 'Longitude')}
             </label>
+
             <label className='seperator' />
+
             <h2 className='newSpotFormSubHeader'>Describe your place to guests</h2>
             <p className='subHeaderDetails'>Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood.</p>
             <label className='descriptionTextContainer'>
@@ -142,7 +173,7 @@ export default function NewSpot() {
             <h2 className='newSpotFormSubHeader'>Create a title for your spot</h2>
             <p className='subHeaderDetails'>Catch guests&apos; attention with a spot title that highlights what makes your place special.</p>
 
-            <label>
+            {/* <label>
                 <input
                     className='newSpotInput'
                     type='text'
@@ -151,14 +182,16 @@ export default function NewSpot() {
                     value={spotName}
                     onChange={(e) => setSpotName(e.target.value)}
                     />
-            </label>
+            </label> */}
+
+            {inputCreator('newSpotInput', 'text', 'Name of your Spot', spotName, setSpotName)}
 
             <label className='seperator' />
 
             <h2 className='newSpotFormSubHeader'>Set a base price for your spot</h2>
             <p className='subHeaderDetails'>Competitive pricing can help your listing stand out and rank higher in search results.</p>
 
-            <label className='setPriceContainer'>
+            {/* <label className='setPriceContainer'>
                 <p>$</p>
                 <input
                     className='newSpotInput'
@@ -168,23 +201,27 @@ export default function NewSpot() {
                     value={price}
                     onChange={(e) => setPrice(e.target.value)}
                     />
-            </label>
+            </label> */}
+
+            {inputCreator('newSpotInput', 'text', 'Name of your spot (USD)', price, setPrice, 'setPriceContainer', '$')}
 
             <label className='seperator' />
 
             <h2 className='newSpotFormSubHeader'>Liven up your spot with photos</h2>
             <p className='subHeaderDetails'>Submit a link to at least one photo to publish your spot.</p>
-
+{/*
             <label>
                 <input
                     className='photoInput'
                     type='text'
                     required
                     placeholder='Preview Image URL'
-                    value={spotName}
-                    onChange={(e) => setSpotName(e.target.value)}
+                    value={previewImage}
+                    onChange={(e) => setPreviewImage(e.target.value)}
                     />
-            </label>
+            </label> */}
+
+            {inputCreator('photoInput', 'url', 'Preview Image Url', previewImage, setPreviewImage)}
 
             {createImageInput()}
 
