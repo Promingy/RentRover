@@ -19,7 +19,7 @@ export default function Spots() {
             <ul className='spotsContainer'>
                 {allSpots && Array.isArray(allSpots) && allSpots.map(spot => (
                     spot &&
-                    <li className='spots' key={`${spot.id}`} onClick={() => navigate(`/spots/${spot.id}`)}>
+                    <li title={`${spot.name}`} className='spots' key={`${spot.id}`} onClick={() => navigate(`/spots/${spot.id}`)}>
                             <img className='previewImage' src={`${spot.previewImage}`} alt={`${spot.previewImage}`} />
                             <span className="locationRating">
                                 <p>{spot.city}, {spot.state}</p>

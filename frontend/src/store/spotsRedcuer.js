@@ -1,5 +1,7 @@
 const GET_SPOTS = 'spotsRecuder/GET_SPOTS';
-const GET_SINGLE_SPOT = 'spotsRecude/GET_SINGLE_SPOT'
+const GET_SINGLE_SPOT = 'spotsReducer/GET_SINGLE_SPOT'
+// const GET_SINGLE_SPOT = 'spotsRecude/GET_SINGLE_SPOT'
+const CREATE_SPOT = 'spotsReducer/CREATE_SPOT'
 
 /// ACTION CREATORS
 const actionGetSpots = (spots) => {
@@ -12,6 +14,13 @@ const actionGetSpots = (spots) => {
 const actionGetSingleSpot = (spot) => {
     return {
         type: GET_SINGLE_SPOT,
+        spot
+    }
+}
+
+const actionCreateSpot = (spot) => {
+    return {
+        type: CREATE_SPOT,
         spot
     }
 }
@@ -36,6 +45,10 @@ export const thunkGetSingleSpot = (spotId) => async (dispatch) => {
     }
 }
 
+export const thunkCreateSpot = (spot) => async (dispatch) => {
+    
+}
+
 /// SELECTORS
 //! VERIFY WITH DAN BEFORE USING INCASE 'RESELECT' ISN'T APPROVED
 
@@ -50,6 +63,9 @@ const spotsReducer = (state = initialState, action) => {
             const newState = {...state}
             newState.Spots = {...state.Spots, [action.spot.id]: action.spot}
             return newState
+        }
+        case CREATE_SPOT: {
+            return {...state}
         }
         default:
             return state
