@@ -21,6 +21,7 @@
 
 .spotBigImage {
     width: 50%;
+    border: 1px solid grey;
 }
 
 .spotSmallImageContainer {
@@ -34,7 +35,6 @@
 .spotSmallImage {
     width: 100%;
     height: 100%;
-    border: 1px solid grey;
 }
 
 .hostedBy {
@@ -46,6 +46,9 @@
     display: flex;
     width: 101%;
     justify-content: center;
+    padding-bottom: 75px;
+    border-bottom: 1px solid #E4FDE1;
+    margin-bottom: 75px;
 }
 
 

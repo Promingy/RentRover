@@ -8,7 +8,7 @@ export default function Spots() {
     const dispatch = useDispatch();
     const allSpots = useSelector(state => state.spots.Spots);
     const navigate = useNavigate();
-    console.log(allSpots, 'allspots')
+
     useEffect(() => {
         dispatch(thunkGetAllSpots());
     }, [dispatch])

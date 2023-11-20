@@ -3,20 +3,34 @@ import './SelectedSpot.css'
 import { useParams } from "react-router-dom"
 import { useEffect } from "react";
 import { thunkGetSingleSpot } from "../../store/spotsRedcuer";
+import { thunkGetSpotReviews } from "../../store/reviewsReducer";
 
 export default function SelectedSpot () {
     const dispatch = useDispatch();
     const { spotId } = useParams();
+    const reviews = useSelector(store => store.reviews.Reviews)
+    console.log('reviews', reviews)
     const spots = useSelector(store => store.spots.Spots);
     const spot = spots && spots[spotId]
     const spotImages = spot && spot.SpotImages
     const previewImage = spotImages && spotImages.find(image => image.preview)
 
     useEffect(() => {
-        dispatch(thunkGetSingleSpot(spotId))
+        dispatch(thunkGetSingleSpot(spotId));
+        dispatch(thunkGetSpotReviews(spotId));
     }, [dispatch, spotId])
 
-    console.log(spot)
+    ///Function for properly formatting the review headers
+    function reviewFormatter() {
+        return (
+            <>
+                <i className='fa-solid fa-star star' />
+                {spot?.avgRating.toFixed(1)} &nbsp; · &nbsp; {spot?.numReviews} {spot?.numReviews > 0 && spot?.numReviews > 1 ? 'Reviews' : 'Review'}
+            </>
+        )
+    }
+
+
     return (
         <div className="spotWrapper">
             <h1 className='spotHeader'>{spot?.name}</h1>
@@ -38,13 +52,22 @@ export default function SelectedSpot () {
                 <div className='reserveContainer'>
                     <span className="reserveHeader">
                         <h2>${spot?.price} night</h2>
-                        <h2>
-                            <i className='fa-solid fa-star star' />
-                            {spot?.avgRating.toFixed(1)}
-                        </h2>
+                        <h3>
+                            {reviewFormatter()}
+                        </h3>
                     </span>
                     <button className='reserveButton' onClick={() => alert('Feature coming soon!')}>RESERVE!</button>
                 </div>
+            </div>
+            <div className='reviewsWrapper'>
+                <h2>
+                    {reviewFormatter()}
+                </h2>
+                <ul>
+                    {reviews?.map(review => (
+                        <li key={`${review.id}`}>{review.review}</li>
+                    ))}
+                </ul>
             </div>
         </div>
     )

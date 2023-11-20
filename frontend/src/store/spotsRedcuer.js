@@ -39,7 +39,6 @@ export const thunkGetSingleSpot = (spotId) => async (dispatch) => {
     }
 }
 
-
 /// SELECTORS
 //! VERIFY WITH DAN BEFORE USING INCASE 'RESELECT' ISN'T APPROVED
 
@@ -50,10 +49,11 @@ const spotsReducer = (state = initialState, action) => {
         case GET_SPOTS: {
             return {...state, Spots: [null, ...action.spots]}
         }
-        case GET_SINGLE_SPOT:
+        case GET_SINGLE_SPOT:{
             const newState = {...state}
             newState.Spots = {...state.Spots, [action.spot.id]: action.spot}
             return newState
+        }
         default:
             return state
     }
