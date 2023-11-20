@@ -48,9 +48,8 @@
     justify-content: center;
     padding-bottom: 75px;
     border-bottom: 1px solid #E4FDE1;
-    margin-bottom: 75px;
+    margin-bottom: 25px;
 }
-
 
 .descriptionContainer{
     width: 100%;
@@ -78,4 +77,14 @@
     padding: 10px;
     margin: 0 auto;
     background-color: #F45B69;
+}
+
+.reviewsHeader {
+    margin-bottom: 45px;
+}
+
+.reviewsWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }

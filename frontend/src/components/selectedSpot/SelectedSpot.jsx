@@ -3,13 +3,11 @@ import './SelectedSpot.css'
 import { useParams } from "react-router-dom"
 import { useEffect } from "react";
 import { thunkGetSingleSpot } from "../../store/spotsRedcuer";
-import { thunkGetSpotReviews } from "../../store/reviewsReducer";
+import Reviews from "./Reviews";
 
 export default function SelectedSpot () {
     const dispatch = useDispatch();
     const { spotId } = useParams();
-    const reviews = useSelector(store => store.reviews.Reviews)
-    console.log('reviews', reviews)
     const spots = useSelector(store => store.spots.Spots);
     const spot = spots && spots[spotId]
     const spotImages = spot && spot.SpotImages
@@ -17,7 +15,6 @@ export default function SelectedSpot () {
 
     useEffect(() => {
         dispatch(thunkGetSingleSpot(spotId));
-        dispatch(thunkGetSpotReviews(spotId));
     }, [dispatch, spotId])
 
     ///Function for properly formatting the review headers
@@ -29,8 +26,6 @@ export default function SelectedSpot () {
             </>
         )
     }
-
-
     return (
         <div className="spotWrapper">
             <h1 className='spotHeader'>{spot?.name}</h1>
@@ -59,16 +54,11 @@ export default function SelectedSpot () {
                     <button className='reserveButton' onClick={() => alert('Feature coming soon!')}>RESERVE!</button>
                 </div>
             </div>
-            <div className='reviewsWrapper'>
-                <h2>
-                    {reviewFormatter()}
-                </h2>
-                <ul>
-                    {reviews?.map(review => (
-                        <li key={`${review.id}`}>{review.review}</li>
-                    ))}
-                </ul>
-            </div>
+            <h2 className='reviewsHeader'>
+                {reviewFormatter()}
+            </h2>
+            <Reviews spotId={spotId} ownerId={spot?.ownerId}/>
+
         </div>
     )
 }

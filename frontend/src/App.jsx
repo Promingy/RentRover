@@ -6,6 +6,7 @@ import * as sessionActions from './store/session';
 import Navigation from './components/Navigation/Navigation';
 import Spots from './components/Spots'
 import SelectedSpot from './components/selectedSpot';
+import NewSpot from './components/NewSpot/NewSpot';
 
 function App() {
   const dispatch = useDispatch();
@@ -25,6 +26,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Spots />} />
           <Route path='/spots/:spotId' element={<SelectedSpot />} />
+          <Route path='/spots/new' element={<NewSpot />} />
         </Routes>
       </>
     }

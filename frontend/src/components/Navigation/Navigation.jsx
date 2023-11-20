@@ -48,9 +48,11 @@ function Navigation({ isLoaded }) {
         <i className='fa-brands fa-airbnb fa-bounce logoIcon' />
         <span className='logoName logo'>airbnb</span>
       </li>
+      {sessionUser &&
       <li>
-        <NavLink to="/" className='homeButton'>Home</NavLink>
+        <NavLink to="/spots/new" className='homeButton'>Create a Spot</NavLink>
       </li>
+      }
       {isLoaded && sessionLinks}
     </ul>
   );

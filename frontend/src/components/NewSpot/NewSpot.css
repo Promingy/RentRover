@@ -1,0 +1,16 @@
+.newSpotForm {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    width: 500px;
+    align-items: center;
+    border: 1px solid red;
+}
+
+.newSpotFormHeader {
+    margin-bottom: 25px;
+}
+.newSpotFormSubHeader {
+    color: #E4FDE1;
+    margin-bottom: 10px;
+}
