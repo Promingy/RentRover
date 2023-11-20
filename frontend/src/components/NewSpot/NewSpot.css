@@ -1,0 +1,67 @@
+.newSpotForm {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    width: 500px;
+    /* border: 1px solid red; */
+    padding: 20px;
+}
+
+.newSpotFormHeader {
+    margin-bottom: 25px;
+}
+.newSpotFormSubHeader {
+    width: 100%;
+    color: #E4FDE1;
+    margin-bottom: 10px;
+}
+.subHeaderDetails {
+    margin-bottom: 30px;
+}
+
+.seperator {
+    margin: 50px 0;
+    border-bottom: 1px solid #E4FDE1;
+    width: 100%;
+}
+
+.newSpotHeaderWrapper {
+    margin: 20px;
+}
+
+.descriptionTextContainer {
+    width: 100%;
+}
+
+.descriptionTextArea {
+    width: 100%;
+    height: 100px;
+    resize: none;
+}
+
+.cityAndState {
+    display: flex;
+    gap: 10px;
+}
+
+.newSpotInput {
+    width: 100%
+}
+
+.setPriceContainer {
+    display: flex;
+    gap: 10px;
+}
+
+.photoInput {
+    width: 100%;
+    margin: 10px 0;
+}
+
+.submitSpot {
+    width: 100px;
+    padding: 10px;
+    margin: 0 auto;
+    background-color: #F45B69;
+    color: #E4FDE1;
+}

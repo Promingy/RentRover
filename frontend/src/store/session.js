@@ -32,23 +32,25 @@ export const thunkSignup = (user) => async (dispatch) => {
             password
         })
     })
+
     const data = await res.json();
     dispatch(actionSetUser(data.user));
     return res;
 }
 export const thunkLogin = (user) => async (dispatch) => {
     const { credential, password } = user;
+
     const res = await csrfFetch('/api/session', {
         method: 'POST',
         body: JSON.stringify({
             credential,
             password
         })
-    });
+    })
 
-    const data = await res.json();
-    dispatch(actionSetUser(data.user));
-    return res;
+        const data = await res.json();
+        dispatch(actionSetUser(data.user));
+        return res;
 };
 
 export const thunkLogout = () => async (dispatch) => {

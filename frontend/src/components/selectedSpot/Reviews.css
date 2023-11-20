@@ -1,0 +1,16 @@
+.postReviewButton {
+    width: 250px;
+    padding: 10px;
+    margin-bottom: 30px;
+}
+
+.reviewContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 50px;
+}
+
+.reviewerName {
+    font-size: 125%;
+}

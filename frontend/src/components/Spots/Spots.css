@@ -1,0 +1,50 @@
+.spotsWrapper {
+    padding: 50px;
+    overflow: hidden;
+}
+.previewImage {
+    height: 200px;
+    width: 250px;
+}
+
+h1 {
+    color: #E4FDE1;
+}
+p {
+    color: #E4FDE1;
+
+}
+
+.spotsContainer {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.spots{
+    width: 250px;
+    margin: 25px;
+}
+.spots:hover {
+    cursor: pointer;
+}
+
+.locationRating{
+    display: flex;
+    justify-content: space-between;
+}
+
+.starRating {
+    display: flex;
+    align-items: center;
+}
+
+.star {
+    margin-right: 5px;
+    font-size: 80%;
+}
+
+.locationPrice{
+    margin-top: 10px;
+}

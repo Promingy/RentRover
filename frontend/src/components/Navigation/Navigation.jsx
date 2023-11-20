@@ -1,51 +1,61 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
-import OpenModalButton from '../OpenModalButton';
-import LoginFormModal from '../LoginFormModal';
-import SignupFormModal from '../SignupFormModal';
 import './Navigation.css';
+import { useEffect, useState } from 'react';
 
 function Navigation({ isLoaded }) {
+  const navigate = useNavigate();
   const sessionUser = useSelector((state) => state.session.user);
+  const [navClass, setNavClass] = useState(true)
+
+
+  // Implements the dynamic class/css settings for home and profile button
+  useEffect(() => {
+    const profileButton = document.getElementsByClassName('profileButtonContainer')[0];
+
+     profileButton && profileButton.addEventListener('click', () => setNavClass(!navClass));
+
+    return () => profileButton && profileButton.removeEventListener('click', () => setNavClass(!navClass));
+  }, [navClass])
+
 
   let sessionLinks;
   if (sessionUser) {
     sessionLinks = (
-      <li>
+      <li className='profileButtonContainer'>
         <ProfileButton user={sessionUser} />
       </li>
     );
   } else {
     sessionLinks = (
       <>
-        <li>
-          <OpenModalButton
-            className="loginButton"
-            buttonText="Log In"
-            modalComponent={<LoginFormModal />}
-          />
-        </li>
-        <li>
-          <OpenModalButton
-            className='navButton'
-            buttonText="Sign Up"
-            modalComponent={<SignupFormModal />}
-          />
+        <li className='profileButtonContainer'>
+          <ProfileButton />
         </li>
       </>
     );
   }
 
+  function logoClick () {
+    navigate('/')
+  }
+
   return (
-    <ul>
-      <li>
-        <NavLink to="/">Home</NavLink>
+    <ul className={`navBarContainer ${navClass ? '' : 'navBarContainerActive'}`}>
+      <li className='logoContainer' onClick={logoClick}>
+        {/* /// in order to rotate this icon, remove the bounce animation */}
+        <i className='fa-brands fa-airbnb fa-bounce logoIcon' />
+        <span className='logoName logo'>airbnb</span>
       </li>
+      {sessionUser &&
+      <li>
+        <NavLink to="/spots/new" className='homeButton'>Create a Spot</NavLink>
+      </li>
+      }
       {isLoaded && sessionLinks}
     </ul>
   );
 }
 
 export default Navigation;
-

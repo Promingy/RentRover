@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux'
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Navigation from './components/Navigation/Navigation';
+import { Routes, Route } from 'react-router-dom';
 import * as sessionActions from './store/session';
+
+import Navigation from './components/Navigation/Navigation';
+import Spots from './components/Spots'
+import SelectedSpot from './components/selectedSpot';
+import NewSpot from './components/NewSpot/NewSpot';
 
 function App() {
   const dispatch = useDispatch();
@@ -15,16 +19,18 @@ function App() {
   }, [dispatch])
 
   return (
-    <BrowserRouter>
+    <>
     { isLoaded &&
       <>
         <Navigation isLoaded={isLoaded}/>
         <Routes>
-          <Route path='/' element={<h1 style={{textAlign: "center", color: "#E4FDE1"}}>Welcome!</h1>} />
+          <Route path='/' element={<Spots />} />
+          <Route path='/spots/:spotId' element={<SelectedSpot />} />
+          <Route path='/spots/new' element={<NewSpot />} />
         </Routes>
-    </>
-        }
-        </BrowserRouter>
+      </>
+    }
+   </>
   )
 }
 

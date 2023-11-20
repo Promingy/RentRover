@@ -1,0 +1,90 @@
+.spotWrapper {
+    margin: 30px 50px;
+    color: #E4FDE1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 30px 50px;
+}
+
+.spotLocation {
+    display: flex;
+    padding-top: 40px;
+}
+
+.spotImagesWrapper {
+    display: flex;
+    gap: 10px;
+    max-width: 100%;
+    height: 500px;
+    margin-top: 25px
+}
+
+.spotBigImage {
+    width: 50%;
+    border: 1px solid grey;
+}
+
+.spotSmallImageContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 10px;
+    min-width: 50%;
+}
+
+.spotSmallImage {
+    width: 100%;
+    height: 100%;
+}
+
+.hostedBy {
+    margin: 20px 0;
+}
+
+.descriptionReserveWrapper {
+    margin-top: 50px;
+    display: flex;
+    width: 101%;
+    justify-content: center;
+    padding-bottom: 75px;
+    border-bottom: 1px solid #E4FDE1;
+    margin-bottom: 25px;
+}
+
+.descriptionContainer{
+    width: 100%;
+}
+
+.reserveContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 20px;
+    width: 50%;
+    border: 1px solid #E4FDE1;
+    height: 150px;
+    border-radius: 20px;
+}
+
+.reserveHeader {
+    display: flex;
+    justify-content: space-between;
+}
+
+.reserveButton {
+    max-width: 95%;
+    width: 100%;
+    padding: 10px;
+    margin: 0 auto;
+    background-color: #F45B69;
+}
+
+.reviewsHeader {
+    margin-bottom: 45px;
+}
+
+.reviewsWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
