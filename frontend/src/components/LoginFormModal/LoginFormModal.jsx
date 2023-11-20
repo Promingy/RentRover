@@ -16,7 +16,7 @@ export default function LoginFormModal() {
 
     useEffect(() => {
       if(sessionUser) navigate('/')
-    }, [sessionUser])
+    }, [sessionUser, navigate])
   const handleSubmit = (e) => {
     e.preventDefault();
 
