@@ -12,6 +12,7 @@ export default function Spots() {
     useEffect(() => {
         dispatch(thunkGetAllSpots());
     }, [dispatch])
+    console.log('allspots', allSpots)
 
     return (
         <div className="spotsWrapper">
@@ -19,13 +20,13 @@ export default function Spots() {
             <ul className='spotsContainer'>
                 {allSpots && Array.isArray(allSpots) && allSpots.map(spot => (
                     spot &&
-                    <li className='spots' key={`${spot.id}`} onClick={() => navigate(`/spots/${spot.id}`)}>
+                    <li title={`${spot.name}`} className='spots' key={`${spot.id}`} onClick={() => navigate(`/spots/${spot.id}`)}>
                             <img className='previewImage' src={`${spot.previewImage}`} alt={`${spot.previewImage}`} />
                             <span className="locationRating">
                                 <p>{spot.city}, {spot.state}</p>
                                 <p className='starRating'>
                                     <i className='fa-solid fa-star star' />
-                                    {spot.avgRating.toFixed(1) || 'New'}
+                                    {spot.avgRating?.toFixed(1) || 'New'}
                                 </p>
                             </span>
                             <p className='locationPrice'>${spot.price} night</p>

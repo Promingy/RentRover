@@ -99,7 +99,8 @@ module.exports = (sequelize, DataTypes) => {
     name: {
       type: DataTypes.STRING,
       validate: {
-        len: {args: [3, 50], msg: 'Name must be less than 50 characters'}
+        min: {args: 3, msg: 'Name must be at least than 3 characters'},
+        max: {args: 50, msg: 'Name must be less than 50 characters'}
       }
     },
     description: {

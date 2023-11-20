@@ -12,17 +12,22 @@ export default function SelectedSpot () {
     const spot = spots && spots[spotId]
     const spotImages = spot && spot.SpotImages
     const previewImage = spotImages && spotImages.find(image => image.preview)
+    let reviewTitle;
 
     useEffect(() => {
         dispatch(thunkGetSingleSpot(spotId));
     }, [dispatch, spotId])
+
+    reviewTitle = spot?.numReviews > 1 ? 'Reviews' : 'Review'
+    // reviewTitle = spot?.numReviews == 0 ? '' : ''
 
     ///Function for properly formatting the review headers
     function reviewFormatter() {
         return (
             <>
                 <i className='fa-solid fa-star star' />
-                {spot?.avgRating.toFixed(1)} &nbsp; · &nbsp; {spot?.numReviews} {spot?.numReviews > 0 && spot?.numReviews > 1 ? 'Reviews' : 'Review'}
+                {spot?.avgRating?.toFixed(1) || 'New'} &nbsp;{spot?.numReviews > 0 && <span>·</span>} &nbsp; {spot?.numReviews > 0 && <span>{spot?.numReviews}</span>}
+                {<span>&nbsp; {spot?.numReviews > 0 && reviewTitle} </span>}
             </>
         )
     }
