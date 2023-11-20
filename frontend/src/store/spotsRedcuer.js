@@ -48,11 +48,11 @@ const initialState = {}
 const spotsReducer = (state = initialState, action) => {
     switch(action.type) {
         case GET_SPOTS: {
-            return {...state, Spots: action.spots}
+            return {...state, Spots: [null, ...action.spots]}
         }
         case GET_SINGLE_SPOT:
             const newState = {...state}
-            newState.spots = {...state.spots, [action.spot.id]: action.spot}
+            newState.Spots = {...state.Spots, [action.spot.id]: action.spot}
             return newState
         default:
             return state

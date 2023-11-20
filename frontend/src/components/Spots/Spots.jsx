@@ -8,17 +8,17 @@ export default function Spots() {
     const dispatch = useDispatch();
     const allSpots = useSelector(state => state.spots.Spots);
     const navigate = useNavigate();
-
+    console.log(allSpots, 'allspots')
     useEffect(() => {
         dispatch(thunkGetAllSpots());
     }, [dispatch])
-
 
     return (
         <div className="spotsWrapper">
             <h1>Spots</h1>
             <ul className='spotsContainer'>
-                {allSpots && allSpots.map(spot => (
+                {allSpots && Array.isArray(allSpots) && allSpots.map(spot => (
+                    spot &&
                     <li className='spots' key={`${spot.id}`} onClick={() => navigate(`/spots/${spot.id}`)}>
                             <img className='previewImage' src={`${spot.previewImage}`} alt={`${spot.previewImage}`} />
                             <span className="locationRating">

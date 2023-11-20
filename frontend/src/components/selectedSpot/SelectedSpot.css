@@ -40,3 +40,39 @@
 .hostedBy {
     margin: 20px 0;
 }
+
+.descriptionReserveWrapper {
+    margin-top: 50px;
+    display: flex;
+    width: 101%;
+    justify-content: center;
+}
+
+
+.descriptionContainer{
+    width: 100%;
+}
+
+.reserveContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    padding: 20px;
+    width: 50%;
+    border: 1px solid #E4FDE1;
+    height: 150px;
+    border-radius: 20px;
+}
+
+.reserveHeader {
+    display: flex;
+    justify-content: space-between;
+}
+
+.reserveButton {
+    max-width: 95%;
+    width: 100%;
+    padding: 10px;
+    margin: 0 auto;
+    background-color: #F45B69;
+}

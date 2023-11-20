@@ -7,7 +7,7 @@ import { thunkGetSingleSpot } from "../../store/spotsRedcuer";
 export default function SelectedSpot () {
     const dispatch = useDispatch();
     const { spotId } = useParams();
-    const spots = useSelector(store => store.spots.spots);
+    const spots = useSelector(store => store.spots.Spots);
     const spot = spots && spots[spotId]
     const spotImages = spot && spot.SpotImages
     const previewImage = spotImages && spotImages.find(image => image.preview)
@@ -16,7 +16,7 @@ export default function SelectedSpot () {
         dispatch(thunkGetSingleSpot(spotId))
     }, [dispatch, spotId])
 
-
+    console.log(spot)
     return (
         <div className="spotWrapper">
             <h1 className='spotHeader'>{spot?.name}</h1>
@@ -30,8 +30,22 @@ export default function SelectedSpot () {
                     <img className='spotSmallImage' src={spotImages?.[4]?.url}/>
                 </div>
             </div>
-            <h2 className='hostedBy'>Hosted by {spot?.Owner.firstName} {spot?.Owner.lastName}</h2>
-            <p className='spotDescription'>{spot?.description}</p>
+            <div className='descriptionReserveWrapper'>
+                <div className='descriptionContainer'>
+                    <h2 className='hostedBy'>Hosted by {spot?.Owner?.firstName} {spot?.Owner?.lastName}</h2>
+                    <p className='spotDescription'>{spot?.description}</p>
+                </div>
+                <div className='reserveContainer'>
+                    <span className="reserveHeader">
+                        <h2>${spot?.price} night</h2>
+                        <h2>
+                            <i className='fa-solid fa-star star' />
+                            {spot?.avgRating.toFixed(1)}
+                        </h2>
+                    </span>
+                    <button className='reserveButton' onClick={() => alert('Feature coming soon!')}>RESERVE!</button>
+                </div>
+            </div>
         </div>
     )
 }
