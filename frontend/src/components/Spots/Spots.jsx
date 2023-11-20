@@ -12,6 +12,7 @@ export default function Spots() {
     useEffect(() => {
         dispatch(thunkGetAllSpots());
     }, [dispatch])
+    console.log('allspots', allSpots)
 
     return (
         <div className="spotsWrapper">
@@ -25,7 +26,7 @@ export default function Spots() {
                                 <p>{spot.city}, {spot.state}</p>
                                 <p className='starRating'>
                                     <i className='fa-solid fa-star star' />
-                                    {spot.avgRating.toFixed(1) || 'New'}
+                                    {spot.avgRating?.toFixed(1) || 'New'}
                                 </p>
                             </span>
                             <p className='locationPrice'>${spot.price} night</p>

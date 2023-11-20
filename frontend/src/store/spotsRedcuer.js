@@ -1,7 +1,9 @@
+import { csrfFetch } from "./csrf";
+
 const GET_SPOTS = 'spotsRecuder/GET_SPOTS';
-const GET_SINGLE_SPOT = 'spotsReducer/GET_SINGLE_SPOT'
-// const GET_SINGLE_SPOT = 'spotsRecude/GET_SINGLE_SPOT'
-const CREATE_SPOT = 'spotsReducer/CREATE_SPOT'
+const GET_SINGLE_SPOT = 'spotsReducer/GET_SINGLE_SPOT';
+const CREATE_SPOT = 'spotsReducer/CREATE_SPOT';
+const ADD_SPOT_IMAGE = 'spotReducer/ADD_SPOT_IMAGE';
 
 /// ACTION CREATORS
 const actionGetSpots = (spots) => {
@@ -22,6 +24,14 @@ const actionCreateSpot = (spot) => {
     return {
         type: CREATE_SPOT,
         spot
+    }
+}
+
+const actionAddSpotImage = (image, spotId, state) => {
+    return {
+        type: ADD_SPOT_IMAGE,
+        image,
+        spotId
     }
 }
 
@@ -46,11 +56,36 @@ export const thunkGetSingleSpot = (spotId) => async (dispatch) => {
 }
 
 export const thunkCreateSpot = (spot) => async (dispatch) => {
-    
+    const res = await csrfFetch('/api/spots', {
+        method: 'POST',
+        body: JSON.stringify(spot.Spot)
+    });
+
+    if (res.ok) {
+        const data = await res.json();
+        await dispatch(actionCreateSpot(data))
+        dispatch(thunkAddSpotImage(spot.Images, data.id))
+        return data;
+    }
+    return res;
 }
 
-/// SELECTORS
-//! VERIFY WITH DAN BEFORE USING INCASE 'RESELECT' ISN'T APPROVED
+export const thunkAddSpotImage = (images, spotId) => async (dispatch) => {
+    for (let image of images) {
+
+        if (image) {
+            const res = await csrfFetch(`/api/spots/${spotId}/images`, {
+                method: 'POST',
+                body: JSON.stringify(image)
+            })
+
+            if (res.ok) {
+                const data = await res.json();
+                dispatch(actionAddSpotImage(data, spotId))
+            }
+        }
+    }
+}
 
 const initialState = {}
 
@@ -65,8 +100,24 @@ const spotsReducer = (state = initialState, action) => {
             return newState
         }
         case CREATE_SPOT: {
-            return {...state}
+            const newState = {...state, Spots: {[action.spot.id]: action.spot}}
+            return newState
         }
+        case ADD_SPOT_IMAGE: {
+            // check if action.image.previewImage is true
+            // if true, key into state with state.Spots[action.spotId]
+            // if set action.image.url == to spot
+
+            if (action.image.preview) {
+                const newState = {...state}
+
+                newState.Spots[action.spotId].previewImage = action.image.url;
+
+                return newState
+            }
+            return state
+        }
+
         default:
             return state
     }
