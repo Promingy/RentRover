@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { csrfFetch } from "./csrf";
 
 const SET_USER = 'session/SET_USER';

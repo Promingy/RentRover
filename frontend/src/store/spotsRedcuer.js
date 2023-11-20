@@ -1,6 +1,3 @@
-import { csrfFetch } from "./csrf"
-
-
 const GET_SPOTS = 'spotsRecuder/GET_SPOTS';
 const GET_SINGLE_SPOT = 'spotsRecude/GET_SINGLE_SPOT'
 
