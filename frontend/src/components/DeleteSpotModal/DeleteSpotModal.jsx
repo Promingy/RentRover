@@ -14,7 +14,7 @@ export default function DeleteSpotModal({ spotId }) {
             dispatch(thunkGetCurrentUserSpots())
                 .then(closeModal)
         }
-    }, [dispatch, test])
+    }, [dispatch, test, closeModal])
 
     async function onSubmit(e) {
         e.preventDefault();
