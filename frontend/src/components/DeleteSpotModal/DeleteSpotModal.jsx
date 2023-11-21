@@ -2,26 +2,19 @@ import { useDispatch } from 'react-redux';
 import './DeleteSpot.css'
 import { thunkDeleteSpot } from '../../store/spotsRedcuer';
 import { useModal } from '../../context/Modal';
-import { useEffect, useState } from 'react';
 import { thunkGetCurrentUserSpots} from '../../store/spotsRedcuer';
 
 export default function DeleteSpotModal({ spotId }) {
     const dispatch = useDispatch();
     const { closeModal } = useModal();
-    const [test, setTest] = useState(false)
-    useEffect(() => {
-        if (test) {
-            dispatch(thunkGetCurrentUserSpots())
-                .then(closeModal)
-        }
-    }, [dispatch, test, closeModal])
 
     async function onSubmit(e) {
         e.preventDefault();
 
         await dispatch(thunkDeleteSpot(spotId))
+        .then(closeModal)
+        .then(() => dispatch(thunkGetCurrentUserSpots()))
 
-        setTest(true)
     }
 
     return (

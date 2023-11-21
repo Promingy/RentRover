@@ -14,7 +14,6 @@ export default function SelectedSpot () {
     const previewImage = spotImages && spotImages.find(image => image.preview)
     let reviewTitle;
 
-    console.log(spotImages)
     useEffect(() => {
         dispatch(thunkGetSingleSpot(spotId));
     }, [dispatch, spotId])
