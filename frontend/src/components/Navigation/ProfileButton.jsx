@@ -56,7 +56,7 @@ export default function ProfileButton({ user }) {
     <ul className={ulClassName} ref={ulRef}>
       <li className='dropDownLoginContainer'>
         <OpenModalButton
-          className='TEST'
+          // className='TEST'
           buttonText="Log In"
           modalComponent={<LoginFormModal />}
         />

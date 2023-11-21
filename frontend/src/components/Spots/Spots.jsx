@@ -16,7 +16,7 @@ export default function Spots() {
 
     return (
         <div className="spotsWrapper">
-            <h1>Spots</h1>
+            {/* <h1>Spots</h1> */}
             <ul className='spotsContainer'>
                 {allSpots && Array.isArray(allSpots) && allSpots.map(spot => (
                     spot &&
