@@ -210,7 +210,6 @@ export default function NewSpot() {
                     placeholder='Please write at least 30 characters'
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    onLoad={(e) => setDescription(e.target.value)}
                     />
             </label>
 

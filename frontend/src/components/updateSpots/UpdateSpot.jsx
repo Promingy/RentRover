@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { thunkCreateSpot, thunkGetSingleSpot, thunkUpdateSpot } from '../../store/spotsRedcuer';
+import { thunkGetSingleSpot, thunkUpdateSpot } from '../../store/spotsRedcuer';
 import '../NewSpot/NewSpot.css'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -140,7 +140,7 @@ export default function UpdateSpot({ isUpdate}) {
         }
 
         if(isUpdate) {
-           newSpot = dispatch(thunkUpdateSpot(spotId, newSpot))
+            dispatch(thunkUpdateSpot(spotId, newSpot))
             navigate(`/spots/${spotId}`)
         }
     }
@@ -241,7 +241,6 @@ export default function UpdateSpot({ isUpdate}) {
                     placeholder='Please write at least 30 characters'
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
-                    onLoad={(e) => setDescription(e.target.value)}
                     />
             </label>
 
