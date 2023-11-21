@@ -21,7 +21,7 @@
     padding: 10px;
 }
 
-.deleteModalButton:hover {
+.deleteButtonText {
     background-color: #E4FDE1;
 }
 

@@ -1,0 +1,38 @@
+.postReviewForm {
+    display: grid;
+    gap: 10px;
+    width: 500px;
+    padding: 20px 25px 0;
+    text-align: center;
+}
+
+.reviewFormHeader {
+    margin-bottom: 10px;
+}
+
+.reviewTextArea {
+    resize: none;
+    height: 100px;
+}
+
+.postReviewButton {
+    width: 250px;
+    padding: 10px;
+    margin: 10px auto 0;
+}
+
+.starRatingContainer {
+    display: flex;
+    gap: 10px;
+    margin: 15px auto 5px;
+}
+
+.empty,
+.starsLabel,
+.reviewFormHeader {
+    color: #E4FDE1;
+}
+
+.filled {
+    color: #F45B69;
+}

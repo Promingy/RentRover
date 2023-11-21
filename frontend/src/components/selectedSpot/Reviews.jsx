@@ -1,7 +1,9 @@
 import { useEffect } from "react";
 import { thunkGetSpotReviews } from "../../store/reviewsReducer";
 import { useDispatch, useSelector } from "react-redux";
+import ReviewFormModal from "./ReviewFormModal";
 import './Reviews.css'
+import OpenModalButton from "../OpenModalButton";
 
 export default function Reviews ({ spotId, ownerId }) {
     const dispatch = useDispatch();
@@ -9,14 +11,25 @@ export default function Reviews ({ spotId, ownerId }) {
     const sessionUser = useSelector((state) => state.session.user)
     const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July',' August', 'September', 'October', 'November', 'December']
 
+    // find review posted by user
+    const userPostedReview = reviews?.find(review => review.userId == sessionUser.id)
+
+    const buttonCondition = (!userPostedReview && sessionUser && ownerId !== sessionUser.id)
+
+    // load all data from reviews
     useEffect(() => {
         dispatch(thunkGetSpotReviews(spotId));
     }, [dispatch, spotId])
 
-
     return (
     <div className='reviewsWrapper'>
-        <button className='postReviewButton' disabled={!sessionUser || ownerId == sessionUser.id}>{reviews?.length ? 'Post a Review' : 'Be the first to post a review'}</button>
+        {buttonCondition &&
+            <label className='postReviewButtonContainer'>
+                <p className='postReviewButtonText'>{reviews?.length ? 'Post Your Review' : 'Be the first to post a review'}</p>
+                <OpenModalButton modalComponent={<ReviewFormModal spotId={spotId} />} />
+            </label>
+        }
+        {/* {buttonCondition && <button className='postReviewButton'>{reviews?.length ? 'Post a Review' : 'Be the first to post a review'}</button>} */}
         <ul className="reviewsWrapper">
             {reviews?.toReversed().map(review => {
                 const date = new Date(review.updatedAt)

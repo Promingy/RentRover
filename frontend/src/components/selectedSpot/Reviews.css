@@ -1,8 +1,3 @@
-.postReviewButton {
-    width: 250px;
-    padding: 10px;
-    margin-bottom: 30px;
-}
 
 .reviewContainer {
     display: flex;
@@ -13,4 +8,38 @@
 
 .reviewerName {
     font-size: 125%;
+}
+
+.postReviewButtonContainer:hover {
+    cursor: pointer;
+}
+.postReviewButtonContainer {
+    width: 150px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    border-top: 2px solid grey;
+    border-left: 2px solid grey;
+    border-bottom: 2px solid black;
+    border-right: 2px solid black;
+}
+
+.postReviewButtonContainer:active {
+    border-bottom: 2px solid grey;
+    border-right: 2px solid grey;
+    border-top: 2px solid black;
+    border-left: 2px solid black;
+}
+
+.postReviewButtonText {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    background-color: #E4FDE1;
+    width: 150px;
+    height: 30px;
+    color: black;
+
 }
