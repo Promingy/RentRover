@@ -3,12 +3,20 @@ import { csrfFetch } from "./csrf";
 const GET_SPOTS = 'spotsRecuder/GET_SPOTS';
 const GET_SINGLE_SPOT = 'spotsReducer/GET_SINGLE_SPOT';
 const CREATE_SPOT = 'spotsReducer/CREATE_SPOT';
-const ADD_SPOT_IMAGE = 'spotReducer/ADD_SPOT_IMAGE';
+const ADD_SPOT_IMAGE = 'spotsReducer/ADD_SPOT_IMAGE';
+const CURRENT_USER_SPOTS = 'spotReducer/CURRENT_USER_SPOTS'
 
 /// ACTION CREATORS
 const actionGetSpots = (spots) => {
     return {
         type: GET_SPOTS,
+        spots
+    }
+}
+
+const actionGetCurrentUserSpots = (spots) => {
+    return {
+        type: CURRENT_USER_SPOTS,
         spots
     }
 }
@@ -42,6 +50,15 @@ export const thunkGetAllSpots = () => async (dispatch) => {
     if (res.ok){
         const data = await res.json();
         dispatch(actionGetSpots(data.Spots))
+    }
+}
+
+export const thunkGetCurrentUserSpots = () => async (dispatch) =>{
+    const res = await fetch('/api/spots/current')
+
+    if (res.ok) {
+        const data = await res.json();
+        dispatch(actionGetCurrentUserSpots(data.Spots))
     }
 }
 
@@ -93,6 +110,9 @@ const spotsReducer = (state = initialState, action) => {
     switch(action.type) {
         case GET_SPOTS: {
             return {...state, Spots: [null, ...action.spots]}
+        }
+        case CURRENT_USER_SPOTS: {
+            return {...state, userSpots: [null, ...action.spots]}
         }
         case GET_SINGLE_SPOT:{
             const newState = {...state}

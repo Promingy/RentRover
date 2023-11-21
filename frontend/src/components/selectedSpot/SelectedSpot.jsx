@@ -19,14 +19,13 @@ export default function SelectedSpot () {
     }, [dispatch, spotId])
 
     reviewTitle = spot?.numReviews > 1 ? 'Reviews' : 'Review'
-    // reviewTitle = spot?.numReviews == 0 ? '' : ''
 
     ///Function for properly formatting the review headers
     function reviewFormatter() {
         return (
             <>
                 <i className='fa-solid fa-star star' />
-                {spot?.avgRating?.toFixed(1) || 'New'} &nbsp;{spot?.numReviews > 0 && <span>·</span>} &nbsp; {spot?.numReviews > 0 && <span>{spot?.numReviews}</span>}
+                {typeof spot?.avgRating == 'number' && spot?.avgRating?.toFixed(1) || 'New'} &nbsp;{spot?.numReviews > 0 && <span>·</span>} &nbsp; {spot?.numReviews > 0 && <span>{spot?.numReviews}</span>}
                 {<span>&nbsp; {spot?.numReviews > 0 && reviewTitle} </span>}
             </>
         )

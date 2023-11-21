@@ -26,7 +26,7 @@ export default function Spots() {
                                 <p>{spot.city}, {spot.state}</p>
                                 <p className='starRating'>
                                     <i className='fa-solid fa-star star' />
-                                    {spot.avgRating?.toFixed(1) || 'New'}
+                                    {typeof spot?.avgRating === 'number' && spot?.avgRating?.toFixed(1) || 'New'}
                                 </p>
                             </span>
                             <p className='locationPrice'>${spot.price} night</p>

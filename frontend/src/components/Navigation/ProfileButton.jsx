@@ -23,6 +23,7 @@ export default function ProfileButton({ user }) {
     dispatch(sessionActions.thunkLogout());
     navigate('/');
   };
+
   useEffect(() => {
     if (!showMenu) return;
 
@@ -39,14 +40,15 @@ export default function ProfileButton({ user }) {
 
   const menuItems = user ? (
     <ul className={`${ulClassName} dropDownLoggedIn`} ref={ulRef}>
-    <li className='dropDown'>Hello, {user.firstName}</li>
-    {/* <li className='dropDown'>{user.firstName} {user.lastName}</li> */}
-    <li className='dropDown'>{user.email}</li>
-    {/* ///TODO add 'ManageSpots' button here */}
-    <li className='dropDown'>
-      <button onClick={logout} className='logoutButton'>Log Out</button>
-    </li>
-  </ul>
+      <li className='dropDown'>Hello, {user.firstName}</li>
+      <li className='dropDown'>{user.email}</li>
+      <li>
+        <button className='manageSpotsButton' onClick={() => navigate('/spots/current')}>Manage Spots</button>
+      </li>
+      <li className='dropDownLogout'>
+        <button onClick={logout} className='logoutButton'>Log Out</button>
+      </li>
+    </ul>
   )
   :
   (

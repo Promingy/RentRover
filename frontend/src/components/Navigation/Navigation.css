@@ -89,18 +89,21 @@ ul {
     overflow: hidden;
 }
 
+
 .dropDown {
     box-sizing: border-box;
     width: 100%;
 }
 
-.dropDown:not(:last-child) {
+.dropDown {
     color: #E4FDE1;
     padding: 10px;
     padding-bottom: 5px;
 }
 
-.logoutButton {
+
+.logoutButton,
+.manageSpotsButton{
     width: 100%;
     padding: 10px 0;
     padding-left: 10px;
@@ -110,7 +113,8 @@ ul {
     color: #E4FDE1;
 }
 
-.logoutButton:hover{
+.logoutButton:hover,
+.manageSpotsButton:hover{
     cursor: pointer;
     background-color: #016E7D;
 }
