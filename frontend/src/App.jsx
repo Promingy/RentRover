@@ -8,6 +8,7 @@ import Spots from './components/Spots'
 import SelectedSpot from './components/selectedSpot';
 import NewSpot from './components/NewSpot/NewSpot';
 import ManageSpots from './components/manageSpots';
+import UpdateSpot from './components/updateSpots/UpdateSpot';
 
 function App() {
   const dispatch = useDispatch();
@@ -28,7 +29,7 @@ function App() {
           <Route path='/' element={<Spots />} />
           <Route path='/spots/:spotId' element={<SelectedSpot />} />
           <Route path='/spots/new' element={<NewSpot />} isUpdate={false} />
-          <Route path='/spots/:spotId/edit' element={<NewSpot isUpdate={true}/>} />
+          <Route path='/spots/:spotId/edit' element={<UpdateSpot isUpdate={true}/>} />
           <Route path='/spots/current' element={<ManageSpots />} />
         </Routes>
       </>

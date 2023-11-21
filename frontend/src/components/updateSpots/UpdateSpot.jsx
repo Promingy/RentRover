@@ -1,12 +1,21 @@
-import { useState } from 'react'
-import { thunkCreateSpot } from '../../store/spotsRedcuer';
-import './NewSpot.css'
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react'
+import { thunkCreateSpot, thunkGetSingleSpot, thunkUpdateSpot } from '../../store/spotsRedcuer';
+import '../NewSpot/NewSpot.css'
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
 
-export default function NewSpot() {
+
+export default function UpdateSpot({ isUpdate}) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+
+    // grab spot id from url
+    const { spotId } = useParams();
+
+    // get spot if isUpdate
+    let spot;
+    const spots = useSelector(state => state.spots.Spots)
+    spot = spots && spots[spotId]
 
     const [address, setAddress] = useState('');
     const [city, setCity] = useState('');
@@ -26,6 +35,28 @@ export default function NewSpot() {
 
     const [errors, setErrrors] = useState({});
 
+    // load isUpdate is true, load spot
+    useEffect(() => {
+        if(spotId && isUpdate){
+            dispatch(thunkGetSingleSpot(spotId))
+        }
+    }, [spotId, isUpdate, dispatch])
+
+    useEffect(() => {
+        if (spot && isUpdate) {
+            setCity(spot?.city)
+            setState(spot?.state)
+            setAddress(spot?.address)
+            setCountry(spot?.country)
+            setLong(spot?.lng)
+            setLat(spot?.lat)
+            setSpotName(spot?.name)
+            setDescription(spot?.description)
+            setPrice(spot?.price)
+            setPreviewImage(spot?.previewImage)
+        }
+    }, [spot, isUpdate])
+
     function errorHandler() {
         // error message for all required fields
         // error message for description length
@@ -35,6 +66,8 @@ export default function NewSpot() {
         //set err state above to empty obj
         // in return setstate of err  to new obj
         const errors = {};
+
+
 
         const images = [image1, image2, image3, image4]
         const imageEndings = ['.png', '.jpg', '.jpeg']
@@ -106,12 +139,10 @@ export default function NewSpot() {
             ]
         }
 
-        if (!Object.values(errors).length){
-            newSpot = await dispatch(thunkCreateSpot(newSpot))
-
-            navigate(`/spots/${newSpot.id}`)
+        if(isUpdate) {
+           newSpot = dispatch(thunkUpdateSpot(spotId, newSpot))
+            navigate(`/spots/${spotId}`)
         }
-
     }
 
     // dynamically create input sections
@@ -157,7 +188,7 @@ export default function NewSpot() {
 
     return (
         <form className='newSpotForm' onSubmit={onSubmit}>
-            <h1 className='newSpotFormHeader'>Create a New Spot</h1>
+            <h1 className='newSpotFormHeader'>{isUpdate ? 'Update your Spot' : 'Create a New Spot'}</h1>
             <h2 className='newSpotFormSubHeader'>Where&apos;s your place located?</h2>
             <p className='subHeaderDetails'>Guests will only get your exact address once they booked a reservation.</p>
 
