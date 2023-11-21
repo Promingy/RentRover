@@ -41,7 +41,7 @@ export default function ManageSpots() {
 
                             </label>
                             <div className="manageButtonsContainer">
-                                <button className="updateButton">Update</button>
+                                <button className="updateButton" onClick={() => navigate(`/spots/${spot.id}/edit`)}>Update</button>
                                 <label className='deleteButtonContainer'>
                                     <p className="deleteButtonText">Delete </p>
                                     <OpenModalButton modalComponent={<DeleteSpotModal spotId={spot.id}/>}/>

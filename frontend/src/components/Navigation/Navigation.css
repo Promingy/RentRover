@@ -13,6 +13,7 @@
     height: 75px;
     transition: all 1s;
     border-bottom: 3px solid #028090;
+    viewport-fit: auto;
 }
 
 ul {

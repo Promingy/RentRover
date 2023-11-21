@@ -44,32 +44,32 @@ module.exports = {
       },
       {
         spotId: 5,
-        url: "testImage2.url",
+        url: "https://testImage2.url",
         preview: true
       },
       {
         spotId: 1,
-        url: "testImage2.url",
+        url: "https://testImage2.url",
         preview: false
       },
       {
         spotId: 2,
-        url: "testImage2.url",
+        url: "https://testImage2.url",
         preview: false
       },
       {
         spotId: 3,
-        url: "testImage2.url",
+        url: "https://testImage2.url",
         preview: false
       },
       {
         spotId: 4,
-        url: "testImage2.url",
+        url: "https://testImage2.url",
         preview: false
       },
       {
         spotId: 5,
-        url: "testImage2.url",
+        url: "https://testImage2.url",
         preview: false
       }
     ])

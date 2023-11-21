@@ -27,7 +27,8 @@ function App() {
         <Routes>
           <Route path='/' element={<Spots />} />
           <Route path='/spots/:spotId' element={<SelectedSpot />} />
-          <Route path='/spots/new' element={<NewSpot />} />
+          <Route path='/spots/new' element={<NewSpot />} isUpdate={false} />
+          <Route path='/spots/:spotId/edit' element={<NewSpot isUpdate={true}/>} />
           <Route path='/spots/current' element={<ManageSpots />} />
         </Routes>
       </>

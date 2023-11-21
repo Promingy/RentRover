@@ -1,13 +1,22 @@
-import { useState } from 'react'
-import { thunkCreateSpot } from '../../store/spotsRedcuer';
+import { useEffect, useState } from 'react'
+import { thunkCreateSpot, thunkGetSingleSpot, thunkUpdateSpot } from '../../store/spotsRedcuer';
 import './NewSpot.css'
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
 
-export default function NewSpot() {
+export default function NewSpot({ isUpdate }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const [address, setAddress] = useState('');
+
+    // grab spot id from url
+    const { spotId } = useParams();
+
+    // get spot if isUpdate
+    let spot;
+    const spots = useSelector(state => state.spots.Spots)
+    spot = spots && spots[spotId]
+
+    const [address, setAddress] = spot ? useState(spot.address) : useState('');
     const [city, setCity] = useState('');
     const [state, setState] = useState('');
     const [country, setCountry] = useState('');
@@ -21,10 +30,16 @@ export default function NewSpot() {
     const [image2, setImage2] = useState('');
     const [image3, setImage3] = useState('');
     const [image4, setImage4] = useState('');
-
     // const [file, setFile] = useState('');
 
     const [errors, setErrrors] = useState({});
+
+    // load isUpdate is true, load spot
+    useEffect(() => {
+        if(spotId && isUpdate){
+            dispatch(thunkGetSingleSpot(spotId))
+        }
+    }, [spotId, isUpdate, dispatch])
 
     function errorHandler() {
         // error message for all required fields
@@ -81,35 +96,38 @@ export default function NewSpot() {
 
         errorHandler();
 
-        if (!Object.values(errors).length){
+        const newPreviewImage = {
+            url: previewImage,
+            preview: true
+        }
 
-            const newPreviewImage = {
-                url: previewImage,
-                preview: true
-            }
+        let newSpot = {
+            Spot: {
+                address,
+                city,
+                state,
+                country,
+                lat: lat || 0,
+                lng: long || 0,
+                name: spotName,
+                price,
+                description
+            },
+            Images: [
+                newPreviewImage,
+                // file && {url: file, preview: false} || undefined,
+                image1 && {url: image1, preview: false} || undefined,
+                image2 && {url: image2, preview: false} || undefined,
+                image3 && {url: image3, preview: false} || undefined,
+                image4 && {url: image4, preview: false} || undefined
+            ]
+        }
 
-            let newSpot = {
-                Spot: {
-                    address,
-                    city,
-                    state,
-                    country,
-                    lat: lat || 0,
-                    lng: long || 0,
-                    name: spotName,
-                    price,
-                    description
-                },
-                Images: [
-                    newPreviewImage,
-                    // file && {url: file, preview: false} || undefined,
-                    image1 && {url: image1, preview: false} || undefined,
-                    image2 && {url: image2, preview: false} || undefined,
-                    image3 && {url: image3, preview: false} || undefined,
-                    image4 && {url: image4, preview: false} || undefined
-                ]
-            }
+        if(isUpdate) {
+            dispatch(thunkUpdateSpot(spotId, newSpot))
+        }
 
+        else if (!Object.values(errors).length){
             newSpot = await dispatch(thunkCreateSpot(newSpot))
 
             navigate(`/spots/${newSpot.id}`)
@@ -158,10 +176,9 @@ export default function NewSpot() {
         return returnArr
     }
 
-
     return (
         <form className='newSpotForm' onSubmit={onSubmit}>
-            <h1 className='newSpotFormHeader'>Create a New Spot</h1>
+            <h1 className='newSpotFormHeader'>{isUpdate ? 'Update your Spot' : 'Create a New Spot'}</h1>
             <h2 className='newSpotFormSubHeader'>Where&apos;s your place located?</h2>
             <p className='subHeaderDetails'>Guests will only get your exact address once they booked a reservation.</p>
 
@@ -180,27 +197,26 @@ export default function NewSpot() {
                 </>
             }
 
-            {inputCreator('newSpotInput', 'text', 'Country', country, setCountry, 'country sectionOneInputs', 'Country')}
+            {inputCreator('newSpotInput', 'text', 'Country',  spot?.country || country, setCountry, 'country sectionOneInputs', 'Country')}
 
-            {inputCreator('newSpotInput', 'text', 'Street Address', address, setAddress, 'streetAddress sectionOneInputs', 'Street Address')}
+            {inputCreator('newSpotInput', 'text', 'Street Address', spot?.address || address, setAddress, 'streetAddress sectionOneInputs', 'Street Address')}
 
             <label className='cityAndState sectionOneInputs'>
 
-                {inputCreator('newSpotInput cityInput', 'text', 'City', city, setCity, 'nestedInputContainer', 'City')}
+                {inputCreator('newSpotInput cityInput', 'text', 'City', spot?.city || city, setCity, 'nestedInputContainer', 'City')}
 
                 <p className='inputComma'>,</p>
 
-                {inputCreator('newSpotInput stateInput', 'text', 'State', state, setState, 'stateInputContainer', 'STATE')}
+                {inputCreator('newSpotInput stateInput', 'text', 'State', spot?.state || state, setState, 'stateInputContainer', 'STATE')}
             </label>
 
-            {/* ///TODO make these optional */}
             <label className='latAndLong sectionOneInputs'>
 
-                {inputCreator('newSpotInput', 'text', 'Latitude', lat, setLat, 'nestedInputContainer', 'Latitude')}
+                {inputCreator('newSpotInput', 'text', 'Latitude', spot?.lat || lat, setLat, 'nestedInputContainer', 'Latitude')}
 
                 <p className='inputComma'>,</p>
 
-                {inputCreator('newSpotInput', 'text', 'Longitude', long, setLong, 'nestedInputContainer', 'Longitude')}
+                {inputCreator('newSpotInput', 'text', 'Longitude', spot?.lng || long, setLong, 'nestedInputContainer', 'Longitude')}
 
             </label>
 
@@ -213,7 +229,7 @@ export default function NewSpot() {
                 <textarea
                     className='descriptionTextArea'
                     placeholder='Please write at least 30 characters'
-                    value={description}
+                    value={spot?. description || description}
                     onChange={(e) => setDescription(e.target.value)}
                     />
             </label>
@@ -223,21 +239,21 @@ export default function NewSpot() {
             <h2 className='newSpotFormSubHeader'>Create a title for your spot</h2>
             <p className='subHeaderDetails'>Catch guests&apos; attention with a spot title that highlights what makes your place special.</p>
 
-            {inputCreator('newSpotInput', 'text', 'Name of your Spot', spotName, setSpotName)}
+            {inputCreator('newSpotInput', 'text', 'Name of your Spot', spot?.name || spotName, setSpotName)}
 
             <label className='seperator' />
 
             <h2 className='newSpotFormSubHeader'>Set a base price for your spot</h2>
             <p className='subHeaderDetails'>Competitive pricing can help your listing stand out and rank higher in search results.</p>
 
-            {inputCreator('newSpotInput', 'text', 'Name of your spot (USD)', price, setPrice, 'setPriceContainer', '$')}
+            {inputCreator('newSpotInput', 'text', 'Name of your spot (USD)', spot?.price || price, setPrice, 'setPriceContainer', '$')}
 
             <label className='seperator' />
 
             <h2 className='newSpotFormSubHeader'>Liven up your spot with photos</h2>
             <p className='subHeaderDetails'>Submit a link to at least one photo to publish your spot.</p>
 
-            {inputCreator('photoInput', 'url', 'Preview Image Url', previewImage, setPreviewImage)}
+            {inputCreator('photoInput', 'url', 'Preview Image Url', spot?.previewImage || previewImage, setPreviewImage)}
 
             {createImageInput()}
 

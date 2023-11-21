@@ -4,7 +4,8 @@ const GET_SPOTS = 'spotsRecuder/GET_SPOTS';
 const GET_SINGLE_SPOT = 'spotsReducer/GET_SINGLE_SPOT';
 const CREATE_SPOT = 'spotsReducer/CREATE_SPOT';
 const ADD_SPOT_IMAGE = 'spotsReducer/ADD_SPOT_IMAGE';
-const CURRENT_USER_SPOTS = 'spotReducer/CURRENT_USER_SPOTS'
+const CURRENT_USER_SPOTS = 'spotsReducer/CURRENT_USER_SPOTS'
+const UPDATE_SPOT = 'spotsReducer/UPDATE_SPOT'
 const DELETE_SPOT = 'spotsReducer/DELETE_SPOT'
 
 /// ACTION CREATORS
@@ -41,6 +42,13 @@ const actionAddSpotImage = (image, spotId) => {
         type: ADD_SPOT_IMAGE,
         image,
         spotId
+    }
+}
+
+const actionUpdateSpot = (spot) => {
+    return {
+        type: UPDATE_SPOT,
+        spot
     }
 }
 
@@ -122,6 +130,18 @@ export const thunkDeleteSpot = (spotId) => async (dispatch) => {
     }
 }
 
+export const thunkUpdateSpot = (spotId, spot) => async (dispatch) => {
+    const res = await csrfFetch(`/api/spots/${spotId}`, {
+        method: 'PUT',
+        body: JSON.stringify(spot)
+    })
+
+    if (res.ok) {
+        const data = await res.json();
+        dispatch(actionUpdateSpot(data));
+    }
+}
+
 const initialState = {}
 
 const spotsReducer = (state = initialState, action) => {
@@ -154,6 +174,12 @@ const spotsReducer = (state = initialState, action) => {
                 return newState
             }
             return state
+        }
+        case UPDATE_SPOT: {
+            const newState = {...state}
+            console.log('hi from reducer', newState)
+            console.log('action', action)
+            return
         }
         case DELETE_SPOT: {
             const newState = {...state}
