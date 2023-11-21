@@ -37,10 +37,10 @@ export default function SelectedSpot () {
             <div className='spotImagesWrapper'>
                 <img className='spotBigImage' src={previewImage?.url} alt={previewImage?.url}/>
                 <div className='spotSmallImageContainer'>
-                    <img className='spotSmallImage' src={spotImages?.[1]?.url}/>
-                    <img className='spotSmallImage' src={spotImages?.[2]?.url}/>
-                    <img className='spotSmallImage' src={spotImages?.[3]?.url}/>
-                    <img className='spotSmallImage' src={spotImages?.[4]?.url}/>
+                    <img className='spotSmallImage' src={spotImages?.[1]?.url} alt={spotImages?.[1]?.url}/>
+                    <img className='spotSmallImage' src={spotImages?.[2]?.url} alt={spotImages?.[2]?.url}/>
+                    <img className='spotSmallImage' src={spotImages?.[3]?.url} alt={spotImages?.[3]?.url}/>
+                    <img className='spotSmallImage' src={spotImages?.[4]?.url} alt={spotImages?.[4]?.url}/>
                 </div>
             </div>
             <div className='descriptionReserveWrapper'>

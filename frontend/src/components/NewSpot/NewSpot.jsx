@@ -22,6 +22,8 @@ export default function NewSpot() {
     const [image3, setImage3] = useState('');
     const [image4, setImage4] = useState('');
 
+    const [file, setFile] = useState('');
+
     const [errors, setErrrors] = useState({});
 
     function errorHandler() {
@@ -100,7 +102,8 @@ export default function NewSpot() {
                 },
                 Images: [
                     newPreviewImage,
-                    image1 && {url: image1, preview: false} || undefined,
+                    file && {url: file, preview: false} || undefined,
+                    // image1 && {url: image1, preview: false} || undefined,
                     image2 && {url: image2, preview: false} || undefined,
                     image3 && {url: image3, preview: false} || undefined,
                     image4 && {url: image4, preview: false} || undefined
@@ -237,6 +240,16 @@ export default function NewSpot() {
             {inputCreator('photoInput', 'url', 'Preview Image Url', previewImage, setPreviewImage)}
 
             {createImageInput()}
+
+
+            {/* The below code is how to allow file uploads, and extract the url from it */}
+            {/* <label>
+                <input
+                    type='file'
+                    value={file}
+                    onChange={(e) => setFile(e.target.value)}
+                />
+            </label> */}
 
             <label className='seperator' />
 
