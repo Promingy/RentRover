@@ -5,6 +5,7 @@ const GET_SINGLE_SPOT = 'spotsReducer/GET_SINGLE_SPOT';
 const CREATE_SPOT = 'spotsReducer/CREATE_SPOT';
 const ADD_SPOT_IMAGE = 'spotsReducer/ADD_SPOT_IMAGE';
 const CURRENT_USER_SPOTS = 'spotReducer/CURRENT_USER_SPOTS'
+const DELETE_SPOT = 'spotsReducer/DELETE_SPOT'
 
 /// ACTION CREATORS
 const actionGetSpots = (spots) => {
@@ -39,6 +40,13 @@ const actionAddSpotImage = (image, spotId) => {
     return {
         type: ADD_SPOT_IMAGE,
         image,
+        spotId
+    }
+}
+
+const actionDeleteSpot = (spotId) => {
+    return {
+        type: DELETE_SPOT,
         spotId
     }
 }
@@ -104,6 +112,16 @@ export const thunkAddSpotImage = (images, spotId) => async (dispatch) => {
     }
 }
 
+export const thunkDeleteSpot = (spotId) => async (dispatch) => {
+    const res = await csrfFetch(`/api/spots/${spotId}`, {
+        method: 'DELETE'
+    })
+
+    if (res.ok){
+        dispatch(actionDeleteSpot(spotId));
+    }
+}
+
 const initialState = {}
 
 const spotsReducer = (state = initialState, action) => {
@@ -137,7 +155,15 @@ const spotsReducer = (state = initialState, action) => {
             }
             return state
         }
-
+        case DELETE_SPOT: {
+            const newState = {...state}
+            newState.userSpots.forEach((spot, idx) => {
+                if (spot) {
+                    spot.id == action.spotId ? delete newState.userSpots[idx] : ''
+                }
+            })
+            return newState
+        }
         default:
             return state
     }

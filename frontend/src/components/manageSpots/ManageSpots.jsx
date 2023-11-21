@@ -10,15 +10,11 @@ export default function ManageSpots() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const allSpots = useSelector(state => state.spots.userSpots)
-    console.log(allSpots)
 
     useEffect(() => {
         dispatch(thunkGetCurrentUserSpots())
     }, [dispatch])
 
-    // when updateSpot is clicked, trigger the update spot thunk
-
-    // when deleteSpot is clicked, trigger the delete spot thunk
 
     //most styling and formatting is in Spots.css
     return (
@@ -48,9 +44,8 @@ export default function ManageSpots() {
                                 <button className="updateButton">Update</button>
                                 <label className='deleteButtonContainer'>
                                     <p className="deleteButtonText">Delete </p>
-                                    <OpenModalButton modalComponent={<DeleteSpotModal />}/>
+                                    <OpenModalButton modalComponent={<DeleteSpotModal spotId={spot.id}/>}/>
                                 </label>
-                                {/* <button className="deleteButton" >Delete</button> */}
                             </div>
                         </li>
                     ))}

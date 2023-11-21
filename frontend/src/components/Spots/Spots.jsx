@@ -12,7 +12,6 @@ export default function Spots() {
     useEffect(() => {
         dispatch(thunkGetAllSpots());
     }, [dispatch])
-    console.log('allspots', allSpots)
 
     return (
         <div className="spotsWrapper">

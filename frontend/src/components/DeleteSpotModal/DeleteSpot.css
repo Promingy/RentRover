@@ -12,11 +12,6 @@
     text-align: center;
 }
 
-.deleteButtonWrapper {
-    display: flex;
-    gap: 10px;
-    flex-direction: column;
-}
 .confirmDelete {
     background-color: #F45B69;
 }
@@ -28,4 +23,9 @@
 
 .deleteModalButton:hover {
     background-color: #E4FDE1;
+}
+
+.confirmDelete:hover,
+.dontDelete:hover {
+    cursor: pointer;
 }

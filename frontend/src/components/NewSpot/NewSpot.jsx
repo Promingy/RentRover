@@ -107,9 +107,6 @@ export default function NewSpot() {
                 ]
             }
 
-
-            console.log('newspot', newSpot)
-
             newSpot = await dispatch(thunkCreateSpot(newSpot))
 
             navigate(`/spots/${newSpot.id}`)
