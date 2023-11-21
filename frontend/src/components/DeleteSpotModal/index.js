@@ -1,3 +1,3 @@
-import DeleteSpot from "./DeleteSpotModal";
+import DeleteSpotModal from "./DeleteSpotModal";
 
-export default DeleteSpot
+export default DeleteSpotModal

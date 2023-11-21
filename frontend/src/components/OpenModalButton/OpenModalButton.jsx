@@ -14,5 +14,5 @@ export default function OpenModalButton({
     if (typeof onButtonClick === "function") onButtonClick();
   };
 
-  return <button onClick={onClick} className='dropDownLoginSignup'>{buttonText}</button>;
+  return <button onClick={onClick} className='dropDownLoginSignup deleteModalButton'>{buttonText}</button>;
 }

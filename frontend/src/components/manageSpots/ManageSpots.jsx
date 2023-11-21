@@ -4,7 +4,7 @@ import { thunkGetCurrentUserSpots } from "../../store/spotsRedcuer";
 import OpenModalButton from "../OpenModalButton";
 import { useEffect } from "react";
 import './ManageSpots.css'
-import LoginFormModal from "../LoginFormModal";
+import DeleteSpotModal from "../DeleteSpotModal";
 
 export default function ManageSpots() {
     const navigate = useNavigate();
@@ -48,7 +48,7 @@ export default function ManageSpots() {
                                 <button className="updateButton">Update</button>
                                 <label className='deleteButtonContainer'>
                                     <p className="deleteButtonText">Delete </p>
-                                    <OpenModalButton modalComponent={<LoginFormModal />}/>
+                                    <OpenModalButton modalComponent={<DeleteSpotModal />}/>
                                 </label>
                                 {/* <button className="deleteButton" >Delete</button> */}
                             </div>
