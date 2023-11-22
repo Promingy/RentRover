@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
 
-export default function UpdateSpot({ isUpdate}) {
+export default function UpdateSpot({ isUpdate }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
@@ -44,16 +44,16 @@ export default function UpdateSpot({ isUpdate}) {
 
     useEffect(() => {
         if (spot && isUpdate) {
-            setCity(spot?.city)
-            setState(spot?.state)
-            setAddress(spot?.address)
-            setCountry(spot?.country)
-            setLong(spot?.lng)
-            setLat(spot?.lat)
-            setSpotName(spot?.name)
-            setDescription(spot?.description)
-            setPrice(spot?.price)
-            setPreviewImage(spot?.previewImage)
+            setCity(spot?.city || '')
+            setState(spot?.state || '')
+            setAddress(spot?.address || '')
+            setCountry(spot?.country || '')
+            setLong(spot?.lng || '')
+            setLat(spot?.lat || '')
+            setSpotName(spot?.name || '')
+            setDescription(spot?.description || '')
+            setPrice(spot?.price || '')
+            setPreviewImage(spot?.previewImage || '')
         }
     }, [spot, isUpdate])
 

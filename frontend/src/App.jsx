@@ -31,6 +31,7 @@ function App() {
           <Route path='/spots/new' element={<NewSpot />} isUpdate={false} />
           <Route path='/spots/:spotId/edit' element={<UpdateSpot isUpdate={true}/>} />
           <Route path='/spots/current' element={<ManageSpots />} />
+          <Route path='*' element={<h1>404 Page Not Found</h1>} />
         </Routes>
       </>
     }

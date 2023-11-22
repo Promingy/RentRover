@@ -23,34 +23,32 @@ export default function ManageSpots() {
                 <h1>Manage Your Spots</h1>
                 <button className='newSpotButton' onClick={() => navigate('/spots/new')}>Create a New Spot</button>
             </header>
-            <main>
-                <ul className="spotsContainer">
-                    {allSpots && Array.isArray(allSpots) && allSpots.map(spot => (
-                        spot &&
-                        <li title={`${spot.name}`} className='spots manageSpotsWrapper' key={`${spot.id}`} >
-                            <label className='manageSpots' onClick={() => navigate(`/spots/${spot.id}`)}>
-                                <img className='previewImage' src={`${spot.previewImage}`} alt={`${spot.previewImage}`} />
-                                <span className="locationRating">
-                                    <p>{spot.city}, {spot.state}</p>
-                                    <p className='starRating'>
-                                        <i className='fa-solid fa-star star' />
-                                        {typeof spot?.avgRating === 'number' && spot?.avgRating?.toFixed(1) || 'New'}
-                                    </p>
-                                </span>
-                                <p className='locationPrice'>${spot.price} night</p>
+            <ul className="spotsContainer">
+                {allSpots && Array.isArray(allSpots) && allSpots.map(spot => (
+                    spot &&
+                    <li title={`${spot.name}`} className='spots manageSpotsWrapper' key={`${spot.id}`} >
+                        <label className='manageSpots' onClick={() => navigate(`/spots/${spot.id}`)}>
+                            <img className='previewImage' src={`${spot.previewImage}`} alt={`${spot.previewImage}`} />
+                            <span className="locationRating">
+                                <p>{spot.city}, {spot.state}</p>
+                                <p className='starRating'>
+                                    <i className='fa-solid fa-star star' />
+                                    {typeof spot?.avgRating === 'number' && spot?.avgRating?.toFixed(1) || 'New'}
+                                </p>
+                            </span>
+                            <p className='locationPrice'>${spot.price} night</p>
 
+                        </label>
+                        <div className="manageButtonsContainer">
+                            <button className="updateButton" onClick={() => navigate(`/spots/${spot.id}/edit`)}>Update</button>
+                            <label className='deleteButtonContainer'>
+                                <p className="deleteButtonText">Delete </p>
+                                <OpenModalButton modalComponent={<DeleteSpotModal spotId={spot.id}/>}/>
                             </label>
-                            <div className="manageButtonsContainer">
-                                <button className="updateButton" onClick={() => navigate(`/spots/${spot.id}/edit`)}>Update</button>
-                                <label className='deleteButtonContainer'>
-                                    <p className="deleteButtonText">Delete </p>
-                                    <OpenModalButton modalComponent={<DeleteSpotModal spotId={spot.id}/>}/>
-                                </label>
-                            </div>
-                        </li>
-                    ))}
-                </ul>
-            </main>
+                        </div>
+                    </li>
+                ))}
+            </ul>
         </div>
     )
 }

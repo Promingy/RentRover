@@ -1,17 +1,20 @@
 .manageWrapper {
-    /* display: flex;
+    display: flex;
     flex-direction: column;
-    justify-content: center; */
+    align-items: center;
     max-width: 1200px;
-    margin: 0 auto
+    margin: 0 auto;
+    padding: 0 50px;
 }
+
 
 .manageHeader {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    margin: 30px 20px;
+    margin: 30px 5px;
     width: fit-content;
+    align-self: flex-start;
 }
 
 
@@ -38,6 +41,7 @@
 .manageSpotsWrapper:hover {
     cursor: default;
 }
+
 
 .updateButton {
     margin-top: 10px;

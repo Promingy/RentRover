@@ -67,9 +67,11 @@ const reviewsReducer = (state = initialState, action) =>{
     switch (action.type) {
         case GET_SPOT_REVIEWS: {
             const newState = {...state, Reviews: {}}
+
             action.reviews.Reviews.map(review => {
                 newState.Reviews[review.id] = review
             })
+            
             return newState
         }
         case POST_SPOT_REVIEW: {
@@ -83,7 +85,7 @@ const reviewsReducer = (state = initialState, action) =>{
             const newState = {...state}
 
             delete newState.Reviews[action.reviewId]
-            console.log('newState', newState)
+
             return newState
         }
         default:

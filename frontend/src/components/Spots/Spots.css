@@ -1,6 +1,10 @@
 .spotsWrapper {
     padding: 50px;
     overflow: hidden;
+    display: flex;
+    justify-content: center;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 .previewImage {
     min-height: 200px;
@@ -19,15 +23,16 @@ p {
 
 .spotsContainer {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 25%));
-    /* grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); */
-    max-width: 1200px;
-    margin: 0 auto;
+    /* justify-content: center; */
+    grid-template-columns: repeat(auto-fit, minmax(250px, .25fr));
+    max-width: 100%;
+    /* margin: 0 auto; */
+    gap: 50px;
 }
 
 .spots{
     width: 250px;
-    margin: 25px;
+    margin: 25px auto;
 }
 .spots:hover {
     cursor: pointer;
