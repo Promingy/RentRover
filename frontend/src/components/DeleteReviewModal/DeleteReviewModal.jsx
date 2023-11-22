@@ -2,14 +2,14 @@ import { useDispatch } from "react-redux"
 import { useModal } from "../../context/Modal";
 import { thunkDeleteReview } from "../../store/reviewsReducer";
 
-export default function DeleteReviewModal ({ reviewId, spotId }) {
+export default function DeleteReviewModal ({ reviewId, spotId}) {
     const dispatch = useDispatch();
     const { closeModal } = useModal();
 
     async function handleSubmit(e) {
         e.preventDefault();
 
-        await dispatch(thunkDeleteReview(reviewId))
+        await dispatch(thunkDeleteReview(reviewId, spotId))
             .then(closeModal)
     }
     return(

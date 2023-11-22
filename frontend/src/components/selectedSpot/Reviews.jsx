@@ -6,7 +6,7 @@ import './Reviews.css'
 import OpenModalButton from "../OpenModalButton";
 import DeleteReviewModal from "../DeleteReviewModal/DeleteReviewModal";
 
-export default function Reviews ({ spotId, ownerId }) {
+export default function Reviews ({ spotId, ownerId}) {
     const dispatch = useDispatch();
     let allReviews = useSelector(store => store?.reviews)
     const reviews = allReviews.Reviews !== undefined && Object.values(allReviews.Reviews)
@@ -32,7 +32,7 @@ export default function Reviews ({ spotId, ownerId }) {
         { buttonCondition &&
             <label className={reviews?.length ? 'postReviewButtonContainer' : 'postReviewButtonContainer2'}>
                 <p className={reviews?.length ? 'postReviewButtonText' : 'postReviewButtonText2'}>{reviews?.length ? 'Post Your Review' : 'Be the first to post a review'}</p>
-                <OpenModalButton modalComponent={<ReviewFormModal spotId={spotId} spot={spot} />} />
+                <OpenModalButton modalComponent={<ReviewFormModal spotId={spotId}/>} />
             </label>
         }
 

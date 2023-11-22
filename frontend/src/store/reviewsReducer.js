@@ -1,6 +1,6 @@
 import { csrfFetch } from "./csrf"
 
-import { actionGetSingleSpot } from './spotsRedcuer'
+import { thunkGetSingleSpot } from './spotsRedcuer'
 
 const GET_SPOT_REVIEWS = 'reviewsReducer/GET_SPOT_REVIEWS'
 const POST_SPOT_REVIEW = 'reviewsReducer/POST_SPOT_REVIEW'
@@ -48,16 +48,18 @@ export const thunkPostReview = (spotId, review) => async (dispatch) => {
         if (res.ok) {
             const data = await res.json();
             await dispatch(actionPostReview(data))
+            dispatch (thunkGetSingleSpot(spotId))
         }
 }
 
-export const thunkDeleteReview = (reviewId) => async (dispatch) => {
+export const thunkDeleteReview = (reviewId, spotId) => async (dispatch) => {
     const res = await csrfFetch(`/api/reviews/${reviewId}`, {
         method: 'DELETE'
     })
 
     if (res.ok) {
         await dispatch(actionDeleteReview(reviewId))
+        dispatch(thunkGetSingleSpot(spotId))
     }
 }
 
