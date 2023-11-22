@@ -10,7 +10,7 @@ export default function ManageSpots() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const spots = useSelector(state => state.spots)
-    const allSpots = spots && Object.values(spots.userSpots)
+    const allSpots = spots.userSpots && Object.values(spots.userSpots)
 
     useEffect(() => {
         dispatch(thunkGetCurrentUserSpots())

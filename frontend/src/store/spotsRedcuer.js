@@ -104,18 +104,23 @@ export const thunkGetSingleSpot = (spotId) => async (dispatch) => {
 }
 
 export const thunkCreateSpot = (spot) => async (dispatch) => {
-    const res = await csrfFetch('/api/spots', {
-        method: 'POST',
-        body: JSON.stringify(spot.Spot)
-    });
+    try {
+        const res = await csrfFetch('/api/spots', {
+            method: 'POST',
+            body: JSON.stringify(spot.Spot)
+        });
 
-    if (res.ok) {
-        const data = await res.json();
-        await dispatch(actionCreateSpot(data))
-        dispatch(thunkAddSpotImage(spot.Images, data.id))
-        return data;
+        if (res.ok) {
+            console.log('hi  from thunk')
+            const data = await res.json();
+            await dispatch(actionCreateSpot(data))
+            dispatch(thunkAddSpotImage(spot.Images, data.id))
+            return data
+        }
+    } catch (e) {
+        throw e
     }
-    return res;
+
 }
 
 export const thunkAddSpotImage = (images, spotId) => async (dispatch) => {
