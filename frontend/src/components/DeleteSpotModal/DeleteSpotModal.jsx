@@ -2,7 +2,6 @@ import { useDispatch } from 'react-redux';
 import './DeleteSpot.css'
 import { thunkDeleteSpot } from '../../store/spotsRedcuer';
 import { useModal } from '../../context/Modal';
-import { thunkGetCurrentUserSpots} from '../../store/spotsRedcuer';
 
 export default function DeleteSpotModal({ spotId }) {
     const dispatch = useDispatch();
@@ -13,7 +12,6 @@ export default function DeleteSpotModal({ spotId }) {
 
         await dispatch(thunkDeleteSpot(spotId))
         .then(closeModal)
-        .then(() => dispatch(thunkGetCurrentUserSpots()))
 
     }
 

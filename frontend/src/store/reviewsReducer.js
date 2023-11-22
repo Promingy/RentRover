@@ -1,5 +1,7 @@
 import { csrfFetch } from "./csrf"
 
+import { actionGetSingleSpot } from './spotsRedcuer'
+
 const GET_SPOT_REVIEWS = 'reviewsReducer/GET_SPOT_REVIEWS'
 const POST_SPOT_REVIEW = 'reviewsReducer/POST_SPOT_REVIEW'
 const DELETE_REVIEW = 'reviewsReducer/DELETE_REVIEW'
@@ -45,7 +47,7 @@ export const thunkPostReview = (spotId, review) => async (dispatch) => {
 
         if (res.ok) {
             const data = await res.json();
-            dispatch(actionPostReview(data))
+            await dispatch(actionPostReview(data))
         }
 }
 
@@ -55,7 +57,7 @@ export const thunkDeleteReview = (reviewId) => async (dispatch) => {
     })
 
     if (res.ok) {
-        dispatch(actionDeleteReview(reviewId))
+        await dispatch(actionDeleteReview(reviewId))
     }
 }
 
@@ -71,13 +73,13 @@ const reviewsReducer = (state = initialState, action) =>{
             action.reviews.Reviews.map(review => {
                 newState.Reviews[review.id] = review
             })
-            
+
             return newState
         }
         case POST_SPOT_REVIEW: {
-            const newState = {...state}
+            const newState = {...state, Reviews: {}}
 
-            newState.Reviews = {...newState.Reviews, [action.review.id]: action.review}
+            newState.Reviews = {...state.Reviews, [action.review.id]: action.review}
 
             return newState
         }

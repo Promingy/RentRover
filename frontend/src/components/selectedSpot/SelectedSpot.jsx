@@ -8,8 +8,8 @@ import Reviews from "./Reviews";
 export default function SelectedSpot () {
     const dispatch = useDispatch();
     const { spotId } = useParams();
-    const spots = useSelector(store => store.spots.Spots);
-    const spot = spots && spots[spotId]
+    const spots = useSelector(store => store.spots);
+    const spot = spots.Spots !== undefined && spots.Spots[spotId]
     const spotImages = spot && spot.SpotImages
     const previewImage = spotImages && spotImages.find(image => image.preview)
     let reviewTitle;
@@ -19,6 +19,7 @@ export default function SelectedSpot () {
     }, [dispatch, spotId])
 
     reviewTitle = spot?.numReviews > 1 ? 'Reviews' : 'Review'
+
 
     ///Function for properly formatting the review headers
     function reviewFormatter() {
@@ -64,8 +65,7 @@ export default function SelectedSpot () {
             <h2 className='reviewsHeader'>
                 {reviewFormatter()}
             </h2>
-            <Reviews spotId={spotId} ownerId={spot?.ownerId} spot={spot}/>
-
+            <Reviews spotId={spotId} ownerId={spot?.ownerId}/>
         </div>
     )
 }

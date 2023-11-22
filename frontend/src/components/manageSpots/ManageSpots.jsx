@@ -9,7 +9,8 @@ import DeleteSpotModal from "../DeleteSpotModal";
 export default function ManageSpots() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const allSpots = useSelector(state => state.spots.userSpots)
+    const spots = useSelector(state => state.spots)
+    const allSpots = spots && Object.values(spots.userSpots)
 
     useEffect(() => {
         dispatch(thunkGetCurrentUserSpots())
@@ -25,7 +26,6 @@ export default function ManageSpots() {
             </header>
             <ul className="spotsContainer">
                 {allSpots && Array.isArray(allSpots) && allSpots.map(spot => (
-                    spot &&
                     <li title={`${spot.name}`} className='spots manageSpotsWrapper' key={`${spot.id}`} >
                         <label className='manageSpots' onClick={() => navigate(`/spots/${spot.id}`)}>
                             <img className='previewImage' src={`${spot.previewImage}`} alt={`${spot.previewImage}`} />

@@ -8,6 +8,19 @@ const CURRENT_USER_SPOTS = 'spotsReducer/CURRENT_USER_SPOTS'
 const UPDATE_SPOT = 'spotsReducer/UPDATE_SPOT'
 const DELETE_SPOT = 'spotsReducer/DELETE_SPOT'
 
+export const thunkPostReview = (spotId, review) => async (dispatch) => {
+    const res = await csrfFetch(`/api/spots/${spotId}/reviews`,{
+        method: 'POST',
+        body: JSON.stringify(review)
+    })
+
+    if (res.ok) {
+        const data = await res.json();
+        dispatch(actionPostReview(data))
+        }
+}
+
+
 /// ACTION CREATORS
 const actionGetSpots = (spots) => {
     return {
@@ -23,7 +36,7 @@ const actionGetCurrentUserSpots = (spots) => {
     }
 }
 
-const actionGetSingleSpot = (spot) => {
+export const actionGetSingleSpot = (spot) => {
     return {
         type: GET_SINGLE_SPOT,
         spot
@@ -59,6 +72,7 @@ const actionDeleteSpot = (spotId) => {
         spotId
     }
 }
+
 
 /// THUNKTIONS
 export const thunkGetAllSpots = () => async (dispatch) => {
@@ -144,19 +158,34 @@ export const thunkUpdateSpot = (spotId, spot) => async (dispatch) => {
     }
 }
 
+
 const initialState = {}
 
 const spotsReducer = (state = initialState, action) => {
     switch(action.type) {
         case GET_SPOTS: {
-            return {...state, Spots: [null, ...action.spots]}
+            const newState = {...state, Spots: {}};
+
+            action.spots.forEach(spot => {
+                newState.Spots[spot.id] = spot
+            })
+
+            return newState
         }
         case CURRENT_USER_SPOTS: {
-            return {...state, userSpots: [null, ...action.spots]}
+            const newState = {...state, userSpots: {}};
+
+            action.spots.forEach(spot => {
+                newState.userSpots[spot.id] = spot
+            })
+
+            return newState
         }
         case GET_SINGLE_SPOT:{
-            const newState = {...state}
+            const newState = {...state, Spots: {}}
+
             newState.Spots = {...state.Spots, [action.spot.id]: action.spot}
+
             return newState
         }
         case CREATE_SPOT: {
@@ -179,16 +208,16 @@ const spotsReducer = (state = initialState, action) => {
         }
         case UPDATE_SPOT: {
             const newState = {...state}
+
             newState.Spots[action.spotId] = action.spot
+
             return newState
         }
         case DELETE_SPOT: {
-            const newState = {...state}
-            newState.userSpots.forEach((spot, idx) => {
-                if (spot) {
-                    spot.id == action.spotId ? delete newState.userSpots[idx] : ''
-                }
-            })
+            const newState = {...state, userSpots: state.userSpots}
+
+            delete newState.userSpots[action.spotId]
+
             return newState
         }
         default:
