@@ -1,15 +1,16 @@
 import { useState } from 'react'
 import './ReviewFormModal.css'
 import { useDispatch } from 'react-redux'
-import { thunkGetSpotReviews, thunkPostReview } from '../../store/reviewsReducer';
+import { thunkPostReview } from '../../store/reviewsReducer';
 import { useModal } from '../../context/Modal';
+import { thunkGetSingleSpot } from '../../store/spotsRedcuer';
 export default function ReviewFormModal ({ spotId }) {
     const dispatch = useDispatch();
     const [activeRating, setActiveRating] = useState(0)
     const [rating, setRating] = useState(0)
     const [review, setReview] = useState('')
     const { closeModal } = useModal()
-    thunkGetSpotReviews
+
     function createStars() {
         const returnArr = []
 
@@ -32,8 +33,8 @@ export default function ReviewFormModal ({ spotId }) {
     function handleSubmit (e) {
         e.preventDefault();
 
-        dispatch(thunkPostReview(spotId, {review, stars: rating}))
-            .then(closeModal).then(() => dispatch(thunkGetSpotReviews(spotId)))
+         dispatch(thunkPostReview(spotId, {review, stars: rating}))
+            .then(closeModal).then(() => dispatch(thunkGetSingleSpot(spotId)))
     }
 
     return (

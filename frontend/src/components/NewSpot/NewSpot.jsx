@@ -64,11 +64,9 @@ export default function NewSpot() {
          lat && lat > 90 || lat < -90 ? errors.lat = 'Latitude must be between 90 and -90' : ''
         long && long > 190 || long < -180 ? errors.lat = 'Longitude must be between 180 and -180' : ''
 
-        if (previewImage && !imageEndings.some( ext => previewImage.endsWith(ext))) {
-            errors.previewImage = 'Image URL must end in .png, .jpg, .jpeg'
+        if (!!previewImage && !imageEndings.some( ext => previewImage.endsWith(ext))) {
+            errors.preview = 'Image URL must end in .png, .jpg, .jpeg'
         }
-
-
 
         setErrrors(errors)
     }

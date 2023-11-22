@@ -24,12 +24,12 @@ export default function Reviews ({ spotId, ownerId }) {
         dispatch(thunkGetSpotReviews(spotId));
     }, [dispatch, spotId])
 
-
     return (
     <div className='reviewsWrapper'>
+
         { buttonCondition &&
-            <label className='postReviewButtonContainer'>
-                <p className='postReviewButtonText'>{reviews?.length ? 'Post Your Review' : 'Be the first to post a review'}</p>
+            <label className={reviews?.length ? 'postReviewButtonContainer' : 'postReviewButtonContainer2'}>
+                <p className={reviews?.length ? 'postReviewButtonText' : 'postReviewButtonText2'}>{reviews?.length ? 'Post Your Review' : 'Be the first to post a review'}</p>
                 <OpenModalButton modalComponent={<ReviewFormModal spotId={spotId} />} />
             </label>
         }
@@ -39,11 +39,11 @@ export default function Reviews ({ spotId, ownerId }) {
                 const date = new Date(review?.updatedAt)
                 const monthPosted = date.getMonth();
                 const yearPosted = date.getFullYear();
-
+                console.log(review)
                 return (<li key={`${review?.id}`} className='reviewContainer'>
-                    <h4 className='reviewerName'>{review.User.firstName}</h4>
+                    <h4 className='reviewerName'>{review?.userId == sessionUser?.id ? sessionUser?.firstName : review.User?.firstName}</h4>
                     <p className="reviewPostDate">Posted on: {months[monthPosted]} {yearPosted}</p>
-                    <p className='reviewText'>{review.review}</p>
+                    <p className='reviewText'>{review?.review}</p>
                     {
                     review?.userId == sessionUser?.id &&
                     <label className="deleteReviewButtonContainer">

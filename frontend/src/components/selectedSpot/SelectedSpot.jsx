@@ -64,7 +64,7 @@ export default function SelectedSpot () {
             <h2 className='reviewsHeader'>
                 {reviewFormatter()}
             </h2>
-            <Reviews spotId={spotId} ownerId={spot?.ownerId}/>
+            <Reviews spotId={spotId} ownerId={spot?.ownerId} spot={spot}/>
 
         </div>
     )

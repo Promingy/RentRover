@@ -1,6 +1,7 @@
 import { useDispatch } from "react-redux"
 import { useModal } from "../../context/Modal";
-import { thunkDeleteReview, thunkGetSpotReviews } from "../../store/reviewsReducer";
+import { thunkDeleteReview } from "../../store/reviewsReducer";
+import { thunkGetSingleSpot } from "../../store/spotsRedcuer";
 
 export default function DeleteReviewModal ({ reviewId, spotId }) {
     const dispatch = useDispatch();
@@ -10,7 +11,7 @@ export default function DeleteReviewModal ({ reviewId, spotId }) {
         e.preventDefault();
 
         await dispatch(thunkDeleteReview(reviewId))
-            .then(closeModal).then(() => dispatch(thunkGetSpotReviews(spotId)))
+            .then(closeModal).then(() => dispatch(thunkGetSingleSpot(spotId)))
     }
     return(
         <form className="confirmDeleteForm" onSubmit={handleSubmit}>

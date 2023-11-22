@@ -25,6 +25,18 @@
     border-right: 2px solid black;
 }
 
+.postReviewButtonContainer2 {
+    width: 185px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    border-top: 2px solid grey;
+    border-left: 2px solid grey;
+    border-bottom: 2px solid black;
+    border-right: 2px solid black;
+}
+
 .postReviewButtonContainer:active {
     border-bottom: 2px solid grey;
     border-right: 2px solid grey;
@@ -39,6 +51,18 @@
     position: absolute;
     background-color: #E4FDE1;
     width: 150px;
+    height: 30px;
+    color: black;
+
+}
+
+.postReviewButtonText2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    background-color: #E4FDE1;
+    width: 185px;
     height: 30px;
     color: black;
 
