@@ -36,19 +36,19 @@ export default function Reviews ({ spotId, ownerId }) {
 
         <ul className="reviewsWrapper">
             {reviews?.toReversed().map(review => {
-                const date = new Date(review.updatedAt)
+                const date = new Date(review?.updatedAt)
                 const monthPosted = date.getMonth();
                 const yearPosted = date.getFullYear();
 
-                return (<li key={`${review.id}`} className='reviewContainer'>
+                return (<li key={`${review?.id}`} className='reviewContainer'>
                     <h4 className='reviewerName'>{review.User.firstName}</h4>
                     <p className="reviewPostDate">Posted on: {months[monthPosted]} {yearPosted}</p>
                     <p className='reviewText'>{review.review}</p>
                     {
-                    review.userId == sessionUser.id &&
+                    review?.userId == sessionUser?.id &&
                     <label className="deleteReviewButtonContainer">
                         <p className="deleteReviewButtonText">Delete Review</p>
-                        <OpenModalButton modalComponent={<DeleteReviewModal reviewId={review.id} spotId={spotId}/>} />
+                        <OpenModalButton modalComponent={<DeleteReviewModal reviewId={review?.id} spotId={spotId}/>} />
                     </label>
                         }
                 </li>)
