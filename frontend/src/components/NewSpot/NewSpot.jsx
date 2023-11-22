@@ -1,16 +1,15 @@
 import { useState, useEffect } from 'react'
 import { thunkCreateSpot, thunkUpdateSpot } from '../../store/spotsRedcuer';
 import './NewSpot.css'
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { thunkGetSingleSpot } from '../../store/spotsRedcuer';
 
 export default function NewSpot({ prevForm, formType }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const { spotId } = useParams();
-    const prevDetails = prevForm[spotId]
+    const prevDetails = prevForm && prevForm[spotId]
 
     const [address, setAddress] = useState(prevDetails?.address || '');
     const [city, setCity] = useState(prevDetails?.city || '');
@@ -32,19 +31,18 @@ export default function NewSpot({ prevForm, formType }) {
 
     // if formType is update, then set state to previus state details
     useEffect(() => {
-        if(formType) {
-            setAddress(prevDetails?.address)
-            setCity(prevDetails?.city)
-            setState(prevDetails?.state)
-            setCountry(prevDetails?.address)
-            setLong(prevDetails?.lng)
-            setLat(prevDetails?.lat)
-            setSpotName(prevDetails?.name)
-            setDescription(prevDetails?.description)
-            setPrice(prevDetails?.price)
-            setPreviewImage(prevDetails?.previewImage)
-        }
-    }, [formType, prevDetails])
+
+        setAddress(prevDetails?.address)
+        setCity(prevDetails?.city)
+        setState(prevDetails?.state)
+        setCountry(prevDetails?.country)
+        setLong(prevDetails?.lng)
+        setLat(prevDetails?.lat)
+        setSpotName(prevDetails?.name)
+        setDescription(prevDetails?.description)
+        setPrice(prevDetails?.price)
+        setPreviewImage(prevDetails?.previewImage)
+}, [formType, prevDetails])
 
 
 
@@ -102,7 +100,6 @@ export default function NewSpot({ prevForm, formType }) {
 
     // dynamically create input sections
     function inputCreator(className, type, placeholder, value, setValue, labelClass, pInput) {
-
         return (
             <label className={labelClass ? labelClass : ''}>
                 {pInput && <p>{pInput}</p>}
@@ -110,7 +107,6 @@ export default function NewSpot({ prevForm, formType }) {
                     className={className}
                     type={type}
                     placeholder={placeholder}
-                    // required
                     value={value}
                     onChange={(e) => setValue(e.target.value)}
                     />
