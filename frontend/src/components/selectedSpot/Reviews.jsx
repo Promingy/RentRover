@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ReviewFormModal from "./ReviewFormModal";
 import './Reviews.css'
 import OpenModalButton from "../OpenModalButton";
+import DeleteReviewModal from "../DeleteReviewModal/DeleteReviewModal";
 
 export default function Reviews ({ spotId, ownerId }) {
     const dispatch = useDispatch();
@@ -43,6 +44,13 @@ export default function Reviews ({ spotId, ownerId }) {
                     <h4 className='reviewerName'>{review.User.firstName}</h4>
                     <p className="reviewPostDate">Posted on: {months[monthPosted]} {yearPosted}</p>
                     <p className='reviewText'>{review.review}</p>
+                    {
+                    review.userId == sessionUser.id &&
+                    <label className="deleteReviewButtonContainer">
+                        <p className="deleteReviewButtonText">Delete Review</p>
+                        <OpenModalButton modalComponent={<DeleteReviewModal reviewId={review.id} spotId={spotId}/>} />
+                    </label>
+                        }
                 </li>)
             })}
         </ul>

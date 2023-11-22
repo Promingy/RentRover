@@ -1,7 +1,8 @@
 import { csrfFetch } from "./csrf"
 
 const GET_SPOT_REVIEWS = 'reviewsReducer/GET_SPOT_REVIEWS'
-const POST_SPOT_REVIEW = 'reviewsReduce/POST_SPOT_REVIEW'
+const POST_SPOT_REVIEW = 'reviewsReducer/POST_SPOT_REVIEW'
+const DELETE_REVIEW = 'reviewsReducer/DELETE_REVIEW'
 
 /// action creators
 const actionGetReviewsForSpot = (reviews) => {
@@ -15,6 +16,13 @@ const actionPostReview = (review) => {
     return {
         type: POST_SPOT_REVIEW,
         review
+    }
+}
+
+const actionDeleteReview = (reviewId) => {
+    return {
+        type: DELETE_REVIEW,
+        reviewId
     }
 }
 
@@ -41,6 +49,16 @@ export const thunkPostReview = (spotId, review) => async (dispatch) => {
         }
 }
 
+export const thunkDeleteReview = (reviewId) => async (dispatch) => {
+    const res = await csrfFetch(`/api/reviews/${reviewId}`, {
+        method: 'DELETE'
+    })
+
+    if (res.ok) {
+        dispatch(actionDeleteReview(reviewId))
+    }
+}
+
 /// reducer
 
 const initialState = {}
@@ -49,18 +67,23 @@ const reviewsReducer = (state = initialState, action) =>{
     switch (action.type) {
         case GET_SPOT_REVIEWS: {
             const newState = {...state, Reviews: {}}
-            // console.log(action)
             action.reviews.Reviews.map(review => {
                 newState.Reviews[review.id] = review
             })
             return newState
-            // return { ...state, ...action.reviews}
         }
         case POST_SPOT_REVIEW: {
             const newState = {...state}
 
             newState.Reviews = {...newState.Reviews, [action.review.id]: action.review}
 
+            return newState
+        }
+        case DELETE_REVIEW: {
+            const newState = {...state}
+
+            delete newState.Reviews[action.reviewId]
+            console.log('newState', newState)
             return newState
         }
         default:
