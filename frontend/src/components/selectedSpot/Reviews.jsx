@@ -29,7 +29,7 @@ export default function Reviews ({ spotId, ownerId}) {
     return (
     <div className='reviewsWrapper'>
 
-        { buttonCondition &&
+        {   buttonCondition && 
             <label className={reviews?.length ? 'postReviewButtonContainer' : 'postReviewButtonContainer2'}>
                 <p className={reviews?.length ? 'postReviewButtonText' : 'postReviewButtonText2'}>{reviews?.length ? 'Post Your Review' : 'Be the first to post a review'}</p>
                 <OpenModalButton modalComponent={<ReviewFormModal spotId={spotId}/>} />

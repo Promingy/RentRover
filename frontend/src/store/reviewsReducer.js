@@ -40,6 +40,7 @@ export const thunkGetSpotReviews = (spotId) => async (dispatch) => {
 }
 
 export const thunkPostReview = (spotId, review) => async (dispatch) => {
+    try{
         const res = await csrfFetch(`/api/spots/${spotId}/reviews`,{
             method: 'POST',
             body: JSON.stringify(review)
@@ -50,6 +51,10 @@ export const thunkPostReview = (spotId, review) => async (dispatch) => {
             await dispatch(actionPostReview(data))
             dispatch (thunkGetSingleSpot(spotId))
         }
+    } catch (e) {
+        console.log(e)
+        throw e
+    }
 }
 
 export const thunkDeleteReview = (reviewId, spotId) => async (dispatch) => {
