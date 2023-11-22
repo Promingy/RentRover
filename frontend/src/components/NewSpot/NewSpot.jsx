@@ -32,6 +32,8 @@ export default function NewSpot() {
 
         setErrors({});
 
+        const imageEndings = ['.png', '.jpg', '.jpeg']
+
         const newPreviewImage = {
             url: previewImage,
             preview: true
@@ -59,16 +61,21 @@ export default function NewSpot() {
             ]
         }
 
-        dispatch(thunkCreateSpot(newSpot))
-            .then(spot => navigate(`/spots/${spot.id}`))
-            .catch(async (res) => {
+        if (previewImage && imageEndings.some(ext => previewImage.endsWith(ext))){
+            dispatch(thunkCreateSpot(newSpot))
+                .then(spot => navigate(`/spots/${spot.id}`))
+                .catch(async (res) => {
 
-                const data = await res.json();
+                    const data = await res.json();
 
-                if (data?.errors) {
-                    setErrors(data.errors)
-                }
-            })
+                    if (data?.errors) {
+                        setErrors(data.errors)
+                    }
+                })
+        } else {
+            setErrors({...errors, preview: 'Preview image is required and must end in .png, .jpg or .jpeg'})
+        }
+
     }
 
     // dynamically create input sections
