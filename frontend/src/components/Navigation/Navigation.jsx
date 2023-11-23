@@ -36,9 +36,10 @@ function Navigation({ isLoaded }) {
       </>
     );
   }
-
+  const [test, setTest] = useState(true)
   function logoClick () {
-    navigate('/')
+    setTest(!test)
+    navigate('/',{state: {reset: test ? 'test' : 'test2' }})
   }
 
   return (
