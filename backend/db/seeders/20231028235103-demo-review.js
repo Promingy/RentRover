@@ -28,13 +28,13 @@ module.exports = {
       const newReview = {
         spotId: spotId1,
         userId: i,
-        review: faker.lorem.lines({max: 5, min: 1}),
+        review: review1,
         stars: faker.number.int({max: 5, min: 1})
       }
       const newReview2 = {
         spotId: spotId2,
         userId: i,
-        review: faker.lorem.lines({max: 5, min: 1}),
+        review: review2,
         stars: faker.number.int({max: 5, min: 1})
       }
       reviews.push(newReview)
