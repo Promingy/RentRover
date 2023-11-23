@@ -27,6 +27,7 @@ p {
     grid-template-columns: repeat(auto-fit, minmax(250px, .25fr));
     max-width: 100%;
     gap: 50px;
+    justify-content: center;
 }
 
 .spots{
