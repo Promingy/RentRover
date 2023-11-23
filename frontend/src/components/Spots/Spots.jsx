@@ -16,17 +16,16 @@ export default function Spots() {
     const [searchparams] = useSearchParams()
 
     const [page, setPage] = useState(+searchparams.get("page") || 1)
-    const [size, setSize] = useState(+searchparams.get("size") || 20)
+    const [size] = useState(+searchparams.get("size") || 20)
 
     useEffect(() => {
-        console.log('am I getting hit')
         if (reset) {
             dispatch(thunkGetAllSpots('page=1&size=20'))
             setPage(1)
         }else {
             dispatch(thunkGetAllSpots(`${page && `page=${page}`}${size ? `&size=${size}` : ''}`));
         }
-    }, [dispatch, reset])
+    }, [dispatch, reset, page, size])
 
     return (
         <div className="spotsWrapper">
@@ -48,15 +47,18 @@ export default function Spots() {
             </ul>
             <div className='pageButtonContainer'>
                 <button className='pageButton' onClick={() => {
-                    page > 1 && setPage(prevPage => --prevPage)
-                    dispatch(thunkGetAllSpots(`${page && `page=${page - 1}`}${size ? `&size=${size}` : ''}`));
+                    page > 1 && setPage(prevPage => prevPage - 1)
+
+                    location.state.reset = false
                     }}>
                         previous
                     </button>
                 <p className='pageNumber'>{page}</p>
                 <button className='pageButton' onClick={() => {
-                    allSpots.length == size && setPage(prevPage => ++prevPage)
-                    dispatch(thunkGetAllSpots(`${page ? `page=${page + 1}` : ''}${size ? `&size=${size}` : ''}`));
+                    allSpots.length == size && setPage(lastPage => lastPage += 1)
+
+                    location.state.reset = false
+
                     }}>
                         next
                     </button>
