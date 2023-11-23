@@ -6,7 +6,8 @@ import './Spots.css';
 
 export default function Spots() {
     const dispatch = useDispatch();
-    const allSpots = useSelector(state => state.spots.Spots);
+    const spots = useSelector(state => state.spots.Spots);
+    const allSpots = spots && Object.values(spots)
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -18,7 +19,6 @@ export default function Spots() {
             {/* <h1>Spots</h1> */}
             <ul className='spotsContainer'>
                 {allSpots && Array.isArray(allSpots) && allSpots.map(spot => (
-                    spot &&
                     <li title={`${spot.name}`} className='spots' key={`${spot.id}`} onClick={() => navigate(`/spots/${spot.id}`)}>
                             <img className='previewImage' src={`${spot.previewImage}`} alt={`${spot.previewImage}`} />
                             <span className="locationRating">
