@@ -19,6 +19,12 @@ module.exports = {
       const spotId1 = faker.number.int({max: 49, min: 1})
       let spotId2 = faker.number.int({max: 99, min: 50})
 
+      let review1 = faker.lorem.lines({max: 5, min: 1})
+      let review2 = faker.lorem.lines({max: 5, min: 1})
+
+      while (review1.length > 255) review1 = faker.lorem.lines({max: 5, min: 1})
+      while (review2.length > 255) review2 = faker.lorem.lines({max: 5, min: 1})
+
       const newReview = {
         spotId: spotId1,
         userId: i,
