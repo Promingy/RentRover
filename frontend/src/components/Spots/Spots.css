@@ -1,10 +1,11 @@
 .spotsWrapper {
-    padding: 50px;
+    padding: 25px;
     overflow: hidden;
     display: flex;
     justify-content: center;
     max-width: 1200px;
     margin: 0 auto;
+    border: 1px solid red;
 }
 .previewImage {
     min-height: 200px;
@@ -23,10 +24,8 @@ p {
 
 .spotsContainer {
     display: grid;
-    /* justify-content: center; */
     grid-template-columns: repeat(auto-fit, minmax(250px, .25fr));
     max-width: 100%;
-    /* margin: 0 auto; */
     gap: 50px;
 }
 
