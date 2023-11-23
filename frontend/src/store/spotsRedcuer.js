@@ -8,18 +8,6 @@ const CURRENT_USER_SPOTS = 'spotsReducer/CURRENT_USER_SPOTS'
 const UPDATE_SPOT = 'spotsReducer/UPDATE_SPOT'
 const DELETE_SPOT = 'spotsReducer/DELETE_SPOT'
 
-export const thunkPostReview = (spotId, review) => async (dispatch) => {
-    const res = await csrfFetch(`/api/spots/${spotId}/reviews`,{
-        method: 'POST',
-        body: JSON.stringify(review)
-    })
-
-    if (res.ok) {
-        const data = await res.json();
-        dispatch(actionPostReview(data))
-        }
-}
-
 
 /// ACTION CREATORS
 const actionGetSpots = (spots) => {
@@ -104,23 +92,18 @@ export const thunkGetSingleSpot = (spotId) => async (dispatch) => {
 }
 
 export const thunkCreateSpot = (spot) => async (dispatch) => {
-    try {
-        const res = await csrfFetch('/api/spots', {
-            method: 'POST',
-            body: JSON.stringify(spot.Spot)
-        });
+    const res = await csrfFetch('/api/spots', {
+        method: 'POST',
+        body: JSON.stringify(spot.Spot)
+    });
 
-        if (res.ok) {
-            console.log('hi  from thunk')
-            const data = await res.json();
-            await dispatch(actionCreateSpot(data))
-            dispatch(thunkAddSpotImage(spot.Images, data.id))
-            return data
-        }
-    } catch (e) {
-        throw e
+    if (res.ok) {
+        console.log('hi  from thunk')
+        const data = await res.json();
+        await dispatch(actionCreateSpot(data))
+        dispatch(thunkAddSpotImage(spot.Images, data.id))
+        return data
     }
-
 }
 
 export const thunkAddSpotImage = (images, spotId) => async (dispatch) => {
@@ -151,20 +134,17 @@ export const thunkDeleteSpot = (spotId) => async (dispatch) => {
 }
 
 export const thunkUpdateSpot = (spotId, spot) => async (dispatch) => {
-    try {
-        console.log(spot.Spot)
-        const res = await csrfFetch(`/api/spots/${spotId}`, {
-            method: 'PUT',
-            body: JSON.stringify(spot.Spot)
-        })
+    console.log(spot.Spot)
+    const res = await csrfFetch(`/api/spots/${spotId}`, {
+        method: 'PUT',
+        body: JSON.stringify(spot.Spot)
+    })
 
-        if (res.ok) {
-            const data = await res.json();
-            dispatch(actionUpdateSpot(data, data.id));
-        }
-    } catch (e) {
-        throw e
+    if (res.ok) {
+        const data = await res.json();
+        dispatch(actionUpdateSpot(data, data.id));
     }
+
 }
 
 

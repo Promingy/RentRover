@@ -3,7 +3,7 @@ import './ReviewFormModal.css'
 import { useDispatch } from 'react-redux'
 import { thunkPostReview } from '../../store/reviewsReducer';
 import { useModal } from '../../context/Modal';
-export default function ReviewFormModal ({ spotId, spot }) {
+export default function ReviewFormModal ({ spotId }) {
     const dispatch = useDispatch();
     const [activeRating, setActiveRating] = useState(0)
     const [rating, setRating] = useState(0)
