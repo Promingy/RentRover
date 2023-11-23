@@ -2,6 +2,7 @@
     padding: 25px;
     overflow: hidden;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     max-width: 1200px;
     margin: 0 auto;
@@ -53,4 +54,21 @@ p {
 
 .locationPrice{
     margin-top: 10px;
+}
+
+.pageButtonContainer {
+    display: flex;
+    gap: 20px;
+    margin: 0 auto;
+}
+
+.pageButton {
+    width: 100px;
+    padding: 10px;
+    background-color: #F45B69;
+    color: #E4FDE1;
+}
+.pageNumber {
+    display: flex;
+    align-items: center;
 }

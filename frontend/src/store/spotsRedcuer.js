@@ -63,8 +63,9 @@ const actionDeleteSpot = (spotId) => {
 
 
 /// THUNKTIONS
-export const thunkGetAllSpots = () => async (dispatch) => {
-    const res = await fetch('/api/spots');
+export const thunkGetAllSpots = (query) => async (dispatch) => {
+    console.log('query', query)
+    const res = await fetch(`/api/spots?${query}`);
 
     if (res.ok){
         const data = await res.json();

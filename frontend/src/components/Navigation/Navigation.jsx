@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
 import './Navigation.css';
 import { useEffect, useState } from 'react';
+import { thunkGetAllSpots } from '../../store/spotsRedcuer';
 
 function Navigation({ isLoaded }) {
   const navigate = useNavigate();
@@ -36,9 +37,10 @@ function Navigation({ isLoaded }) {
       </>
     );
   }
-
+  const [test, setTest] = useState(true)
   function logoClick () {
-    navigate('/')
+    setTest(!test)
+    navigate('/',{state: {reset: test ? 'test' : 'test2' }})
   }
 
   return (
