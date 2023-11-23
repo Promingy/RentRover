@@ -29,7 +29,7 @@ export default function Reviews ({ spotId, ownerId}) {
     return (
     <div className='reviewsWrapper'>
 
-        {   buttonCondition && 
+        {   buttonCondition &&
             <label className={reviews?.length ? 'postReviewButtonContainer' : 'postReviewButtonContainer2'}>
                 <p className={reviews?.length ? 'postReviewButtonText' : 'postReviewButtonText2'}>{reviews?.length ? 'Post Your Review' : 'Be the first to post a review'}</p>
                 <OpenModalButton modalComponent={<ReviewFormModal spotId={spotId}/>} />
@@ -38,9 +38,8 @@ export default function Reviews ({ spotId, ownerId}) {
 
         <ul className="reviewsWrapper">
             { reviews && reviews?.toReversed().map(review => {
-                const date = new Date(review?.updatedAt)
-                const monthPosted = date.getMonth();
-                const yearPosted = date.getFullYear();
+                const monthPosted = review?.updatedAt.split('-')[0];
+                const yearPosted = review?.updatedAt.split('-')[1];
                 return (<li key={`${review?.id}`} className='reviewContainer'>
                     <h4 className='reviewerName'>{review?.userId == sessionUser?.id ? sessionUser?.firstName : review.User?.firstName}</h4>
                     <p className="reviewPostDate">Posted on: {months[monthPosted]} {yearPosted}</p>
