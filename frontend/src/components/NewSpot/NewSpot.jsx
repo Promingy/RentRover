@@ -1,26 +1,26 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { thunkCreateSpot, thunkUpdateSpot } from '../../store/spotsRedcuer';
 import './NewSpot.css'
 import { useDispatch } from 'react-redux';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-export default function NewSpot({ prevForm, formType }) {
+export default function NewSpot({ updateForm, formType }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const { spotId } = useParams();
-    const prevDetails = prevForm && prevForm[spotId]
+    updateForm && Object.values(updateForm).length && localStorage.setItem("values", JSON.stringify(updateForm))
+    let prevForm = updateForm && JSON.parse(localStorage.getItem("values"))
 
-    const [address, setAddress] = useState(prevDetails?.address || '');
-    const [city, setCity] = useState(prevDetails?.city || '');
-    const [state, setState] = useState(prevDetails?.state || '');
-    const [country, setCountry] = useState(prevDetails?.country || '');
-    const [long, setLong] = useState(prevDetails?.lng || '');
-    const [lat, setLat] = useState(prevDetails?.lat || '');
-    const [spotName, setSpotName] = useState(prevDetails?.name || '');
-    const [description, setDescription] = useState(prevDetails?.description || '')
-    const [price, setPrice] = useState(prevDetails?.price || '');
-    const [previewImage, setPreviewImage] = useState(prevDetails?.previewImage || '')
+    const [address, setAddress] = useState(prevForm?.address || '');
+    const [city, setCity] = useState(prevForm?.city || '');
+    const [state, setState] = useState(prevForm?.state || '');
+    const [country, setCountry] = useState(prevForm?.country || '');
+    const [long, setLong] = useState(prevForm?.lng || '');
+    const [lat, setLat] = useState(prevForm?.lat || '');
+    const [spotName, setSpotName] = useState(prevForm?.name || '');
+    const [description, setDescription] = useState(prevForm?.description || '')
+    const [price, setPrice] = useState(prevForm?.price || '');
+    const [previewImage, setPreviewImage] = useState(prevForm?.previewImage || '')
     const [image1, setImage1] = useState('');
     const [image2, setImage2] = useState('');
     const [image3, setImage3] = useState('');
@@ -28,22 +28,6 @@ export default function NewSpot({ prevForm, formType }) {
     // const [file, setFile] = useState('');
 
     const [errors, setErrors] = useState({});
-
-    // if formType is update, then set state to previus state details
-    useEffect(() => {
-
-        setAddress(prevDetails?.address)
-        setCity(prevDetails?.city)
-        setState(prevDetails?.state)
-        setCountry(prevDetails?.country)
-        setLong(prevDetails?.lng)
-        setLat(prevDetails?.lat)
-        setSpotName(prevDetails?.name)
-        setDescription(prevDetails?.description)
-        setPrice(prevDetails?.price)
-        setPreviewImage(prevDetails?.previewImage)
-}, [formType, prevDetails])
-
 
 
     // creates spot object on submit and calls thunktion to flesh out any errors that may be present
@@ -139,7 +123,7 @@ export default function NewSpot({ prevForm, formType }) {
 
     return (
         <form className='newSpotForm' onSubmit={onSubmit}>
-            <h1 className='newSpotFormHeader'>{formType ? 'Update Your Spot' : 'Create a New Spot'}</h1>
+            <h1 className='newSpotFormHeader'>{formType ? 'Update your Spot' : 'Create a New Spot'}</h1>
             <h2 className='newSpotFormSubHeader'>Where&apos;s your place located?</h2>
             <p className='subHeaderDetails'>Guests will only get your exact address once they booked a reservation.</p>
 

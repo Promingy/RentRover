@@ -13,13 +13,14 @@ export default function UpdateSpot() {
     // get spot if isUpdate
     const spots = useSelector(state => state.spots)
 
-    const prevForm = { ...spots?.Spots}
+    const prevForm = { ...spots?.Spots?.[spotId]}
+
 
     useEffect(() => {
         dispatch(thunkGetSingleSpot(spotId))
     }, [dispatch, spotId])
 
     return (
-        <NewSpot formType='update' prevForm={prevForm}/>
+        <NewSpot formType='update' updateForm={prevForm}/>
     )
 }
