@@ -118,6 +118,7 @@ export const thunkAddSpotImage = (images, spotId) => async (dispatch) => {
             if (res.ok) {
                 const data = await res.json();
                 dispatch(actionAddSpotImage(data, spotId))
+                return data
             }
         }
     }
@@ -141,7 +142,8 @@ export const thunkUpdateSpot = (spotId, spot) => async (dispatch) => {
 
     if (res.ok) {
         const data = await res.json();
-        dispatch(actionUpdateSpot(data, spotId));
+        await dispatch(actionUpdateSpot(data, spotId));
+        dispatch(thunkAddSpotImage(spot.Images, spotId))
         return data
     }
     return res

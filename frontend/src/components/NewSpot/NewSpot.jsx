@@ -4,7 +4,7 @@ import './NewSpot.css'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
-export default function NewSpot({ isUpdate, updateForm, formType }) {
+export default function NewSpot({ isUpdate, formType }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { spotId } = useParams()
@@ -78,8 +78,6 @@ export default function NewSpot({ isUpdate, updateForm, formType }) {
             },
             Images: [
                 newPreviewImage,
-                // file && {url: file, preview: false} || undefined,
-                image1 && {url: image1, preview: false} || undefined,
                 image2 && {url: image2, preview: false} || undefined,
                 image3 && {url: image3, preview: false} || undefined,
                 image4 && {url: image4, preview: false} || undefined
@@ -87,7 +85,7 @@ export default function NewSpot({ isUpdate, updateForm, formType }) {
         }
 
         if (previewImage && imageEndings.some(ext => previewImage.endsWith(ext))){
-            dispatch(formType ? thunkUpdateSpot(updateForm.id, newSpot) : thunkCreateSpot(newSpot))
+            dispatch(formType ? thunkUpdateSpot(spot?.id, newSpot) : thunkCreateSpot(newSpot))
                 .then(spot => {navigate(`/spots/${spot.id}`)})
                 .catch(async (res) => {
                     const data = await res.json();
@@ -202,14 +200,17 @@ export default function NewSpot({ isUpdate, updateForm, formType }) {
 
             {inputCreator('newSpotInput', 'text', 'Name of your spot (USD)',price, setPrice, 'setPriceContainer', '$')}
 
-            <label className='seperator' />
 
-            <h2 className='newSpotFormSubHeader'>Liven up your spot with photos</h2>
-            <p className='subHeaderDetails'>Submit a link to at least one photo to publish your spot.</p>
+            {!isUpdate &&
+            <>
+                <label className='seperator' />
+                <h2 className='newSpotFormSubHeader'>Liven up your spot with photos</h2>
+                <p className='subHeaderDetails'>Submit a link to at least one photo to publish your spot.</p>
 
-            {inputCreator('photoInput', 'url', 'Preview Image Url', previewImage, setPreviewImage)}
+                {inputCreator('photoInput', 'url', 'Preview Image Url', previewImage, setPreviewImage)}
 
-            {createImageInput()}
+                {createImageInput()}
+            </>}
 
 
             {/* The below code is how to allow file uploads, and extract the url from it */}
@@ -223,7 +224,7 @@ export default function NewSpot({ isUpdate, updateForm, formType }) {
 
             <label className='seperator' />
 
-            <button className='submitSpot'>{updateForm ? "Update Spot" : "Create Spot"}</button>
+            <button className='submitSpot'>{isUpdate ? "Update Spot" : "Create Spot"}</button>
 
         </form>
     )
