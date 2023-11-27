@@ -1,34 +1,54 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { thunkCreateSpot, thunkUpdateSpot } from '../../store/spotsRedcuer';
 import './NewSpot.css'
-import { useDispatch } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
 
-export default function NewSpot({ updateForm, formType }) {
+export default function NewSpot({ isUpdate, updateForm, formType }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const { spotId } = useParams()
 
-    let prevFormFull = updateForm && JSON.parse(localStorage.getItem("values"))
-    const prevForm = prevFormFull?.Spot
-    const prevImages = prevFormFull?.Images
+    let spot
+    const spots = useSelector(state => state.spots.Spots)
+    spot = spots && spots[spotId]
 
-    const [address, setAddress] = useState(prevForm?.address || '');
-    const [city, setCity] = useState(prevForm?.city || '');
-    const [state, setState] = useState(prevForm?.state || '');
-    const [country, setCountry] = useState(prevForm?.country || '');
-    const [long, setLong] = useState(prevForm?.lng || '');
-    const [lat, setLat] = useState(prevForm?.lat || '');
-    const [spotName, setSpotName] = useState(prevForm?.name || '');
-    const [description, setDescription] = useState(prevForm?.description || '')
-    const [price, setPrice] = useState(prevForm?.price || '');
-    const [previewImage, setPreviewImage] = useState(prevImages?.[0]?.url || '')
-    const [image1, setImage1] = useState(prevImages?.[1]?.url || '')
-    const [image2, setImage2] = useState(prevImages?.[2]?.url || '')
-    const [image3, setImage3] = useState(prevImages?.[3]?.url || '')
-    const [image4, setImage4] = useState(prevImages?.[4]?.url || '')
+    const [address, setAddress] = useState('');
+    const [city, setCity] = useState('');
+    const [state, setState] = useState('');
+    const [country, setCountry] = useState('');
+    const [long, setLong] = useState('');
+    const [lat, setLat] = useState('');
+    const [spotName, setSpotName] = useState('');
+    const [description, setDescription] = useState('')
+    const [price, setPrice] = useState('');
+    const [previewImage, setPreviewImage] = useState('')
+    const [image1, setImage1] = useState('')
+    const [image2, setImage2] = useState('')
+    const [image3, setImage3] = useState('')
+    const [image4, setImage4] = useState('')
     // const [file, setFile] = useState('');
 
     const [errors, setErrors] = useState({});
+
+    useEffect(() => {
+        if (spot && isUpdate) {
+            setCity(spot.city || '')
+            setState(spot.state || '')
+            setAddress(spot.address || '')
+            setCountry(spot.country || '')
+            setLong(spot.lng || '')
+            setLat(spot.lat || '')
+            setSpotName(spot.name || '')
+            setDescription(spot.description || '')
+            setPrice(spot.price || '')
+            setPreviewImage(spot.previewImage || '')
+            setImage1(spot.SpotImages[1]?.url || '')
+            setImage2(spot.SpotImages[2]?.url || '')
+            setImage3(spot.SpotImages[3]?.url || '')
+            setImage4(spot.SpotImages[4]?.url || '')
+        }
+    }, [spot, isUpdate])
 
 
     // creates spot object on submit and calls thunktion to flesh out any errors that may be present
@@ -68,11 +88,7 @@ export default function NewSpot({ updateForm, formType }) {
 
         if (previewImage && imageEndings.some(ext => previewImage.endsWith(ext))){
             dispatch(formType ? thunkUpdateSpot(updateForm.id, newSpot) : thunkCreateSpot(newSpot))
-                .then(spot => {
-                    console.log('updatedSpot', spot)
-                    localStorage.setItem("values", JSON.stringify(newSpot))
-                    navigate(`/spots/${spot.id}`)
-                })
+                .then(spot => {navigate(`/spots/${spot.id}`)})
                 .catch(async (res) => {
                     const data = await res.json();
 
