@@ -12,6 +12,7 @@
     min-width: 250px;
     max-width: 250px;
     border: 1px solid grey;
+    border-radius: 10px;
 }
 
 h1 {

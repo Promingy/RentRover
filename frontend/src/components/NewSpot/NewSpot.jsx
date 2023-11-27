@@ -66,10 +66,12 @@ export default function NewSpot({ updateForm, formType }) {
         }
 
         if (previewImage && imageEndings.some(ext => previewImage.endsWith(ext))){
-            dispatch(formType ? thunkUpdateSpot(newSpot) : thunkCreateSpot(newSpot))
-                .then(spot => navigate(`/spots/${spot.id}`))
+            dispatch(formType ? thunkUpdateSpot(updateForm.id, newSpot) : thunkCreateSpot(newSpot))
+                .then(spot => {
+                    console.log('updatedSpot', spot)
+                    navigate(`/spots/${spot.id}`)
+                })
                 .catch(async (res) => {
-
                     const data = await res.json();
 
                     if (data?.errors) {
@@ -203,7 +205,7 @@ export default function NewSpot({ updateForm, formType }) {
 
             <label className='seperator' />
 
-            <button className='submitSpot'>Create Spot</button>
+            <button className='submitSpot'>{updateForm ? "Update Spot" : "Create Spot"}</button>
 
         </form>
     )
