@@ -72,14 +72,15 @@ export default function NewSpot({ isUpdate, formType }) {
                 city,
                 state,
                 country,
-                lat: +lat || 0,
-                lng: +long || 0,
+                lat: lat || 0,
+                lng: long || 0,
                 name: spotName,
                 price,
                 description
             },
             Images: [
                 newPreviewImage,
+                image1 && {url: image1, preview: false} || undefined,
                 image2 && {url: image2, preview: false} || undefined,
                 image3 && {url: image3, preview: false} || undefined,
                 image4 && {url: image4, preview: false} || undefined
