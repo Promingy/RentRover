@@ -72,8 +72,8 @@ export default function NewSpot({ isUpdate, formType }) {
                 city,
                 state,
                 country,
-                lat: lat || 0,
-                lng: long || 0,
+                lat: +lat || 0,
+                lng: +long || 0,
                 name: spotName,
                 price,
                 description
