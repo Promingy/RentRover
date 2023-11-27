@@ -141,7 +141,7 @@ export const thunkUpdateSpot = (spotId, spot) => async (dispatch) => {
 
     if (res.ok) {
         const data = await res.json();
-        dispatch(actionUpdateSpot(data, spotId));
+        await dispatch(actionUpdateSpot(data, spotId));
         return data
     }
     return res

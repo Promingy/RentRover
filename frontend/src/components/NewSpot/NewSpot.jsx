@@ -4,9 +4,10 @@ import './NewSpot.css'
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 
-export default function NewSpot({ isUpdate, updateForm, formType }) {
+export default function NewSpot({ isUpdate, formType }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const sessionUser = useSelector((state) => state.session.user);
     const { spotId } = useParams()
 
     let spot
@@ -32,6 +33,7 @@ export default function NewSpot({ isUpdate, updateForm, formType }) {
     const [errors, setErrors] = useState({});
 
     useEffect(() => {
+        if (!sessionUser) navigate('/');
         if (spot && isUpdate) {
             setCity(spot.city || '')
             setState(spot.state || '')
@@ -48,7 +50,7 @@ export default function NewSpot({ isUpdate, updateForm, formType }) {
             setImage3(spot.SpotImages[3]?.url || '')
             setImage4(spot.SpotImages[4]?.url || '')
         }
-    }, [spot, isUpdate])
+    }, [spot, isUpdate, sessionUser, navigate])
 
 
     // creates spot object on submit and calls thunktion to flesh out any errors that may be present
@@ -78,7 +80,6 @@ export default function NewSpot({ isUpdate, updateForm, formType }) {
             },
             Images: [
                 newPreviewImage,
-                // file && {url: file, preview: false} || undefined,
                 image1 && {url: image1, preview: false} || undefined,
                 image2 && {url: image2, preview: false} || undefined,
                 image3 && {url: image3, preview: false} || undefined,
@@ -87,7 +88,7 @@ export default function NewSpot({ isUpdate, updateForm, formType }) {
         }
 
         if (previewImage && imageEndings.some(ext => previewImage.endsWith(ext))){
-            dispatch(formType ? thunkUpdateSpot(updateForm.id, newSpot) : thunkCreateSpot(newSpot))
+            dispatch(formType ? thunkUpdateSpot(spot?.id, newSpot) : thunkCreateSpot(newSpot))
                 .then(spot => {navigate(`/spots/${spot.id}`)})
                 .catch(async (res) => {
                     const data = await res.json();
@@ -142,89 +143,94 @@ export default function NewSpot({ isUpdate, updateForm, formType }) {
     }
 
     return (
-        <form className='newSpotForm' onSubmit={onSubmit}>
-            <h1 className='newSpotFormHeader'>{formType ? 'Update your Spot' : 'Create a New Spot'}</h1>
-            <h2 className='newSpotFormSubHeader'>Where&apos;s your place located?</h2>
-            <p className='subHeaderDetails'>Guests will only get your exact address once they booked a reservation.</p>
+        <>
+        {sessionUser && <form className='newSpotForm' onSubmit={onSubmit}>
+                <h1 className='newSpotFormHeader'>{formType ? 'Update your Spot' : 'Create a New Spot'}</h1>
+                <h2 className='newSpotFormSubHeader'>Where&apos;s your place located?</h2>
+                <p className='subHeaderDetails'>Guests will only get your exact address once they booked a reservation.</p>
 
-            {Object.values(errors).map(error => (
-                <p className='errors' key={error}>{error}</p>
-            ))}
+                {Object.values(errors).map(error => (
+                    <p className='errors' key={error}>{error}</p>
+                ))}
 
-            {inputCreator('newSpotInput', 'text', 'Country', country, setCountry, 'country sectionOneInputs', 'Country')}
+                {inputCreator('newSpotInput', 'text', 'Country', country, setCountry, 'country sectionOneInputs', 'Country')}
 
-            {inputCreator('newSpotInput', 'text', 'Street Address',  address, setAddress, 'streetAddress sectionOneInputs', 'Street Address')}
+                {inputCreator('newSpotInput', 'text', 'Street Address',  address, setAddress, 'streetAddress sectionOneInputs', 'Street Address')}
 
-            <label className='cityAndState sectionOneInputs'>
+                <label className='cityAndState sectionOneInputs'>
 
-                {inputCreator('newSpotInput cityInput', 'text', 'City', city, setCity, 'nestedInputContainer', 'City')}
+                    {inputCreator('newSpotInput cityInput', 'text', 'City', city, setCity, 'nestedInputContainer', 'City')}
 
-                <p className='inputComma'>,</p>
+                    <p className='inputComma'>,</p>
 
-                {inputCreator('newSpotInput stateInput', 'text', 'State',state, setState, 'stateInputContainer', 'STATE')}
-            </label>
+                    {inputCreator('newSpotInput stateInput', 'text', 'State',state, setState, 'stateInputContainer', 'STATE')}
+                </label>
 
-            <label className='latAndLong sectionOneInputs'>
+                <label className='latAndLong sectionOneInputs'>
 
-                {inputCreator('newSpotInput', 'text', 'Latitude', lat, setLat, 'nestedInputContainer', 'Latitude')}
+                    {inputCreator('newSpotInput', 'text', 'Latitude', lat, setLat, 'nestedInputContainer', 'Latitude')}
 
-                <p className='inputComma'>,</p>
+                    <p className='inputComma'>,</p>
 
-                {inputCreator('newSpotInput', 'text', 'Longitude', long, setLong, 'nestedInputContainer', 'Longitude')}
+                    {inputCreator('newSpotInput', 'text', 'Longitude', long, setLong, 'nestedInputContainer', 'Longitude')}
 
-            </label>
+                </label>
 
-            <label className='seperator' />
+                <label className='seperator' />
 
-            <h2 className='newSpotFormSubHeader'>Describe your place to guests</h2>
-            <p className='subHeaderDetails'>Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood.</p>
+                <h2 className='newSpotFormSubHeader'>Describe your place to guests</h2>
+                <p className='subHeaderDetails'>Mention the best features of your space, any special amentities like fast wifi or parking, and what you love about the neighborhood.</p>
 
-            <label className='descriptionTextContainer'>
-                <textarea
-                    className='descriptionTextArea'
-                    placeholder='Please write at least 30 characters'
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
+                <label className='descriptionTextContainer'>
+                    <textarea
+                        className='descriptionTextArea'
+                        placeholder='Please write at least 30 characters'
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        />
+                </label>
+
+                <label className='seperator' />
+
+                <h2 className='newSpotFormSubHeader'>Create a title for your spot</h2>
+                <p className='subHeaderDetails'>Catch guests&apos; attention with a spot title that highlights what makes your place special.</p>
+
+                {inputCreator('newSpotInput', 'text', 'Name of your Spot', spotName, setSpotName)}
+
+                <label className='seperator' />
+
+                <h2 className='newSpotFormSubHeader'>Set a base price for your spot</h2>
+                <p className='subHeaderDetails'>Competitive pricing can help your listing stand out and rank higher in search results.</p>
+
+                {inputCreator('newSpotInput', 'text', 'Name of your spot (USD)',price, setPrice, 'setPriceContainer', '$')}
+
+
+                {!isUpdate &&
+                <>
+                    <label className='seperator' />
+                    <h2 className='newSpotFormSubHeader'>Liven up your spot with photos</h2>
+                    <p className='subHeaderDetails'>Submit a link to at least one photo to publish your spot.</p>
+
+                    {inputCreator('photoInput', 'url', 'Preview Image Url', previewImage, setPreviewImage)}
+
+                    {createImageInput()}
+                </>}
+
+
+                {/* The below code is how to allow file uploads, and extract the url from it */}
+                {/* <label>
+                    <input
+                        type='file'
+                        value={file}
+                        onChange={(e) => setFile(e.target.value)}
                     />
-            </label>
+                </label> */}
 
-            <label className='seperator' />
+                <label className='seperator' />
 
-            <h2 className='newSpotFormSubHeader'>Create a title for your spot</h2>
-            <p className='subHeaderDetails'>Catch guests&apos; attention with a spot title that highlights what makes your place special.</p>
+                <button className='submitSpot'>{isUpdate ? "Update Spot" : "Create Spot"}</button>
 
-            {inputCreator('newSpotInput', 'text', 'Name of your Spot', spotName, setSpotName)}
-
-            <label className='seperator' />
-
-            <h2 className='newSpotFormSubHeader'>Set a base price for your spot</h2>
-            <p className='subHeaderDetails'>Competitive pricing can help your listing stand out and rank higher in search results.</p>
-
-            {inputCreator('newSpotInput', 'text', 'Name of your spot (USD)',price, setPrice, 'setPriceContainer', '$')}
-
-            <label className='seperator' />
-
-            <h2 className='newSpotFormSubHeader'>Liven up your spot with photos</h2>
-            <p className='subHeaderDetails'>Submit a link to at least one photo to publish your spot.</p>
-
-            {inputCreator('photoInput', 'url', 'Preview Image Url', previewImage, setPreviewImage)}
-
-            {createImageInput()}
-
-
-            {/* The below code is how to allow file uploads, and extract the url from it */}
-            {/* <label>
-                <input
-                    type='file'
-                    value={file}
-                    onChange={(e) => setFile(e.target.value)}
-                />
-            </label> */}
-
-            <label className='seperator' />
-
-            <button className='submitSpot'>{updateForm ? "Update Spot" : "Create Spot"}</button>
-
-        </form>
+            </form>}
+        </>
     )
 }
