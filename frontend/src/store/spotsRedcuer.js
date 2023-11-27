@@ -134,7 +134,6 @@ export const thunkDeleteSpot = (spotId) => async (dispatch) => {
 }
 
 export const thunkUpdateSpot = (spotId, spot) => async (dispatch) => {
-    console.log(spot.Spot)
     const res = await csrfFetch(`/api/spots/${spotId}`, {
         method: 'PUT',
         body: JSON.stringify(spot.Spot)
@@ -142,9 +141,10 @@ export const thunkUpdateSpot = (spotId, spot) => async (dispatch) => {
 
     if (res.ok) {
         const data = await res.json();
-        dispatch(actionUpdateSpot(data, data.id));
+        dispatch(actionUpdateSpot(data, spotId));
+        return data
     }
-
+    return res
 }
 
 
