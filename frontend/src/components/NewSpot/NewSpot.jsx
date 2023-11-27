@@ -8,8 +8,9 @@ export default function NewSpot({ updateForm, formType }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    updateForm && Object.values(updateForm).length && localStorage.setItem("values", JSON.stringify(updateForm))
-    let prevForm = updateForm && JSON.parse(localStorage.getItem("values"))
+    let prevFormFull = updateForm && JSON.parse(localStorage.getItem("values"))
+    const prevForm = prevFormFull?.Spot
+    const prevImages = prevFormFull?.Images
 
     const [address, setAddress] = useState(prevForm?.address || '');
     const [city, setCity] = useState(prevForm?.city || '');
@@ -20,11 +21,11 @@ export default function NewSpot({ updateForm, formType }) {
     const [spotName, setSpotName] = useState(prevForm?.name || '');
     const [description, setDescription] = useState(prevForm?.description || '')
     const [price, setPrice] = useState(prevForm?.price || '');
-    const [previewImage, setPreviewImage] = useState(prevForm?.previewImage || '')
-    const [image1, setImage1] = useState('');
-    const [image2, setImage2] = useState('');
-    const [image3, setImage3] = useState('');
-    const [image4, setImage4] = useState('');
+    const [previewImage, setPreviewImage] = useState(prevImages?.[0]?.url || '')
+    const [image1, setImage1] = useState(prevImages?.[1]?.url || '')
+    const [image2, setImage2] = useState(prevImages?.[2]?.url || '')
+    const [image3, setImage3] = useState(prevImages?.[3]?.url || '')
+    const [image4, setImage4] = useState(prevImages?.[4]?.url || '')
     // const [file, setFile] = useState('');
 
     const [errors, setErrors] = useState({});
@@ -69,6 +70,7 @@ export default function NewSpot({ updateForm, formType }) {
             dispatch(formType ? thunkUpdateSpot(updateForm.id, newSpot) : thunkCreateSpot(newSpot))
                 .then(spot => {
                     console.log('updatedSpot', spot)
+                    localStorage.setItem("values", JSON.stringify(newSpot))
                     navigate(`/spots/${spot.id}`)
                 })
                 .catch(async (res) => {
