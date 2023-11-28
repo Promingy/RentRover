@@ -14,6 +14,7 @@ export default function NewSpot({ isUpdate, formType }) {
     const spots = useSelector(state => state.spots.Spots)
     spot = spots && spots[spotId]
 
+
     const [address, setAddress] = useState('');
     const [city, setCity] = useState('');
     const [state, setState] = useState('');
@@ -31,9 +32,10 @@ export default function NewSpot({ isUpdate, formType }) {
     // const [file, setFile] = useState('');
 
     const [errors, setErrors] = useState({});
-
     useEffect(() => {
+        if(spot?.Owner.id &&  sessionUser.id != spot?.Owner.id) navigate('/')
         if (!sessionUser) navigate('/');
+
         if (spot && isUpdate) {
             setCity(spot.city || '')
             setState(spot.state || '')
