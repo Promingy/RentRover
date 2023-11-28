@@ -1,11 +1,12 @@
 import { useDispatch, useSelector } from "react-redux"
 import './SelectedSpot.css'
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import { useEffect } from "react";
 import { thunkGetSingleSpot } from "../../store/spotsRedcuer";
 import Reviews from "./Reviews";
 
 export default function SelectedSpot () {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const { spotId } = useParams();
     const spots = useSelector(store => store.spots);
@@ -13,10 +14,12 @@ export default function SelectedSpot () {
     const spotImages = spot && spot.SpotImages
     const previewImage = spotImages && spotImages.find(image => image.preview)
     let reviewTitle;
+    console.log('spots', spot)
 
     useEffect(() => {
+        if (!spot) navigate('/*')
         dispatch(thunkGetSingleSpot(spotId));
-    }, [dispatch, spotId])
+    }, [dispatch, spotId, spot, navigate])
 
     reviewTitle = spot?.numReviews > 1 ? 'Reviews' : 'Review'
 
@@ -32,6 +35,8 @@ export default function SelectedSpot () {
         )
     }
     return (
+        <>
+        { spot &&
         <div className="spotWrapper">
             <h1 className='spotHeader'>{spot?.name}</h1>
             <span className='spotLocation'>{spot?.city}, &nbsp;{spot?.state}, &nbsp;{spot?.country}</span>
@@ -67,5 +72,7 @@ export default function SelectedSpot () {
             </h2>
             <Reviews spotId={spotId} ownerId={spot?.ownerId}/>
         </div>
+    }
+        </>
     )
 }
