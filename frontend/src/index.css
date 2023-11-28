@@ -7,5 +7,9 @@ body {
     text-align: center;
     color: #E4FDE1;
     font-size: 50px;
+}
 
+.notFound {
+    text-align: center;
+    margin-top: 200px;
 }
