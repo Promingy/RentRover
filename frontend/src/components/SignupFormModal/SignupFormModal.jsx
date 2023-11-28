@@ -87,7 +87,7 @@ function SignupFormModal() {
           Email
           <input
             className='signupInput'
-            type="text"
+            type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
