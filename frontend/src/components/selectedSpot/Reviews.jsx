@@ -42,7 +42,7 @@ export default function Reviews ({ spotId, ownerId}) {
                 const yearPosted = review?.updatedAt.split('-')[1];
                 return (<li key={`${review?.id}`} className='reviewContainer'>
                     <h4 className='reviewerName'>{review?.userId == sessionUser?.id ? sessionUser?.firstName : review.User?.firstName}</h4>
-                    <p className="reviewPostDate">Posted on: {months[monthPosted]} {yearPosted}</p>
+                    <p className="reviewPostDate">Posted on: {months[monthPosted - 1]} {yearPosted}</p>
                     <p className='reviewText'>{review?.review}</p>
                     {
                     review?.userId == sessionUser?.id &&

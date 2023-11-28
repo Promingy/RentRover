@@ -1,12 +1,11 @@
 import { useDispatch, useSelector } from "react-redux"
 import './SelectedSpot.css'
-import { useNavigate, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import { useEffect } from "react";
 import { thunkGetSingleSpot } from "../../store/spotsRedcuer";
 import Reviews from "./Reviews";
 
 export default function SelectedSpot () {
-    const navigate = useNavigate();
     const dispatch = useDispatch();
     const { spotId } = useParams();
     const spots = useSelector(store => store.spots);
@@ -16,9 +15,8 @@ export default function SelectedSpot () {
     let reviewTitle;
 
     useEffect(() => {
-        if (!spot) navigate('/*')
         dispatch(thunkGetSingleSpot(spotId));
-    }, [dispatch, spotId, spot, navigate])
+    }, [dispatch, spotId])
 
     reviewTitle = spot?.numReviews > 1 ? 'Reviews' : 'Review'
 
