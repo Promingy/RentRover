@@ -34,9 +34,22 @@
     outline: 1px solid #114B5F;
 }
 
-.signupButton {
-    width: 100px;
+.signupButton,
+.signupButton:disabled:hover {
+    width: 125px;
     margin: 10px auto;
+    background-color: #E4FDE1;
+    padding: 10px;
+    cursor: auto;
+}
+
+.signupButton:disabled:hover {
+    color: #A5B6A1;
+}
+
+.signupButton:hover {
+    background-color: #F45B69;
+    color: #E4FDE1;
 }
 
 .signupErrors {

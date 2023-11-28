@@ -88,6 +88,12 @@
     color: #E4FDE1;
 }
 
+.reserveButton:hover {
+    cursor: pointer;
+    background-color: #E4FDE1;
+    color: black;
+}
+
 .reviewsHeader {
     margin-bottom: 45px;
 }

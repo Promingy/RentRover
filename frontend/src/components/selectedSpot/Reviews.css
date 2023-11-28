@@ -37,7 +37,8 @@
     border-right: 2px solid black;
 }
 
-.postReviewButtonContainer:active {
+.postReviewButtonContainer:active,
+.postReviewButtonContainer2:active {
     border-bottom: 2px solid grey;
     border-right: 2px solid grey;
     border-top: 2px solid black;
@@ -53,7 +54,6 @@
     width: 150px;
     height: 30px;
     color: black;
-
 }
 
 .postReviewButtonText2 {
@@ -65,6 +65,12 @@
     width: 185px;
     height: 30px;
     color: black;
+}
+
+.postReviewButtonText:hover,
+.postReviewButtonText2:hover {
+    background-color: #F45B69;
+    color: #E4FDE1;
 }
 
 .deleteReviewButtonContainer {
@@ -101,4 +107,9 @@
     height: 28px;
     position: absolute;
     background-color: #E4FDE1;
+}
+
+.deleteReviewButtonText:hover {
+    background-color: #F45B69;
+    color: #E4FDE1;
 }

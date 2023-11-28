@@ -21,10 +21,19 @@
     margin: 10px auto 0;
 }
 
+.postReviewButton:hover:enabled {
+    background-color: #F45B69;
+    color: #E4FDE1
+}
+
 .starRatingContainer {
     display: flex;
     gap: 10px;
     margin: 15px auto 5px;
+}
+.starRatingContainer:hover,
+.postReviewButton:hover:enabled {
+    cursor: pointer;
 }
 
 .empty,
