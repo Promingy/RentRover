@@ -10,7 +10,7 @@ export default function NewSpot({ isUpdate, formType }) {
     const sessionUser = useSelector((state) => state.session.user);
     const { spotId } = useParams()
 
-    let spot
+    let spot;
     const spots = useSelector(state => state.spots.Spots)
     spot = spots && spots[spotId]
 
@@ -33,8 +33,7 @@ export default function NewSpot({ isUpdate, formType }) {
 
     const [errors, setErrors] = useState({});
     useEffect(() => {
-        if(spot?.Owner.id &&  sessionUser.id != spot?.Owner.id) navigate('/')
-        if (!sessionUser) navigate('/');
+        if((spot?.Owner.id && sessionUser.id != spot?.Owner.id) || !sessionUser) navigate('/')
 
         if (spot && isUpdate) {
             setCity(spot.city || '')
