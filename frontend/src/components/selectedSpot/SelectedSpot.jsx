@@ -14,7 +14,6 @@ export default function SelectedSpot () {
     const spotImages = spot && spot.SpotImages
     const previewImage = spotImages && spotImages.find(image => image.preview)
     let reviewTitle;
-    console.log('spots', spot)
 
     useEffect(() => {
         if (!spot) navigate('/*')

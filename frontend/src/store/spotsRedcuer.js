@@ -98,7 +98,6 @@ export const thunkCreateSpot = (spot) => async (dispatch) => {
     });
 
     if (res.ok) {
-        console.log('hi  from thunk')
         const data = await res.json();
         await dispatch(actionCreateSpot(data))
         dispatch(thunkAddSpotImage(spot.Images, data.id))
