@@ -37,18 +37,24 @@
 }
 
 
-.loginButton {
-    margin: 5px;
-    width: 75px;
+.loginButton,
+.loginButton:disabled:hover {
+    margin: 10px auto;
+    width: 125px;
+    padding: 10px;
+    background-color: #E4FDE1;
+    cursor: auto;
+
+}
+.loginButton:disabled:hover{
+    color: #A5B6A1;
 
 }
 
 .loginButton:hover {
     cursor: pointer;
-}
-
-.loginButton:disabled {
-    cursor: auto;
+    background-color: #F45B69;
+    color: #E4FDE1;
 }
 
 .demoLoginButton {

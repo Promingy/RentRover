@@ -72,7 +72,14 @@ p {
     padding: 10px;
     background-color: #F45B69;
     color: #E4FDE1;
+    cursor: pointer;
 }
+
+.pageButton:active {
+    background-color: #E4FDE1;
+    color: black;
+}
+
 .pageNumber {
     display: flex;
     align-items: center;

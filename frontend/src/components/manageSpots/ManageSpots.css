@@ -22,7 +22,11 @@
     width: 70%;
     padding: 10px;
     background-color: #E4FDE1;
-    /* color: #E4FDE1; */
+}
+
+.newSpotButton:hover {
+    color: #E4FDE1;
+    background-color: #F45B69;
 }
 
 .manageSpots:hover,
