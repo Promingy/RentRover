@@ -47,7 +47,7 @@ function Navigation({ isLoaded }) {
       <li className='logoContainer' onClick={logoClick}>
         {/* /// in order to rotate this icon, remove the bounce animation */}
         <i className='fa-brands fa-airbnb fa-bounce logoIcon' />
-        <span className='logoName logo'>airbnb</span>
+        <span className='logoName logo'>RentRover</span>
       </li>
       {sessionUser &&
       <li>
