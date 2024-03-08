@@ -46,7 +46,7 @@ function Navigation({ isLoaded }) {
     <ul className={`navBarContainer ${navClass ? '' : 'navBarContainerActive'}`}>
       <li className='logoContainer' onClick={logoClick}>
         {/* /// in order to rotate this icon, remove the bounce animation */}
-        <i className='fa-brands fa-airbnb fa-bounce logoIcon' />
+        <img className='rentrover-icon' src="./public/rentrover.svg"/>
         <span className='logoName logo'>RentRover</span>
       </li>
       {sessionUser &&
