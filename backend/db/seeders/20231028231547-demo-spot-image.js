@@ -15,7 +15,7 @@ const spotImages = [];
 module.exports = {
   async up (queryInterface, Sequelize) {
 
-    for (let i = 0; i < 99; i++){
+    for (let i = 0; i < 100; i++){
 
         const newSpotImage = {
           spotId: i + 1,
